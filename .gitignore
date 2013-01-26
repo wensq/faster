@@ -1,1 +1,12 @@
 target/
+
+# Eclipse
+/.settings
+/.project
+/.classpath
+
+# IntelliJ Idea
+.idea/
+*.ipr
+*.iws
+*.iml
