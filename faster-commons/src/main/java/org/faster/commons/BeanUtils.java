@@ -43,7 +43,7 @@ public class BeanUtils {
 	}
 
 	public static final void slicePopulate(Object bean, Map<String, ?> map, String... slicePropertyNames) {
-		Map<String, ?> sliceMap = CollectionUtils.sliceMap(map, slicePropertyNames);
+		Map<String, ?> sliceMap = Maps.slice(map, slicePropertyNames);
 		populate(bean, sliceMap);
 	}
 

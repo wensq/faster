@@ -32,7 +32,7 @@ public class Maps {
         return ret;
     }
 
-    public static final Map<String, ?> slice(Map<String, ?> map, String... keys) {
+    public static final Map<String, ?> sliceIgnoreNullOrEmpty(Map<String, ?> map, String... keys) {
         return slice(map, true, keys);
     }
 
@@ -53,7 +53,7 @@ public class Maps {
         return ret;
     }
 
-    public static final Map<String, ?> sliceMap(Map<String, ?> map, String... slicePropertyNames) {
+    public static final Map<String, ?> slice(Map<String, ?> map, String... slicePropertyNames) {
         if (slicePropertyNames == null || slicePropertyNames.length == 0) {
             return map;
         }
