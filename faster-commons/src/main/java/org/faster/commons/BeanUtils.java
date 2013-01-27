@@ -26,6 +26,14 @@ public class BeanUtils {
 
 	private BeanUtils() {}
 
+    public static final <T> T newInstance(Class<T> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (Exception e) {
+            throw Exceptions.unchecked(e);
+        }
+    }
+
 	public static final void populate(Object bean, Map<String, ?> map) {
 		try {
 			org.apache.commons.beanutils.BeanUtils.populate(bean, map);
@@ -104,5 +112,29 @@ public class BeanUtils {
 			destBean.set(propertyName, value);
 		}
 	}
+
+    public static final <T> T slice(T orig, String... propertyNames) {
+        return slice(orig, true, propertyNames);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final <T> T slice(T orig, boolean ignoreNullValue, String... propertyNames) {
+        if (propertyNames == null || propertyNames.length == 0) {
+            return orig;
+        }
+
+        T dest = (T) BeanUtils.newInstance(orig.getClass());
+        WrapDynaBean destBean = new WrapDynaBean(dest);
+        WrapDynaBean origBean = new WrapDynaBean(orig);
+        for (String propertyName : propertyNames) {
+            Object value = origBean.get(propertyName);
+            if (ignoreNullValue && BeanUtils.isNullOrEmpty(value)) {
+                continue;
+            }
+
+            destBean.set(propertyName, value);
+        }
+        return dest;
+    }
 
 }

@@ -15,13 +15,7 @@
  */
 package org.faster.commons;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author sqwen
@@ -46,19 +40,24 @@ public class CollectionUtils {
 		return new LinkedHashSet<T>(elements);
 	}
 
-	public static final Map<String, ?> sliceMap(Map<String, ?> map, String... slicePropertyNames) {
-		if (slicePropertyNames == null || slicePropertyNames.length == 0) {
-			return map;
-		}
+    public static final <T> List<T> slice(Collection<T> objs, String... slicePropertyNames) {
+        return slice(objs, true, slicePropertyNames);
+    }
 
-		Map<String, Object> ret = new HashMap<String, Object>();
-		for (String p : slicePropertyNames) {
-			Object value = map.get(p);
-			if (value != null) {
-				ret.put(p, value);
-			}
-		}
-		return ret;
-	}
+    public static final <T> List<T> slice(Collection<T> objs, boolean ignoreNullValue, String... slicePropertyNames) {
+        if (objs == null || objs.isEmpty()) {
+            return null;
+        }
+
+        if (slicePropertyNames == null || slicePropertyNames.length == 0) {
+            return Collections.emptyList();
+        }
+
+        List<T> ret = new ArrayList<T>(objs.size());
+        for (T obj : objs) {
+            ret.add(BeanUtils.slice(obj, ignoreNullValue, slicePropertyNames));
+        }
+        return ret;
+    }
 
 }
