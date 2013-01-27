@@ -16,7 +16,7 @@
 package org.faster.commons;
 
 /**
- * User: sqwen
+ * @author sqwen
  */
 public class BooleanUtils {
 
