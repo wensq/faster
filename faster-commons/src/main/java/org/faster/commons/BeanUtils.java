@@ -15,9 +15,9 @@
  */
 package org.faster.commons;
 
-import java.util.Map;
-
 import org.apache.commons.beanutils.WrapDynaBean;
+
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -38,7 +38,7 @@ public class BeanUtils {
 		try {
 			org.apache.commons.beanutils.BeanUtils.populate(bean, map);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class BeanUtils {
 		try {
 			org.apache.commons.beanutils.BeanUtils.setProperty(bean, propertyName, propertyValue);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class BeanUtils {
 		try {
 			org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw Exceptions.unchecked(e);
 		}
 	}
 
