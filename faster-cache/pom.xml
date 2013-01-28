@@ -12,12 +12,6 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.faster</groupId>
-			<artifactId>faster-commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
