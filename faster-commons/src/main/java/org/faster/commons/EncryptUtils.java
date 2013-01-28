@@ -15,11 +15,11 @@
  */
 package org.faster.commons;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+
+import java.io.IOException;
+import java.security.MessageDigest;
 
 /**
  * 加密解密工具类
@@ -66,8 +66,7 @@ public class EncryptUtils {
 		try {
 			md = MessageDigest.getInstance(algorithm);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return plainText;
+			throw Exceptions.unchecked(e);
 		}
 
 		md.reset();
