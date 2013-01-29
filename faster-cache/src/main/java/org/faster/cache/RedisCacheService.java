@@ -15,10 +15,7 @@
  */
 package org.faster.cache;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
@@ -29,9 +26,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author sqwen
  */
-public class RedisCacheService implements CacheService {
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
+public class RedisCacheService extends AbstractCacheService {
 
 	@SuppressWarnings("rawtypes")
 	private RedisTemplate redis;
@@ -42,13 +37,8 @@ public class RedisCacheService implements CacheService {
 	}
 
 	@Override
-	public String buildInternalKey(String outerKey) {
-		return outerKey;
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
-	public void putInCache(String key, int expiration, Object obj) {
+	protected void doPutInCache(String key, int expiration, Object obj) {
 		redis.opsForValue().set(key, obj);
 		if (expiration > 0) {
 			redis.expire(key, expiration, TimeUnit.SECONDS);
@@ -56,75 +46,47 @@ public class RedisCacheService implements CacheService {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public void flush(String key) {
-		StopWatch sw = new StopWatch();
-		sw.start();
-		redis.delete(key);
-		log.info("Key[" + key + "] flushed. (" + sw.getTime() + " ms)");
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public void flush(List<String> keys) {
-		if (keys == null || keys.isEmpty()) {
-			return;
-		}
-
-		StopWatch sw = new StopWatch();
-		sw.start();
-		redis.delete(keys);
-		String allKey = StringUtils.join(keys, ",");
-		log.info(keys.size() + " keys[" + allKey + "] flushed. (" + sw.getTime() + " ms)");
-	}
-
-	@Override
-	public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
-		if (expiration < 0) {
-			return handler.doFind();
-		}
-
-		String newKey = buildInternalKey(key);
-
+	protected Object doGetFromCache(String internalKey, int expiration, CacheMissHandler handler) {
 		StopWatch sw = null;
 		if (log.isDebugEnabled()) {
 			sw = new StopWatch();
 			sw.start();
-			log.debug("Getting from Redis Cache[key=" + newKey + "]...");
+			log.debug("Getting from Redis Cache[key={}]...", internalKey);
 		}
 
-		Object ret = redis.opsForValue().get(newKey);
+		Object ret = redis.opsForValue().get(internalKey);
 		if (ret != null) {
 			if (log.isDebugEnabled()) {
-				log.debug("Redis Cache hit. (" + sw.getTime() + " ms)");
+				log.debug("Redis Cache hit[key={}]. ({} ms)", internalKey, sw.getTime());
 			}
 			return ret;
 		}
 
-		if (handler == null) {
-			throw new IllegalArgumentException("CacheMissHandler should be provided!");
-		}
+		assertHandlerIsNotNull(handler);
 
 		if (log.isDebugEnabled()) {
-			log.debug("Redis Cache miss, direct search...");
-		}
-
-		ret = redis.opsForValue().get(newKey);
-		if (ret != null) {
-			if (log.isDebugEnabled()) {
-				log.debug("Redis Cache hit during double check. (" + sw.getTime() + " ms)");
-			}
-			return ret;
+            log.debug("Redis cache miss[key={}], direct search...", internalKey);
 		}
 
 		ret = handler.doFind();
 		if (ret != null) {
-			putInCache(key, expiration, ret);
+			doPutInCache(internalKey, expiration, ret);
 		}
-		if (log.isDebugEnabled()) {
-			log.debug("Direct search completed[found=" + (ret != null) + "]. (" + sw.getTime() + " ms)");
-		}
+
+        if (log.isDebugEnabled()) {
+            log.debug("Direct search completed[found={}]. ({} ms)", ret != null, sw.getTime());
+        }
 		return ret;
 	}
+
+    @Override
+    protected void doFlush(String key) throws Exception {
+        redis.delete(key);
+    }
+
+    @Override
+    protected void doFlush(List<String> internalKeys) throws Exception {
+        redis.delete(internalKeys);
+    }
 
 }

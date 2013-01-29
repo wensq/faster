@@ -15,7 +15,7 @@
  */
 package org.faster.cache;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * cache操作接口
@@ -38,7 +38,7 @@ public interface CacheService {
 
 	void flush(String key);
 
-	void flush(List<String> keys);
+	void flush(Collection<String> keys);
 
 	/**
 	 * 从Cache中根据key获取对象，如果找不到直接进行查找

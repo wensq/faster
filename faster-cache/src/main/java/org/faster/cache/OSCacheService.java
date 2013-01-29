@@ -18,8 +18,6 @@ package org.faster.cache;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.lang3.time.StopWatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -28,23 +26,12 @@ import java.util.List;
  *
  * @author sqwen
  */
-public class OSCacheService implements CacheService {
+public class OSCacheService extends AbstractCacheService {
 
 	private static final GeneralCacheAdministrator cache = new GeneralCacheAdministrator();
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
-
-	/**
-	 * OSCache对key无要求，直接采用外部key
-	 */
 	@Override
-	public String buildInternalKey(String outerKey) {
-		return outerKey;
-	}
-
-	@Override
-	public void putInCache(String key, int expiration, Object obj) {
-		key = buildInternalKey(key);
+	protected void doPutInCache(String key, int expiration, Object obj) {
 		boolean updated = false;
 		try {
 			if (obj != null) {
@@ -58,61 +45,48 @@ public class OSCacheService implements CacheService {
 		}
 	}
 
-	@Override
-	public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
-		if (expiration < 0) {
-			return handler.doFind();
-		}
+    @Override
+    protected Object doGetFromCache(String internalKey, int expiration, CacheMissHandler handler) {
+        try {
+            return cache.getFromCache(internalKey, expiration);
+        } catch (NeedsRefreshException nre) {
+            assertHandlerIsNotNull(handler);
+            StopWatch sw = null;
+            if (log.isDebugEnabled()) {
+                sw = new StopWatch();
+                sw.start();
+                log.debug("Cache miss[key={}], finding directly...", internalKey);
+            }
+            Object ret = null;
+            boolean updated = false;
+            try {
+                ret = handler.doFind();
+                if (ret != null) {
+                    doPutInCache(internalKey, expiration, ret);
+                    updated = true;
+                }
+            } finally {
+                if (!updated) {
+                    cache.cancelUpdate(internalKey);
+                }
+                if (log.isDebugEnabled()) {
+                    log.debug("Direct search completed[found={}]. ({} ms)", updated, sw.getTime());
+                }
+            }
+            return ret;
+        }
+    }
 
-		key = buildInternalKey(key);
-		try {
-			return cache.getFromCache(key, expiration);
-		} catch (NeedsRefreshException nre) {
-			if (handler == null) {
-				throw new IllegalArgumentException("CacheMissHandler should be provided!");
-			}
-			StopWatch sw = null;
-			if (log.isDebugEnabled()) {
-				sw = new StopWatch();
-				sw.start();
-			}
-			Object ret = null;
-			boolean updated = false;
-			try {
-				if (log.isDebugEnabled()) {
-					log.debug("Cache miss hit[key={}], finding directly...", key);
-				}
-				ret = handler.doFind();
-				if (ret != null) {
-					cache.putInCache(key, ret);
-					updated = true;
-				}
-			} finally {
-				if (!updated) {
-					cache.cancelUpdate(key);
-				}
-				if (log.isDebugEnabled()) {
-					log.debug("Direct search completed[found={}]. ({} ms)", updated, sw.getTime());
-				}
-			}
-			return ret;
-		}
-	}
+    @Override
+    protected void doFlush(String key) throws Exception {
+        cache.flushEntry(key);
+    }
 
-	@Override
-	public void flush(String key) {
-		key = buildInternalKey(key);
-		cache.flushEntry(key);
-	}
-
-	@Override
-	public void flush(List<String> keys) {
-		if (keys == null || keys.isEmpty()) {
-			return;
-		}
-		for (String key : keys) {
-			flush(key);
-		}
-	}
+    @Override
+    protected void doFlush(List<String> internalKeys) throws Exception {
+        for (String key : internalKeys) {
+            doFlush(key);
+        }
+    }
 
 }
