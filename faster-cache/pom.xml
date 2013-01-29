@@ -8,8 +8,15 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>faster-cache</artifactId>
+    <name>faster cache module</name>
 
 	<dependencies>
+
+        <dependency>
+            <groupId>org.faster</groupId>
+            <artifactId>faster-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>

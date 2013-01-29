@@ -15,17 +15,15 @@
  */
 package org.faster.cache;
 
-import java.net.InetSocketAddress;
-import java.util.Collection;
-import java.util.List;
-
 import net.rubyeye.xmemcached.MemcachedClient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.commons.EncryptUtils;
+import org.faster.commons.exception.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Cache 操作接口的 Memcached 实现
@@ -34,7 +32,9 @@ import org.slf4j.LoggerFactory;
  */
 public class MemcachedService implements CacheService {
 
-	protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    public static final int MAX_KEY_SIZE = 255;
 
 	protected MemcachedClient memcachedClient;
 
@@ -57,7 +57,7 @@ public class MemcachedService implements CacheService {
 
 	@Override
 	public String buildInternalKey(String outerKey) {
-		return hashKey ? EncryptUtils.encryptByMD5(outerKey) : outerKey;
+		return hashKey || outerKey.length() > MAX_KEY_SIZE ? EncryptUtils.encryptByMD5(outerKey) : outerKey;
 	}
 
 	@Override
@@ -66,7 +66,8 @@ public class MemcachedService implements CacheService {
 		try {
 			memcachedClient.set(key, expiration, obj);
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			log.error("Putting [" + key + "] to Memcached failed: " + e.getMessage(), e);
+            throw Exceptions.unchecked(e);
 		}
 	}
 
