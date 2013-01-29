@@ -3,14 +3,14 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package org.faster.commons;
+package org.faster.commons.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
  * 关于异常的工具类.
- * 
+ *
  * @author calvin
  */
 public class Exceptions {
@@ -50,4 +50,5 @@ public class Exceptions {
 		}
 		return false;
 	}
+
 }

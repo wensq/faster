@@ -16,6 +16,7 @@
 package org.faster.commons;
 
 import org.apache.commons.beanutils.WrapDynaBean;
+import org.faster.commons.exception.Exceptions;
 
 import java.util.Map;
 
