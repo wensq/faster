@@ -28,6 +28,14 @@ public class Encrypts {
 
 	private Encrypts() {}
 
+    /**
+     * 用指定的加密算法对文本进行加密（加盐）
+     *
+     * @param algorithm 算法名称
+     * @param plainText 原文本
+     * @param salt 盐
+     * @return 加密后的文本
+     */
 	public static final String encrypt(String algorithm, String plainText, String salt) {
 		MessageDigest md;
 		try {
@@ -47,6 +55,13 @@ public class Encrypts {
         return Base64.encodeBase64URLSafeString(encodedText);
 	}
 
+    /**
+     * 用指定的加密算法对文本进行加密（不加盐）
+     *
+     * @param algorithm 算法名称
+     * @param plainText 原文本
+     * @return 加密后的文本
+     */
 	public static final String encrypt(String algorithm, String plainText) {
 		return encrypt(plainText, algorithm, null);
 	}
