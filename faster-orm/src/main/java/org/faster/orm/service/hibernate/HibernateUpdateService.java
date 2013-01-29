@@ -15,18 +15,18 @@
  */
 package org.faster.orm.service.hibernate;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.util.Condition;
 import org.faster.orm.util.OrmUtils;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author sqwen
@@ -184,19 +184,37 @@ public abstract class HibernateUpdateService<PO extends GenericEntity<ID>, ID ex
 		}
 	}
 
-	@Override
-	public int updateAttribute(DetachedCriteria dc, String attributeName, Object attributeValue) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public void updateAttribute(Collection<ID> ids, String attributeName, Object attributeValue) {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public int updateAttributes(DetachedCriteria dc, Map<String, ?> attributes) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public void updateAttribute(ID[] ids, String attributeName, Object attributeValue) {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
+    @Override
+    public void updateAttributes(Collection<ID> ids, Map<String, ?> attributes) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void updateAttributes(ID[] ids, Map<String, ?> attributes) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public int updateAttribute(DetachedCriteria dc, String attributeName, Object attributeValue) {
+        return 0; // TODO Auto-generated method stub
+    }
+
+    @Override
+    public int updateAttributes(DetachedCriteria dc, Map<String, ?> attributes) {
+        return 0; // TODO Auto-generated method stub
+    }
+
+    @Override
 	public int updateAttribute(GenericCriteria<PO> gc, String attributeName, Object attributeValue) {
 		// TODO Auto-generated method stub
 		return 0;

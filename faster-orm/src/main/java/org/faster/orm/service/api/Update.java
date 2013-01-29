@@ -15,13 +15,13 @@
  */
 package org.faster.orm.service.api;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
-
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -44,7 +44,15 @@ public interface Update<PO extends GenericEntity<ID>, ID extends Serializable> {
 
 	void updateAttribute(ID id, String attributeName, Object attributeValue);
 
+    void updateAttribute(Collection<ID> ids, String attributeName, Object attributeValue);
+
+    void updateAttribute(ID[] ids, String attributeName, Object attributeValue);
+
 	void updateAttributes(ID id, Map<String, ?> attributes);
+
+    void updateAttributes(Collection<ID> ids, Map<String, ?> attributes);
+
+    void updateAttributes(ID[] ids, Map<String, ?> attributes);
 
 	// 根据查询结果更新
 
