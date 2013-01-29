@@ -22,6 +22,10 @@ import java.util.*;
  */
 public class Collections {
 
+    public static final <T> T[] toArray(Collection<T> objs) {
+        return (T[]) objs.toArray();
+    }
+
 	public static final <T> Set<T> toSet(T... elements) {
 		if (elements == null) {
 			return java.util.Collections.emptySet();

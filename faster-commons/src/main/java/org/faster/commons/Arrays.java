@@ -42,4 +42,8 @@ public class Arrays {
         return ret;
     }
 
+    public static final <T> T[] toArray(T obj) {
+        return (T[]) java.util.Arrays.asList(obj).toArray();
+    }
+
 }
