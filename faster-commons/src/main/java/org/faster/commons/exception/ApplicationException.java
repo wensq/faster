@@ -78,4 +78,29 @@ public class ApplicationException extends RuntimeException {
         return this;
     }
 
+    @Override
+    public String getMessage() {
+        if (errorCode == null && attributes == null) {
+            return super.getMessage();
+        }
+
+        StringBuilder sb = new StringBuilder(super.getMessage() == null ? "" : super.getMessage() + " ");
+        sb.append("{");
+        if (errorCode != null) {
+            sb.append("ErrorCode=")
+                    .append(errorCode)
+                    .append("(")
+                    .append(errorCode.getNumber())
+                    .append("), ");
+        }
+        if (attributes != null) {
+            for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+                sb.append(entry.getKey()).append("=").append(entry.getValue()).append(", ");
+            }
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append("}");
+        return sb.toString();
+    }
+
 }
