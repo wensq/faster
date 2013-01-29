@@ -3,7 +3,10 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package org.faster.commons.exception;
+package org.faster.commons;
+
+import org.faster.commons.exception.ApplicationException;
+import org.faster.commons.exception.ErrorCode;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

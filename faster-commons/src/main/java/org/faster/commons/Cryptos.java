@@ -5,8 +5,6 @@
  */
 package org.faster.commons;
 
-import org.faster.commons.exception.Exceptions;
-
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Arrays;

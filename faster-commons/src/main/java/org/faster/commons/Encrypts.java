@@ -15,7 +15,6 @@
  */
 package org.faster.commons;
 
-import org.faster.commons.exception.Exceptions;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 

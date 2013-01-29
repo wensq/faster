@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.faster.commons.string;
+package org.faster.commons;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -191,7 +192,7 @@ public class Strings {
 	public static Collection<String> toStringCollection(String str,
 			String delimiter) {
 		if (str == null || str.length() == 0) {
-			return Collections.emptyList();
+			return java.util.Collections.emptyList();
 		}
 		String[] ids = str.split(delimiter);
 		List<String> ret = new ArrayList<String>(ids.length);
@@ -203,7 +204,7 @@ public class Strings {
 
 	public static List<String> toStringList(String str, String delimiter) {
 		if (str == null || str.length() == 0) {
-			return Collections.emptyList();
+			return java.util.Collections.emptyList();
 		}
 		String[] ids = str.split(delimiter);
 		List<String> ret = new ArrayList<String>(ids.length);

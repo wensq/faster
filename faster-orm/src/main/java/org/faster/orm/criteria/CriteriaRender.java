@@ -20,7 +20,7 @@ import static org.faster.orm.criteria.GenericCriteria.ALL;
 import static org.faster.orm.criteria.GenericCriteria.NOT_NULL;
 import static org.faster.orm.criteria.GenericCriteria.NULL;
 
-import org.faster.commons.string.Strings;
+import org.faster.commons.Strings;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
