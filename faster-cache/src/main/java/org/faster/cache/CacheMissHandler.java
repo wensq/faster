@@ -20,7 +20,7 @@ package org.faster.cache;
  *
  * @author	sqwen
  */
-public interface CacheMissAction {
+public interface CacheMissHandler {
 
 	/**
 	 * 未命中时进行的查询操作

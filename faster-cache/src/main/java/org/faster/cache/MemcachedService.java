@@ -72,9 +72,9 @@ public class MemcachedService implements CacheService {
 	}
 
 	@Override
-	public Object getFromCache(String key, int expiration, CacheMissAction cma) {
+	public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
 		if (expiration < 0) {
-			return cma.doFind();
+			return handler.doFind();
 		}
 
 		String newKey = buildInternalKey(key);
@@ -95,8 +95,8 @@ public class MemcachedService implements CacheService {
 				return ret;
 			}
 
-			if (cma == null) {
-				throw new IllegalArgumentException("CacheMissAction should be provided!");
+			if (handler == null) {
+				throw new IllegalArgumentException("CacheMissHandler should be provided!");
 			}
 
 			if (log.isDebugEnabled()) {
@@ -112,7 +112,7 @@ public class MemcachedService implements CacheService {
 					return ret;
 				}
 
-				ret = cma.doFind();
+				ret = handler.doFind();
 				if (ret != null) {
 					memcachedClient.set(newKey, expiration, ret);
 				}

@@ -15,14 +15,14 @@
  */
 package org.faster.cache;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Cache 操作接口的 Redis 实现
@@ -79,9 +79,9 @@ public class RedisCacheService implements CacheService {
 	}
 
 	@Override
-	public Object getFromCache(String key, int expiration, CacheMissAction cma) {
+	public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
 		if (expiration < 0) {
-			return cma.doFind();
+			return handler.doFind();
 		}
 
 		String newKey = buildInternalKey(key);
@@ -101,8 +101,8 @@ public class RedisCacheService implements CacheService {
 			return ret;
 		}
 
-		if (cma == null) {
-			throw new IllegalArgumentException("CacheMissAction should be provided!");
+		if (handler == null) {
+			throw new IllegalArgumentException("CacheMissHandler should be provided!");
 		}
 
 		if (log.isDebugEnabled()) {
@@ -117,7 +117,7 @@ public class RedisCacheService implements CacheService {
 			return ret;
 		}
 
-		ret = cma.doFind();
+		ret = handler.doFind();
 		if (ret != null) {
 			putInCache(key, expiration, ret);
 		}

@@ -45,9 +45,9 @@ public interface CacheService {
 	 *
 	 * @param key 对象对应的key
 	 * @param expiration 超时时间， 小于0代表不从cache中找 等于0代表采用默认的最大超时 大于0代表超时的秒数
-	 * @param cma cache没有命中时的直接查找策略
+	 * @param handler cache没有命中时的直接查找策略
 	 * @return 查找到的对象，没找到返回空
 	 */
-	Object getFromCache(String key, int expiration, CacheMissAction cma);
+	Object getFromCache(String key, int expiration, CacheMissHandler handler);
 
 }

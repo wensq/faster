@@ -15,12 +15,12 @@
  */
 package org.faster.cache;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * 缓存容器
@@ -70,39 +70,39 @@ public class CacheSupport<T> {
 		cacheService.putInCache(key, expiration, obj);
 	}
 
-	public T findFromCache(String key, CacheMissAction cma) {
-		return findFromCache(key, 0, cma);
+	public T findFromCache(String key, CacheMissHandler handler) {
+		return findFromCache(key, 0, handler);
 	}
 
-	public T findFromCache(String key, CacheStrategy cs, CacheMissAction cma) {
-		return findFromCache(key, cs, 0, cma);
+	public T findFromCache(String key, CacheStrategy cs, CacheMissHandler handler) {
+		return findFromCache(key, cs, 0, handler);
 	}
 
-	public Object findObjectFromCache(String key, CacheMissAction cma) {
-		return findObjectFromCache(key, 0, cma);
+	public Object findObjectFromCache(String key, CacheMissHandler handler) {
+		return findObjectFromCache(key, 0, handler);
 	}
 
-	public Object findObjectFromCache(String key, CacheStrategy cs, CacheMissAction cma) {
-		return findObjectFromCache(key, cs, 0, cma);
+	public Object findObjectFromCache(String key, CacheStrategy cs, CacheMissHandler handler) {
+		return findObjectFromCache(key, cs, 0, handler);
 	}
 
-	public Object findObjectFromCache(String key, int expiration, CacheMissAction cma) {
-		return cacheService.getFromCache(key, expiration, cma);
+	public Object findObjectFromCache(String key, int expiration, CacheMissHandler handler) {
+		return cacheService.getFromCache(key, expiration, handler);
 	}
 
-	public Object findObjectFromCache(String key, CacheStrategy cs, int expiration, CacheMissAction cma) {
+	public Object findObjectFromCache(String key, CacheStrategy cs, int expiration, CacheMissHandler handler) {
 		switch (cs) {
 		case FLUSH:
 			flushCache(key);
 			log.info("Flushed key: " + key);
 			return null;
 		case NO:
-			return cma.doFind();
+			return handler.doFind();
 		case YES:
-			return findObjectFromCache(key, expiration, cma);
+			return findObjectFromCache(key, expiration, handler);
 		case REBUILD:
 			log.info("Rebuilding cache: " + key);
-			Object ret = cma.doFind();
+			Object ret = handler.doFind();
 			if (ret != null) {
 				putInCache(key, expiration, ret);
 			} else {
@@ -115,31 +115,31 @@ public class CacheSupport<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public T findFromCache(String key, int expiration, CacheMissAction cma) {
-		return (T) findObjectFromCache(key, expiration, cma);
+	public T findFromCache(String key, int expiration, CacheMissHandler handler) {
+		return (T) findObjectFromCache(key, expiration, handler);
 	}
 
 	@SuppressWarnings("unchecked")
-	public T findFromCache(String key, CacheStrategy cs, int expiration, CacheMissAction cma) {
-		return (T) findObjectFromCache(key, cs, expiration, cma);
+	public T findFromCache(String key, CacheStrategy cs, int expiration, CacheMissHandler handler) {
+		return (T) findObjectFromCache(key, cs, expiration, handler);
 	}
 
-	public List<T> findAllFromCache(String key, CacheMissAction cma) {
-		return findAllFromCache(key, 0, cma);
+	public List<T> findAllFromCache(String key, CacheMissHandler handler) {
+		return findAllFromCache(key, 0, handler);
 	}
 
-	public List<T> findAllFromCache(String key, CacheStrategy cs, CacheMissAction cma) {
-		return findAllFromCache(key, cs, 0, cma);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<T> findAllFromCache(String key, int expiration, CacheMissAction cma) {
-		return (List<T>) findObjectFromCache(key, expiration, cma);
+	public List<T> findAllFromCache(String key, CacheStrategy cs, CacheMissHandler handler) {
+		return findAllFromCache(key, cs, 0, handler);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> findAllFromCache(String key, CacheStrategy cs, int expiration, CacheMissAction cma) {
-		return (List<T>) findObjectFromCache(key, cs, expiration, cma);
+	public List<T> findAllFromCache(String key, int expiration, CacheMissHandler handler) {
+		return (List<T>) findObjectFromCache(key, expiration, handler);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<T> findAllFromCache(String key, CacheStrategy cs, int expiration, CacheMissHandler handler) {
+		return (List<T>) findObjectFromCache(key, cs, expiration, handler);
 	}
 
 }

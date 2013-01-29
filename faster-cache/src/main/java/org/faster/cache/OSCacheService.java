@@ -15,14 +15,13 @@
  */
 package org.faster.cache;
 
-import java.util.List;
-
+import com.opensymphony.oscache.base.NeedsRefreshException;
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.opensymphony.oscache.base.NeedsRefreshException;
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import java.util.List;
 
 /**
  * Cache 操作接口的 OSCache 实现
@@ -60,17 +59,17 @@ public class OSCacheService implements CacheService {
 	}
 
 	@Override
-	public Object getFromCache(String key, int expiration, CacheMissAction cma) {
+	public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
 		if (expiration < 0) {
-			return cma.doFind();
+			return handler.doFind();
 		}
 
 		key = buildInternalKey(key);
 		try {
 			return cache.getFromCache(key, expiration);
 		} catch (NeedsRefreshException nre) {
-			if (cma == null) {
-				throw new IllegalArgumentException("CacheMissAction should be provided!");
+			if (handler == null) {
+				throw new IllegalArgumentException("CacheMissHandler should be provided!");
 			}
 			StopWatch sw = null;
 			if (log.isDebugEnabled()) {
@@ -83,7 +82,7 @@ public class OSCacheService implements CacheService {
 				if (log.isDebugEnabled()) {
 					log.debug("Cache miss hit[key={}], finding directly...", key);
 				}
-				ret = cma.doFind();
+				ret = handler.doFind();
 				if (ret != null) {
 					cache.putInCache(key, ret);
 					updated = true;

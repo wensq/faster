@@ -26,7 +26,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.faster.cache.CacheMissAction;
+import org.faster.cache.CacheMissHandler;
 import org.faster.cache.CacheSupport;
 import org.faster.cache.CacheStrategy;
 import org.faster.orm.criteria.GenericCriteria;
@@ -106,7 +106,7 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 
 	public PO get(final ID id, String cacheStrategy) {
 		String key = buildGlobalCacheKey("id:" + id);
-		return findFromCache(key, CacheStrategy.fromString(cacheStrategy), cacheExpireSeconds, new CacheMissAction() {
+		return findFromCache(key, CacheStrategy.fromString(cacheStrategy), cacheExpireSeconds, new CacheMissHandler() {
 
 			@Override
 			public Object doFind() {
@@ -123,7 +123,7 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 		String key = buildGlobalCacheKey("count:" + criteria);
 		return (Integer) findObjectFromCache(key, CacheStrategy.fromString(criteria.getCacheStrategy()),
 				cacheExpireSeconds,
-				new CacheMissAction() {
+				new CacheMissHandler() {
 
 					@Override
 					public Object doFind() {
@@ -138,7 +138,7 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 		String key = buildGlobalCacheKey("filter:" + criteria);
 		return (DTOS) findObjectFromCache(key, CacheStrategy.fromString(criteria.getCacheStrategy()),
 				cacheExpireSeconds,
-				new CacheMissAction() {
+				new CacheMissHandler() {
 
 					@Override
 					public Object doFind() {
@@ -153,7 +153,7 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 		String key = buildGlobalCacheKey("search:" + criteria);
 		return (DTOS) findObjectFromCache(key, CacheStrategy.fromString(criteria.getCacheStrategy()),
 				cacheExpireSeconds,
-				new CacheMissAction() {
+				new CacheMissHandler() {
 
 					@Override
 					public Object doFind() {
