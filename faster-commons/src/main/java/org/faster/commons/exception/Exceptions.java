@@ -12,10 +12,30 @@ import java.io.StringWriter;
  * 关于异常的工具类.
  *
  * @author calvin
+ * @author sqwen
  */
 public class Exceptions {
 
-	/**
+    /**
+     * 封装异常到自定义的应用异常
+     */
+    public static ApplicationException wrap(Throwable t) {
+        return wrap(t, null);
+    }
+
+    public static ApplicationException wrap(Throwable exception, ErrorCode errorCode) {
+        if (exception instanceof ApplicationException) {
+            ApplicationException se = (ApplicationException) exception;
+            if (errorCode != null && errorCode != se.getErrorCode()) {
+                return new ApplicationException(exception.getMessage(), exception, errorCode);
+            }
+            return se;
+        }
+
+        return new ApplicationException(exception.getMessage(), exception, errorCode);
+    }
+
+    /**
 	 * 将CheckedException转换为UncheckedException.
 	 */
 	public static RuntimeException unchecked(Exception e) {
