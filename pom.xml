@@ -301,14 +301,6 @@
 				<version>${xmemcached.version}</version>
 			</dependency>
 
-			<!-- email begin -->
-			<dependency>
-				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-				<version>1.4.3</version>
-			</dependency>
-			<!-- email end -->
-
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
