@@ -19,7 +19,7 @@ package org.faster.commons;
 import java.util.Arrays;
 
 /**
- * @Author sqwen
+ * @author sqwen
  */
 public class ArrayUtils {
 

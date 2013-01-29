@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Author sqwen
+ * @author sqwen
  */
 public class Maps {
 
