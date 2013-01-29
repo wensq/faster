@@ -16,17 +16,20 @@
 package org.faster.orm.service.hibernate;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.faster.commons.Collections;
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.util.Condition;
 import org.faster.orm.util.OrmUtils;
 import org.hibernate.criterion.DetachedCriteria;
 
+import org.faster.commons.Arrays;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+
+import static org.faster.commons.Maps.map;
 
 /**
  * @author sqwen
@@ -63,7 +66,20 @@ public abstract class HibernateUpdateService<PO extends GenericEntity<ID>, ID ex
 			return;
 		}
 
-		update(Arrays.asList(pos));
+        int count = pos.length;
+        StopWatch sw = null;
+        if (log.isDebugEnabled()) {
+            sw = new StopWatch();
+            sw.start();
+            logMultiBegin("Updating", count);
+        }
+
+        doUpdate(pos);
+        flush();
+
+        if (log.isDebugEnabled()) {
+            logMultiComplete("Updated", count, sw.getTime());
+        }
 	}
 
 	@Override
@@ -72,28 +88,10 @@ public abstract class HibernateUpdateService<PO extends GenericEntity<ID>, ID ex
 			return;
 		}
 
-		if (pos.size() == 1) {
-			update(pos.iterator().next());
-			return;
-		}
-
-		int count = pos.size();
-		StopWatch sw = null;
-		if (log.isDebugEnabled()) {
-			sw = new StopWatch();
-			sw.start();
-			logMultiBegin("Updating", count);
-		}
-
-		doUpdate(pos);
-		flush();
-
-		if (log.isDebugEnabled()) {
-			logMultiComplete("Updated", count, sw.getTime());
-		}
+		update(Collections.toArray(pos));
 	}
 
-	protected void doUpdate(Collection<PO> pos) {
+	protected void doUpdate(PO[] pos) {
 		for (PO po : pos) {
 			doUpdate(po);
 		}
@@ -158,72 +156,76 @@ public abstract class HibernateUpdateService<PO extends GenericEntity<ID>, ID ex
 
 	@Override
 	public void updateAttributes(ID id, Map<String, ?> attributes) {
-		if (attributes == null || attributes.isEmpty()) {
-			return;
-		}
-
-		if (attributes.size() == 1) {
-			Entry<String, ?> entry = attributes.entrySet().iterator().next();
-			updateAttribute(id, entry.getKey(), entry.getValue());
-			return;
-		}
-
-		StopWatch sw = null;
-		if (log.isDebugEnabled()) {
-			log.debug("Updating {}#{} by {}...", new Object[] { persistClassName, id, attributes });
-			sw = new StopWatch();
-			sw.start();
-		}
-
-		Condition condition = OrmUtils.buildUpdateHQL(persistClassName, idFieldName, id, attributes);
-
-		execute(condition.getStatement(), condition.getValues());
-
-		if (log.isDebugEnabled()) {
-			logComplete("Updated", id, sw.getTime());
-		}
-	}
-
-    @Override
-    public void updateAttribute(Collection<ID> ids, String attributeName, Object attributeValue) {
-        // TODO Auto-generated method stub
+        updateAttributes(Arrays.toArray(id), attributes);
     }
 
     @Override
-    public void updateAttribute(ID[] ids, String attributeName, Object attributeValue) {
-        // TODO Auto-generated method stub
+    public int updateAttribute(Collection<ID> ids, String attributeName, Object attributeValue) {
+        return updateAttributes(ids, map(attributeName, attributeValue));
     }
 
     @Override
-    public void updateAttributes(Collection<ID> ids, Map<String, ?> attributes) {
-        // TODO Auto-generated method stub
+    public int updateAttribute(ID[] ids, String attributeName, Object attributeValue) {
+        return updateAttributes(ids, map(attributeName, attributeValue));
     }
 
     @Override
-    public void updateAttributes(ID[] ids, Map<String, ?> attributes) {
-        // TODO Auto-generated method stub
+    public int updateAttributes(Collection<ID> ids, Map<String, ?> attributes) {
+        return updateAttributes(Collections.toArray(ids), attributes);
+    }
+
+    @Override
+    public int updateAttributes(ID[] ids, Map<String, ?> attributes) {
+        if (attributes == null || attributes.isEmpty()) {
+            return 0;
+        }
+
+        StopWatch sw = null;
+        if (log.isDebugEnabled()) {
+            if (ids.length == 1) {
+                log.debug("Updating {}#{} by {}...", new Object[] { persistClassName, ids[0], attributes });
+            } else {
+                log.debug("Updating {} {}s by {}...", new Object[] { ids.length, persistClassName, attributes });
+            }
+            sw = new StopWatch();
+            sw.start();
+        }
+
+        Condition condition = OrmUtils.buildUpdateHQL(persistClassName, idFieldName, ids, attributes);
+
+        int count = execute(condition.getStatement(), condition.getValues());
+
+        if (log.isDebugEnabled()) {
+            if (ids.length == 1) {
+                logComplete("Updated", ids[0], sw.getTime());
+            } else {
+                logMultiComplete("Updated", count, sw.getTime());
+            }
+        }
+
+        return count;
     }
 
     @Override
     public int updateAttribute(DetachedCriteria dc, String attributeName, Object attributeValue) {
-        return 0; // TODO Auto-generated method stub
+        List<ID> ids = projectIdByCriteria(dc);
+        return updateAttribute(ids, attributeName, attributeValue);
     }
 
     @Override
     public int updateAttributes(DetachedCriteria dc, Map<String, ?> attributes) {
-        return 0; // TODO Auto-generated method stub
+        List<ID> ids = projectIdByCriteria(dc);
+        return updateAttributes(ids, attributes);
     }
 
     @Override
 	public int updateAttribute(GenericCriteria<PO> gc, String attributeName, Object attributeValue) {
-		// TODO Auto-generated method stub
-		return 0;
+		return updateAttribute(gc.buildCriteria(), attributeName, attributeValue);
 	}
 
 	@Override
 	public int updateAttributes(GenericCriteria<PO> gc, Map<String, ?> attributes) {
-		// TODO Auto-generated method stub
-		return 0;
+		return updateAttributes(gc.buildCriteria(), attributes);
 	}
 
 }

@@ -15,19 +15,6 @@
  */
 package org.faster.orm.service.hibernate;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Id;
-import javax.persistence.Transient;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.option.QueryOption;
@@ -42,6 +29,18 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -303,6 +302,7 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
 		return queryObject.executeUpdate();
 	}
 
+	// 日志常用操作方法封装
 	protected void logBegin(String actionName, Object obj) {
 		log.info("{} {} by {}...", new Object[] { actionName, persistClassName, obj });
 	}
@@ -319,7 +319,6 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
 		log.info("{} {} {}...", new Object[] { actionName, count, persistClassName });
 	}
 
-	// 日志常用操作方法封装
 	protected void logMultiComplete(String actionName, int count, long elapsed) {
 		log.info("{} {} {}. ({} ms)", new Object[] { actionName, count, persistClassName, elapsed });
 	}

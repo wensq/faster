@@ -33,7 +33,7 @@ public class OrmUtils {
 	}
 
 	public static final Condition buildUpdateHQL(String persistClassName, String wherePropertyName,
-			Object wherePropertyValue, Map<String, ?> setAttributes) {
+			Object[] wherePropertyValues, Map<String, ?> setAttributes) {
 		StringBuilder hql = new StringBuilder("update ")
 				.append(persistClassName)
 				.append(" set ");
@@ -44,8 +44,14 @@ public class OrmUtils {
 			values.add(entry.getValue());
 		}
 		hql.delete(hql.length() - 3, hql.length());
-		hql.append("where ").append(wherePropertyName).append(" = ?");
-		values.add(wherePropertyValue);
+		hql.append("where ");
+        if (wherePropertyValues.length == 1) {
+            hql.append(wherePropertyName).append(" = ?");
+            values.add(wherePropertyValues[0]);
+        } else {
+            hql.append(wherePropertyName).append(" in ?");
+            values.add(wherePropertyValues);
+        }
 
 		return new Condition(hql.toString(), values);
 	}

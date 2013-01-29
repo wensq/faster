@@ -44,15 +44,15 @@ public interface Update<PO extends GenericEntity<ID>, ID extends Serializable> {
 
 	void updateAttribute(ID id, String attributeName, Object attributeValue);
 
-    void updateAttribute(Collection<ID> ids, String attributeName, Object attributeValue);
+    int updateAttribute(Collection<ID> ids, String attributeName, Object attributeValue);
 
-    void updateAttribute(ID[] ids, String attributeName, Object attributeValue);
+    int updateAttribute(ID[] ids, String attributeName, Object attributeValue);
 
 	void updateAttributes(ID id, Map<String, ?> attributes);
 
-    void updateAttributes(Collection<ID> ids, Map<String, ?> attributes);
+    int updateAttributes(Collection<ID> ids, Map<String, ?> attributes);
 
-    void updateAttributes(ID[] ids, Map<String, ?> attributes);
+    int updateAttributes(ID[] ids, Map<String, ?> attributes);
 
 	// 根据查询结果更新
 
