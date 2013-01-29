@@ -94,7 +94,6 @@ public class CacheSupport<T> {
 		switch (cs) {
 		case FLUSH:
 			flushCache(key);
-			log.info("Flushed key: " + key);
 			return null;
 		case NO:
 			return handler.doFind();
