@@ -29,7 +29,7 @@ import java.util.Date;
 /**
  * @author sqwen
  */
-public class DateTimeUtils {
+public class DateTimes {
 
 	public static final long DAY = 86400000;
 
@@ -58,7 +58,7 @@ public class DateTimeUtils {
 	public static final String[] COMMON_TIMESTAMP_PATTERN = new String[] { TIMESTAMP_PATTERN,
 			TIMESTAMP_PATTERN_UNDERSCORE };
 
-	private DateTimeUtils() {}
+	private DateTimes() {}
 
 	public static final String formatDateToString(Date date, String formatPattern) {
 		if (date == null) {

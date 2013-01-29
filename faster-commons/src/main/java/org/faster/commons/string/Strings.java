@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 /**
  * @author sqwen
  */
-public class StringUtils {
+public class Strings {
 
 	public static final String DEFAULT_DELIMITER = "&&";
 
@@ -37,7 +37,7 @@ public class StringUtils {
 	/**
 	 * 防止被实例化
 	 */
-	private StringUtils() {}
+	private Strings() {}
 
 	public static void rejectIfNullOrEmpty(String text, String errMessage) {
 		if (text == null || text.trim().length() == 0) {
@@ -89,7 +89,7 @@ public class StringUtils {
 
 	public static boolean find(String pattern, boolean regex,
 			List<String> charsList) {
-		Pattern p = StringUtils.getPattern(pattern, regex);
+		Pattern p = Strings.getPattern(pattern, regex);
 		for (String chars : charsList) {
 			Matcher m = p.matcher(chars);
 			if (m.find()) {
@@ -100,14 +100,14 @@ public class StringUtils {
 	}
 
 	public static boolean find(String pattern, boolean regex, String chars) {
-		Pattern p = StringUtils.getPattern(pattern, regex);
+		Pattern p = Strings.getPattern(pattern, regex);
 		Matcher m = p.matcher(chars);
 		return m.find();
 	}
 
 	public static String findMatchString(String pattern, boolean regex,
 			List<String> charsList) {
-		Pattern p = StringUtils.getPattern(pattern, regex);
+		Pattern p = Strings.getPattern(pattern, regex);
 		for (String chars : charsList) {
 			Matcher m = p.matcher(chars);
 			if (m.find()) {
@@ -119,7 +119,7 @@ public class StringUtils {
 
 	public static String findMatchString(String pattern, boolean regex,
 			String chars) {
-		Pattern p = StringUtils.getPattern(pattern, regex);
+		Pattern p = Strings.getPattern(pattern, regex);
 		Matcher m = p.matcher(chars);
 		if (!m.find()) {
 			return null;
@@ -128,7 +128,7 @@ public class StringUtils {
 	}
 
 	public static String findMatchString(String regEx, String chars) {
-		Pattern p = StringUtils.getPattern(regEx);
+		Pattern p = Strings.getPattern(regEx);
 		Matcher m = p.matcher(chars);
 		if (!m.find()) {
 			return null;

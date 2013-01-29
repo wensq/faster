@@ -31,12 +31,12 @@ public class BeanUtilsTest {
 		TestBean tb1 = new TestBean();
 		TestBean tb2 = new TestBean();
 		tb2.setName("sqwen");
-		BeanUtils.populate(tb1, tb2);
+		Beans.populate(tb1, tb2);
 		assertNotNull(tb1.getName());
 		assertEquals(tb1.getName(), tb2.getName());
 
 		tb1.setAge(100);
-		BeanUtils.populate(tb1, tb2);
+		Beans.populate(tb1, tb2);
 		assertEquals(tb1.getAge(), tb2.getAge());
 
 	}
@@ -47,17 +47,17 @@ public class BeanUtilsTest {
 		TestBean tb2 = new TestBean();
 		tb2.setName("");
 		tb2.setAge(28);
-		BeanUtils.slicePopulate(tb1, tb2, "name");
+		Beans.slicePopulate(tb1, tb2, "name");
 		assertNull(tb1.getName());
 		assertEquals(tb1.getAge(), 0);
 
 		tb2.setName("sqwen");
-		BeanUtils.slicePopulate(tb1, tb2, "name");
+		Beans.slicePopulate(tb1, tb2, "name");
 		assertNotNull(tb1.getName());
 		assertEquals(tb1.getName(), tb2.getName());
 		assertEquals(tb1.getAge(), 0);
 
-		BeanUtils.slicePopulate(tb1, tb2, "age");
+		Beans.slicePopulate(tb1, tb2, "age");
 		assertEquals(tb1.getAge(), tb2.getAge());
 
 		tb1.setName(null);
@@ -66,7 +66,7 @@ public class BeanUtilsTest {
 		tb2.setName("sqwen");
 		tb2.setAge(28);
 
-		BeanUtils.slicePopulate(tb1, tb2, "age", "name");
+		Beans.slicePopulate(tb1, tb2, "age", "name");
 		assertEquals(tb1, tb2);
 	}
 

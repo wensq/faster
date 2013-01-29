@@ -18,7 +18,7 @@ package org.faster.commons;
 /**
  * @author sqwen
  */
-public class BooleanUtils {
+public class Booleans {
 
     /**
      * 将布尔值转换为指定的字符串显示，而不是默认的true、false

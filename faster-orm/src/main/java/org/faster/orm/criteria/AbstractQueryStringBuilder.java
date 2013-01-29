@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.faster.commons.CollectionUtils;
+import org.faster.commons.Collections;
 
 /**
  * @author sqwen
@@ -52,22 +52,22 @@ public class AbstractQueryStringBuilder {
 	}
 
 	protected AbstractQueryStringBuilder exclude(String... excludeFieldNames) {
-		this.excludeFieldNames = CollectionUtils.toSet(excludeFieldNames);
+		this.excludeFieldNames = Collections.toSet(excludeFieldNames);
 		return this;
 	}
 
 	protected AbstractQueryStringBuilder exclude(Collection<String> excludeFieldNames) {
-		this.excludeFieldNames = CollectionUtils.toSet(excludeFieldNames);
+		this.excludeFieldNames = Collections.toSet(excludeFieldNames);
 		return this;
 	}
 
 	protected AbstractQueryStringBuilder include(String... includeFieldNames) {
-		this.includeFieldNames = CollectionUtils.toSet(includeFieldNames);
+		this.includeFieldNames = Collections.toSet(includeFieldNames);
 		return this;
 	}
 
 	protected AbstractQueryStringBuilder include(Collection<String> includeFieldNames) {
-		this.includeFieldNames = CollectionUtils.toSet(includeFieldNames);
+		this.includeFieldNames = Collections.toSet(includeFieldNames);
 		return this;
 	}
 

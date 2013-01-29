@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.faster.commons.BeanUtils;
+import org.faster.commons.Beans;
 
 /**
  * @author sqwen
@@ -103,7 +103,7 @@ public class CategoryQueryStringBuilder extends AbstractQueryStringBuilder {
 		}
 
 		for (Object value : values) {
-			Object fv = BeanUtils.getProperty(value, valueFieldName);
+			Object fv = Beans.getProperty(value, valueFieldName);
 			String url = buildUrl(fv);
 			String key = String.valueOf(fv);
 			map.put(key, url);

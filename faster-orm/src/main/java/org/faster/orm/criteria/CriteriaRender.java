@@ -20,7 +20,7 @@ import static org.faster.orm.criteria.GenericCriteria.ALL;
 import static org.faster.orm.criteria.GenericCriteria.NOT_NULL;
 import static org.faster.orm.criteria.GenericCriteria.NULL;
 
-import org.faster.commons.string.StringUtils;
+import org.faster.commons.string.Strings;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
@@ -183,7 +183,7 @@ public class CriteriaRender {
 		if (isBlank(integerValues)) {
 			return;
 		}
-		Integer[] array = StringUtils.toIntegerArray(integerValues.trim(), ",");
+		Integer[] array = Strings.toIntegerArray(integerValues.trim(), ",");
 		if (array.length == 1) {
 			dc.add(Restrictions.eq(fieldName, array[0]));
 		} else {
@@ -195,7 +195,7 @@ public class CriteriaRender {
 		if (isBlank(integerValues)) {
 			return;
 		}
-		Long[] array = StringUtils.toLongArray(integerValues.trim(), ",");
+		Long[] array = Strings.toLongArray(integerValues.trim(), ",");
 		if (array.length == 1) {
 			dc.add(Restrictions.eq(fieldName, array[0]));
 		} else {
@@ -218,7 +218,7 @@ public class CriteriaRender {
 		if (subObjects == null || subObjects.length == 0 || isBlank(filterValues)) {
 			return;
 		}
-		Integer[] array = StringUtils.toIntegerArray(filterValues.trim(), ",");
+		Integer[] array = Strings.toIntegerArray(filterValues.trim(), ",");
 		for (String fieldName : subObjects) {
 			dc.createAlias(fieldName, fieldName);
 		}
@@ -311,7 +311,7 @@ public class CriteriaRender {
 			return;
 		}
 
-		Integer[] ids = StringUtils.toIntegerArray(integerIds.trim(), ",");
+		Integer[] ids = Strings.toIntegerArray(integerIds.trim(), ",");
 		LogicalExpression criteria = buildLogicalExpressionForIntegersField(integersFiledName, ids[0]);
 
 		for (int i = 1; i < ids.length; i++) {

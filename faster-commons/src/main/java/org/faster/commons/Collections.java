@@ -20,21 +20,21 @@ import java.util.*;
 /**
  * @author sqwen
  */
-public class CollectionUtils {
+public class Collections {
 
 	public static final <T> Set<T> toSet(T... elements) {
 		if (elements == null) {
-			return Collections.emptySet();
+			return java.util.Collections.emptySet();
 		}
 
 		Set<T> set = new HashSet<T>(elements.length);
-		Collections.addAll(set, elements);
+		java.util.Collections.addAll(set, elements);
 		return set;
 	}
 
 	public static final <T> Set<T> toSet(Collection<T> elements) {
 		if (elements == null) {
-			return Collections.emptySet();
+			return java.util.Collections.emptySet();
 		}
 
 		return new LinkedHashSet<T>(elements);
@@ -50,12 +50,12 @@ public class CollectionUtils {
         }
 
         if (slicePropertyNames == null || slicePropertyNames.length == 0) {
-            return Collections.emptyList();
+            return java.util.Collections.emptyList();
         }
 
         List<T> ret = new ArrayList<T>(objs.size());
         for (T obj : objs) {
-            ret.add(BeanUtils.slice(obj, ignoreNullValue, slicePropertyNames));
+            ret.add(Beans.slice(obj, ignoreNullValue, slicePropertyNames));
         }
         return ret;
     }

@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.faster.commons;
-
-import java.util.Arrays;
 
 /**
  * @author sqwen
  */
-public class ArrayUtils {
+public class Arrays {
 
-    private ArrayUtils() {}
+    private Arrays() {}
 
     public static final <T> T[] slice(T[] objs, String... slicePropertyNames) {
         return slice(objs, true, slicePropertyNames);
@@ -38,9 +35,9 @@ public class ArrayUtils {
             return objs;
         }
 
-        T[] ret = Arrays.copyOfRange(objs, 0, objs.length);
+        T[] ret = java.util.Arrays.copyOfRange(objs, 0, objs.length);
         for (int i = 0; i < objs.length; i++) {
-            ret[i] = BeanUtils.slice(objs[i], ignoreNullValue, slicePropertyNames);
+            ret[i] = Beans.slice(objs[i], ignoreNullValue, slicePropertyNames);
         }
         return ret;
     }

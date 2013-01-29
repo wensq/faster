@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.faster.commons.BeanUtils;
+import org.faster.commons.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.option.QueryOption;
@@ -131,7 +131,7 @@ public class HibernateGenericServiceWithName<PO extends GenericEntity<ID>, ID ex
 	public List<String> projectName(Collection<PO> pos) {
 		List<String> names = new ArrayList<String>();
 		for (PO po : pos) {
-			String name = (String) BeanUtils.getProperty(po, getFieldNameOfName());
+			String name = (String) Beans.getProperty(po, getFieldNameOfName());
 			if (name != null) {
 				names.add(name);
 			}

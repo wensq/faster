@@ -23,9 +23,9 @@ import java.util.Map;
 /**
  * @author sqwen
  */
-public class BeanUtils {
+public class Beans {
 
-	private BeanUtils() {}
+	private Beans() {}
 
     public static final <T> T newInstance(Class<T> clazz) {
         try {
@@ -124,12 +124,12 @@ public class BeanUtils {
             return orig;
         }
 
-        T dest = (T) BeanUtils.newInstance(orig.getClass());
+        T dest = (T) Beans.newInstance(orig.getClass());
         WrapDynaBean destBean = new WrapDynaBean(dest);
         WrapDynaBean origBean = new WrapDynaBean(orig);
         for (String propertyName : propertyNames) {
             Object value = origBean.get(propertyName);
-            if (ignoreNullValue && BeanUtils.isNullOrEmpty(value)) {
+            if (ignoreNullValue && Beans.isNullOrEmpty(value)) {
                 continue;
             }
 

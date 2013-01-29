@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.faster.commons.DateTimeUtils;
+import org.faster.commons.DateTimes;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -198,7 +198,7 @@ public class GenericCriteria<PO> {
 					continue;
 				case DATE:
 					// TODO 改为根据匹配模式自动生成限制条件
-					Date date = DateTimeUtils.parseStringToDate(stringValue);
+					Date date = DateTimes.parseStringToDate(stringValue);
 					dc.add(Restrictions.eq(fieldName, date));
 					continue;
 				case BOOLEAN:

@@ -18,7 +18,7 @@ package org.faster.cache;
 import net.rubyeye.xmemcached.MemcachedClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.faster.commons.EncryptUtils;
+import org.faster.commons.Encrypts;
 import org.faster.commons.exception.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class MemcachedService implements CacheService {
 
 	@Override
 	public String buildInternalKey(String outerKey) {
-		return hashKey || outerKey.length() > MAX_KEY_SIZE ? EncryptUtils.encryptByMD5(outerKey) : outerKey;
+		return hashKey || outerKey.length() > MAX_KEY_SIZE ? Encrypts.encryptByMD5(outerKey) : outerKey;
 	}
 
 	@Override

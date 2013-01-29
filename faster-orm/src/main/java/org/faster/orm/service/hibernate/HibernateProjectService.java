@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.faster.commons.BeanUtils;
+import org.faster.commons.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.service.hibernate.with.option.HibernateFindPageWithOptionService;
@@ -60,7 +60,7 @@ public abstract class HibernateProjectService<PO extends GenericEntity<ID>, ID e
 	public List<?> project(String propertyName, List<PO> pos) {
 		List values = new ArrayList();
 		for (PO po : pos) {
-			Object value = BeanUtils.getProperty(po, propertyName);
+			Object value = Beans.getProperty(po, propertyName);
 			if (value != null) {
 				values.add(value);
 			}

@@ -26,8 +26,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.faster.commons.BeanUtils;
-import org.faster.commons.DateTimeUtils;
+import org.faster.commons.Beans;
+import org.faster.commons.DateTimes;
 import org.hibernate.collection.internal.AbstractPersistentCollection;
 
 /**
@@ -51,15 +51,15 @@ public abstract class GenericEntity<ID extends Serializable> implements Cloneabl
 	public abstract ID getId();
 
 	public void updateAttributes(Map<String, ?> attributes) {
-		BeanUtils.populate(this, attributes);
+		Beans.populate(this, attributes);
 	}
 
 	public void updateAttribute(String attributeName, Object attributeValue) {
-		BeanUtils.setProperty(this, attributeName, attributeValue);
+		Beans.setProperty(this, attributeName, attributeValue);
 	}
 
 	public void updateAttributes(Object from) {
-		BeanUtils.populate(this, from);
+		Beans.populate(this, from);
 	}
 
 	public void updateAttributes(Object from, String... slicePropertyName) {
@@ -68,7 +68,7 @@ public abstract class GenericEntity<ID extends Serializable> implements Cloneabl
 			return;
 		}
 
-		BeanUtils.slicePopulate(this, from, slicePropertyName);
+		Beans.slicePopulate(this, from, slicePropertyName);
 	}
 
 	/**
@@ -108,9 +108,9 @@ public abstract class GenericEntity<ID extends Serializable> implements Cloneabl
 					continue;
 				}
 				if (obj instanceof Calendar) {
-					obj = DateTimeUtils.formatDateToTimestampString(((Calendar) obj).getTime());
+					obj = DateTimes.formatDateToTimestampString(((Calendar) obj).getTime());
 				} else if (obj instanceof Date) {
-					obj = DateTimeUtils.formatDateToTimestampString((Date) obj);
+					obj = DateTimes.formatDateToTimestampString((Date) obj);
 				}
 				tsb.append(field.getName(), obj);
 			}

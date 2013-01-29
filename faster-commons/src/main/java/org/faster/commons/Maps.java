@@ -45,7 +45,7 @@ public class Maps {
         Map ret = new HashMap();
         for (String key : keys) {
             Object value = map.get(key);
-            if (ignoreNullValue && BeanUtils.isNullOrEmpty(value)) {
+            if (ignoreNullValue && Beans.isNullOrEmpty(value)) {
                 continue;
             }
             ret.put(key, value);

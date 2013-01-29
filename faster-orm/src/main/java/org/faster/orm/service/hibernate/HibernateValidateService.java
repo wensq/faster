@@ -25,7 +25,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import org.faster.commons.BeanUtils;
+import org.faster.commons.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.validation.Errors;
 import org.faster.orm.validation.GroupValidator;
@@ -122,8 +122,8 @@ public abstract class HibernateValidateService<PO extends GenericEntity<ID>, ID 
 
 	@Override
 	public void validatesUniquenessOf(PO po, String propertyName, ID excludeId, Errors<PO> errors) {
-		Object value = BeanUtils.getProperty(po, propertyName);
-		if (BeanUtils.isNullOrEmpty(value)) {
+		Object value = Beans.getProperty(po, propertyName);
+		if (Beans.isNullOrEmpty(value)) {
 			return;
 		}
 

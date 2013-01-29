@@ -28,9 +28,9 @@ import java.security.MessageDigest;
  * @author sqwen
  */
 @SuppressWarnings("restriction")
-public class EncryptUtils {
+public class Encrypts {
 
-	private EncryptUtils() {}
+	private Encrypts() {}
 
 	public static final String encryptByBASE64(byte[] bytes) {
 		return new BASE64Encoder().encode(bytes);
