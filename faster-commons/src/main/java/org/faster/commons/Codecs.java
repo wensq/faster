@@ -5,14 +5,14 @@
  */
 package org.faster.commons;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * 封装各种格式的编码解码工具类.
@@ -23,8 +23,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * 4.JDK提供的URLEncoder
  *
  * @author calvin
+ * @author sqwen
  */
-public class Encodes {
+public class Codecs {
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
 
