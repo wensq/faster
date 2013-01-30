@@ -15,10 +15,10 @@
  */
 package org.faster.orm.util;
 
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Test;
 
 /**
  * @author sqwen
@@ -30,7 +30,7 @@ public class OrmUtilsTest {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", "sqwen");
 
-		System.out.println(OrmUtils.buildUpdateHQL("Province", "id", 3, map));
+		System.out.println(OrmUtils.buildUpdateHQL("Province", "id", new Integer[] {3}, map));
 	}
 
 }
