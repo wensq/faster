@@ -386,9 +386,9 @@
 	</profiles>
 
 	<modules>
-		<module>faster-orm</module>
-		<module>faster-commons</module>
-		<module>faster-ws</module>
+		<module>faster-util</module>
 		<module>faster-cache</module>
+		<module>faster-orm</module>
+		<module>faster-ws</module>
 	</modules>
 </project>

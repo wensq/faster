@@ -25,7 +25,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
-import org.faster.commons.Beans;
+import org.faster.util.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.validation.Errors;
 import org.faster.orm.validation.GroupValidator;

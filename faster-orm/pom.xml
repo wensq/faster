@@ -8,10 +8,11 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>faster-orm</artifactId>
+    <name>faster ORM module</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.faster</groupId>
-			<artifactId>faster-commons</artifactId>
+			<artifactId>faster-util</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

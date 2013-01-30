@@ -26,8 +26,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.faster.commons.Beans;
-import org.faster.commons.DateTimes;
+import org.faster.util.Beans;
+import org.faster.util.DateTimes;
 import org.hibernate.collection.internal.AbstractPersistentCollection;
 
 /**

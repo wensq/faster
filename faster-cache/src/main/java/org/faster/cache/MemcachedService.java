@@ -17,7 +17,7 @@ package org.faster.cache;
 
 import net.rubyeye.xmemcached.MemcachedClient;
 import org.apache.commons.lang3.time.StopWatch;
-import org.faster.commons.Exceptions;
+import org.faster.util.Exceptions;
 
 import java.util.List;
 

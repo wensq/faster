@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.faster.commons.Beans;
+import org.faster.util.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.service.hibernate.with.option.HibernateFindPageWithOptionService;

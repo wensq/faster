@@ -16,20 +16,20 @@
 package org.faster.orm.service.hibernate;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.faster.commons.Collections;
+import org.faster.util.Collections;
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.util.Condition;
 import org.faster.orm.util.OrmUtils;
 import org.hibernate.criterion.DetachedCriteria;
 
-import org.faster.commons.Arrays;
+import org.faster.util.Arrays;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static org.faster.commons.Maps.map;
+import static org.faster.util.Maps.map;
 
 /**
  * @author sqwen

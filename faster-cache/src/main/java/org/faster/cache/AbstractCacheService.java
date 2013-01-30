@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.faster.commons.Hashes.md5;
+import static org.faster.util.Hashes.md5;
 
 /**
  * @author sqwen

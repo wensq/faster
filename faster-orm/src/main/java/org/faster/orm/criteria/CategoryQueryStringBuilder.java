@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.faster.commons.Beans;
+import org.faster.util.Beans;
 
 /**
  * @author sqwen

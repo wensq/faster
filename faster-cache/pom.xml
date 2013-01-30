@@ -14,7 +14,7 @@
 
         <dependency>
             <groupId>org.faster</groupId>
-            <artifactId>faster-commons</artifactId>
+            <artifactId>faster-util</artifactId>
             <version>${project.version}</version>
         </dependency>
 

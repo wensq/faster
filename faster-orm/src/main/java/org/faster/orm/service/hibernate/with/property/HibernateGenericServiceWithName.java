@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.faster.commons.Beans;
+import org.faster.util.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.option.QueryOption;

@@ -8,6 +8,7 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>faster-ws</artifactId>
+	<name>faster webservice module</name>
 
 	<dependencies>
 		<dependency>
@@ -15,13 +16,13 @@
 			<artifactId>faster-orm</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.faster</groupId>
 			<artifactId>faster-cache</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>

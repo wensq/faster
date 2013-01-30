@@ -175,11 +175,6 @@ public class Page implements Pagination {
 		resetCurrentPage();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.eastcom.commons.Pagination#turnPageTo(int)
-	 */
 	public void turnPageTo(int pageIndex) {
 		verifyPageIndex(pageIndex);
 		if (currentPageIndex != pageIndex) {

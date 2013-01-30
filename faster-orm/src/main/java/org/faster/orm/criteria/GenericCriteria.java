@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.faster.commons.DateTimes;
+import org.faster.util.DateTimes;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
