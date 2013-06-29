@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import static org.faster.util.Hashes.md5;
 
@@ -15,7 +19,11 @@ import static org.faster.util.Hashes.md5;
  */
 public abstract class AbstractCacheService implements CacheService {
 
+    public static final int DEFAULT_EXPIRATION = 300;   // 5 minutes
+
     protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    protected ConcurrentMap<String, FutureTask> futureTaskMap = new ConcurrentHashMap<String, FutureTask>();
 
     // 是否需要对key进行hash处理
     private boolean hashKey = false;
@@ -51,27 +59,47 @@ public abstract class AbstractCacheService implements CacheService {
     public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
         String internalKey = buildInternalKey(key);
         if (expiration < 0) {
-            assertHandlerIsNotNull(handler);
-            StopWatch sw = null;
-            if (log.isDebugEnabled()) {
-                sw = new StopWatch();
-                sw.start();
-                log.debug("Finding bypass the cache...");
-            }
-            Object ret = handler.doFind();
-            if (ret != null) {
-                doPutInCache(internalKey, expiration, ret);
-            }
-            if (log.isDebugEnabled()) {
-                log.debug("Direct search completed[found={}]. ({} ms)", ret != null, sw.getTime());
-            }
-            return ret;
+            return directSearch(key, DEFAULT_EXPIRATION, handler);
         }
 
-        Object ret = doGetFromCache(internalKey, expiration, handler);
-        if (ret != null) {
-            doPutInCache(internalKey, expiration, ret);
+        return doGetFromCache(internalKey, expiration, handler);
+    }
+
+    protected Object directSearch(String key, int expiration, CacheMissHandler handler) {
+        assertHandlerIsNotNull(handler);
+        StopWatch sw = null;
+        if (log.isDebugEnabled()) {
+            sw = new StopWatch();
+            sw.start();
+            log.debug("Direct searching ...");
         }
+
+        FutureTask ft = new FutureTask(new SearchItem(handler));
+        FutureTask old = futureTaskMap.putIfAbsent(key, ft);
+
+        if (old == null) {
+            ft.run();
+            old = ft;
+        }
+
+        Object ret = null;
+        try {
+            ret = old.get();
+        } catch (InterruptedException e) {
+            // just ignored
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Direct search completed[found={}]. ({} ms)", ret != null, sw.getTime());
+        }
+
+        futureTaskMap.remove(key, ft);
+        if (ret != null) {
+            doPutInCache(key, expiration, ret);
+        }
+
         return ret;
     }
 

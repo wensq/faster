@@ -75,21 +75,7 @@ public class MemcachedService extends AbstractCacheService {
 				return ret;
 			}
 
-			assertHandlerIsNotNull(handler);
-
-			if (log.isDebugEnabled()) {
-				log.debug("Memcached miss[key={}], direct search...", internalKey);
-			}
-
-            ret = handler.doFind();
-            if (ret != null) {
-                doPutInCache(internalKey, expiration, ret);
-            }
-
-			if (log.isDebugEnabled()) {
-				log.debug("Direct search completed[found={}]. ({} ms)", ret != null, sw.getTime());
-			}
-			return ret;
+            return directSearch(internalKey, expiration, handler);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}

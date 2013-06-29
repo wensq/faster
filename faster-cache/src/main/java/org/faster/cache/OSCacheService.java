@@ -17,7 +17,6 @@ package org.faster.cache;
 
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
-import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.List;
 
@@ -34,10 +33,8 @@ public class OSCacheService extends AbstractCacheService {
 	protected void doPutInCache(String key, int expiration, Object obj) {
 		boolean updated = false;
 		try {
-			if (obj != null) {
-				cache.putInCache(key, obj);
-				updated = true;
-			}
+            cache.putInCache(key, obj);
+            updated = true;
 		} finally {
 			if (!updated) {
 				cache.cancelUpdate(key);
@@ -50,27 +47,12 @@ public class OSCacheService extends AbstractCacheService {
         try {
             return cache.getFromCache(internalKey, expiration);
         } catch (NeedsRefreshException nre) {
-            assertHandlerIsNotNull(handler);
-            StopWatch sw = null;
-            if (log.isDebugEnabled()) {
-                sw = new StopWatch();
-                sw.start();
-                log.debug("Cache miss[key={}], finding directly...", internalKey);
-            }
             Object ret = null;
-            boolean updated = false;
             try {
-                ret = handler.doFind();
-                if (ret != null) {
-                    doPutInCache(internalKey, expiration, ret);
-                    updated = true;
-                }
+                ret = directSearch(internalKey, expiration, handler);
             } finally {
-                if (!updated) {
+                if (ret == null) {
                     cache.cancelUpdate(internalKey);
-                }
-                if (log.isDebugEnabled()) {
-                    log.debug("Direct search completed[found={}]. ({} ms)", updated, sw.getTime());
                 }
             }
             return ret;
