@@ -28,6 +28,7 @@
 
 	<properties>
 		<slf4j.version>1.7.5</slf4j.version>
+		<dom4j.version>1.6.1</dom4j.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
@@ -44,7 +45,10 @@
 		<xmemcached.version>1.4.1</xmemcached.version>
         <oscache.version>2.4.1</oscache.version>
         <ehcache.version>2.7</ehcache.version>
+        <freemarker.version>2.3.20</freemarker.version>
 		<junit.version>4.8.1</junit.version>
+		<source.version>1.6</source.version>
+		<target.version>1.6</target.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -88,8 +92,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.1</version>
 					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
+						<source>${source.version}</source>
+						<target>${target.version}</target>
 						<showWarnings>true</showWarnings>
 					</configuration>
 				</plugin>
@@ -132,6 +136,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
 			<!-- spring begin -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -370,6 +379,12 @@
 				<version>${resteasy.version}</version>
 			</dependency>
 
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -407,5 +422,6 @@
 		<module>faster-orm</module>
 		<module>faster-ws</module>
         <module>faster-opm</module>
+        <module>faster-generator</module>
     </modules>
 </project>

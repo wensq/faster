@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2013 @iSQWEN. All rights reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<generator overwrite="false" output="core,rs" basePackage="com.eastcom.intsight.resource.corenetwork">
+    <dir>
+        <template>../template/general</template>
+        <core>/Users/sqwen/Development/java/eastcom/intsight-2.0/intsight-resource/resource-core/resource-corenetwork/src/main/java</core>
+        <rs>/Users/sqwen/Development/java/eastcom/intsight-2.0/intsight-resource/resource-core/resource-corenetwork/src/main/java</rs>
+    </dir>
+    <property name="author" value="sqwen" />
+    <property name="version" value="1.0" />
+    <property name="schema" value="IRMS" />
+    <property name="idType" value="Long" />
+    <property name="idName" value="id" />
+    <model name="MSS" table="VIEW_IRMS_CORE_MSS" parent="IRMSEntity" remark="MSCServer(Mobile Switch Center Server): 移动交换中心服务器，简称软交换机或软交换端局，缩写为MSS" />
+    <model name="HLR" table="VIEW_IRMS_CORE_HLR" parent="IRMSEntity" remark="HLR: 归属地位置寄存器" />
+</generator>
