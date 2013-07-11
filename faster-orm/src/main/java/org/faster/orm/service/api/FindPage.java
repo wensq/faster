@@ -15,16 +15,18 @@
  */
 package org.faster.orm.service.api;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.pagination.PagedList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 
+import java.io.Serializable;
+import java.util.Map;
+
 /**
+ * 分页查找接口，页号从1开始计数
+ *
  * @author sqwen
  */
 public interface FindPage<PO extends GenericEntity<ID>, ID extends Serializable> {
