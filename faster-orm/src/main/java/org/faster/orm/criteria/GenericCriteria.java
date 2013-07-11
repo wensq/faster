@@ -15,23 +15,6 @@
  */
 package org.faster.orm.criteria;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.QueryParam;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -39,6 +22,22 @@ import org.faster.util.DateTimes;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * 通用的范型查询条件基类
@@ -60,18 +59,25 @@ public class GenericCriteria<PO> {
 	@NoQuery
 	protected String sort;
 
-	// 从1开始计数
+	// 页号，从1开始计数
 	@QueryParam("page")
 	@DefaultValue("1")
 	@XmlAttribute
 	@NoQuery
 	protected int page = 1;
 
+    // 每页大小
 	@QueryParam("limit")
 	@DefaultValue("10")
 	@XmlAttribute
 	@NoQuery
 	protected int limit = 10;
+
+    // 返回字段，为空表示返回所有字段
+    @QueryParam("fields")
+    @XmlAttribute
+    @NoQuery
+    protected String fields;
 
 	/**
 	 * 缓存策略：
@@ -283,4 +289,11 @@ public class GenericCriteria<PO> {
 		this.cache = cacheStrategy;
 	}
 
+    public String getFields() {
+        return fields;
+    }
+
+    public void setFields(String fields) {
+        this.fields = fields;
+    }
 }
