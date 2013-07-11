@@ -15,20 +15,25 @@
  */
 package org.faster.orm.service.hibernate;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author sqwen
  */
 public abstract class HibernateFindService<PO extends GenericEntity<ID>, ID extends Serializable>
-		extends HibernateGetService<PO, ID> {
+        extends HibernateGetService<PO, ID> {
 
-	@Override
+    @Override
+    public PO findFirst() {
+        return findFirst(Options.getCacheEnabledQueryOption(cacheEnabled));
+    }
+
+    @Override
 	public PO findByCriteria(DetachedCriteria criteria) {
 		return findByCriteria(criteria, Options.getCacheEnabledQueryOption(cacheEnabled));
 	}

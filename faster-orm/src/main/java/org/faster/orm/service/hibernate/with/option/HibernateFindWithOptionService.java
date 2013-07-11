@@ -15,13 +15,13 @@
  */
 package org.faster.orm.service.hibernate.with.option;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -29,7 +29,12 @@ import org.hibernate.criterion.DetachedCriteria;
 public abstract class HibernateFindWithOptionService<PO extends GenericEntity<ID>, ID extends Serializable>
 		extends HibernateGetWithOptionService<PO, ID> {
 
-	@SuppressWarnings("unchecked")
+    @Override
+    public PO findFirst(QueryOption queryOption) {
+        return findByCriteria(buildCriteria(), queryOption);
+    }
+
+    @SuppressWarnings("unchecked")
 	@Override
 	public PO findByCriteria(DetachedCriteria criteria, QueryOption queryOption) {
 		log.info("Finding one {} with cache {} by {}...",

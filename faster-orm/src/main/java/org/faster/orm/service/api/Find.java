@@ -15,16 +15,18 @@
  */
 package org.faster.orm.service.api;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import org.faster.orm.model.GenericEntity;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author sqwen
  */
 public interface Find<PO extends GenericEntity<ID>, ID extends Serializable> {
+
+    PO findFirst();
 
 	PO findByCriteria(DetachedCriteria criteria);
 

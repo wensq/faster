@@ -15,13 +15,13 @@
  */
 package org.faster.orm.service.api.with.option;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -31,6 +31,8 @@ public interface TimestampWithOption<PO extends GenericEntity<ID>, ID extends Se
 	Date findLastUpdateTime(QueryOption queryOption);
 
 	Date findLastUpdateTime(DetachedCriteria criteria, QueryOption queryOption);
+
+	PO findLast(QueryOption queryOption);
 
 	PO findLastByCriteria(DetachedCriteria criteria, QueryOption queryOption);
 

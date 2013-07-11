@@ -15,17 +15,19 @@
  */
 package org.faster.orm.service.api.with.option;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author sqwen
  */
 public interface FindWithOption<PO extends GenericEntity<ID>, ID extends Serializable> {
+
+	PO findFirst(QueryOption queryOption);
 
 	PO findByCriteria(DetachedCriteria criteria, QueryOption queryOption);
 

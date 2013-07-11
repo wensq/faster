@@ -15,10 +15,6 @@
  */
 package org.faster.orm.service.hibernate.with.property;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
@@ -27,6 +23,10 @@ import org.faster.orm.service.GenericServiceWithNameAndTimestamp;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -46,6 +46,11 @@ public abstract class HibernateGenericServiceWithNameAndTimestamp<PO extends Gen
 	public Date findLastUpdateTime(DetachedCriteria criteria) {
 		return findLastUpdateTime(Options.getCacheEnabledQueryOption(cacheEnabled));
 	}
+
+    @Override
+    public PO findLast() {
+        return findLast(Options.getCacheEnabledQueryOption(cacheEnabled));
+    }
 
 	@Override
 	public PO findLastByCriteria(DetachedCriteria criteria) {
@@ -90,6 +95,11 @@ public abstract class HibernateGenericServiceWithNameAndTimestamp<PO extends Gen
 		}
 		return ret;
 	}
+
+    @Override
+    public PO findLast(QueryOption queryOption) {
+        return findLastByCriteria(buildCriteria(), queryOption);
+    }
 
 	@SuppressWarnings("unchecked")
 	@Override
