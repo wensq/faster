@@ -63,7 +63,7 @@ public class Resource implements Serializable, Cloneable {
     private List<Property> propertis;
 
     @XmlTransient
-    private Map<String, Property> propertyMap;
+    private transient Map<String, Property> propertyMap;
 
     // --------------------
     // feature methods

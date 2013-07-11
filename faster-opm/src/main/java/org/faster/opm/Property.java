@@ -52,10 +52,10 @@ public class Property implements Serializable, Cloneable {
     private String group;
 
     @XmlTransient
-    private Set<String> groupNames;
+    private transient Set<String> groupNames;
 
     @XmlTransient
-    private boolean changed = false;
+    private transient boolean changed = false;
 
     // --------------------
     // feature methods
