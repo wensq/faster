@@ -15,13 +15,6 @@
  */
 package org.faster.orm.service.hibernate;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.criteria.GenericCriteria;
@@ -29,6 +22,13 @@ import org.faster.orm.model.GenericEntity;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.internal.CriteriaImpl;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author sqwen

@@ -36,6 +36,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -67,7 +68,11 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
 
 	@SuppressWarnings("unchecked")
 	public HibernateDaoSupport() {
-		persistClass = (Class<PO>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Type genericSuperClass = getClass().getGenericSuperclass();
+        if (getClass().getName().contains("$$EnhancerByCGLIB$$")) {
+            genericSuperClass = getClass().getSuperclass().getGenericSuperclass();
+        }
+		persistClass = (Class<PO>) ((ParameterizedType) genericSuperClass).getActualTypeArguments()[0];
 		Cache cache = persistClass.getAnnotation(Cache.class);
         cacheEnabled = cache != null && cache.usage() != CacheConcurrencyStrategy.NONE;
 		persistClassName = persistClass.getSimpleName();
