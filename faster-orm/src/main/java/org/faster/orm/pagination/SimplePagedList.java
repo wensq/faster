@@ -20,18 +20,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * 分页列表实现类
  *
  * @author sqwen
  */
 @SuppressWarnings("ALL")
-@XmlRootElement(name = "Resources")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SimplePagedList<T> implements PagedList<T> {
 
 	private static final long serialVersionUID = -8683219147485315010L;
@@ -67,7 +61,12 @@ public class SimplePagedList<T> implements PagedList<T> {
 		return page;
 	}
 
-	@Override
+    @Override
+    public String toString() {
+        return page.toString();
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
