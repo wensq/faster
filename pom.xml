@@ -423,5 +423,6 @@
 		<module>faster-ws</module>
         <module>faster-opm</module>
         <module>faster-generator</module>
+        <module>faster-test</module>
     </modules>
 </project>
