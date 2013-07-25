@@ -29,7 +29,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 public class CacheSupport<T> {
 
-	protected final Logger log = LoggerFactory.getLogger(getClass());
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	protected final String KEY_PREFIX = getClass().getCanonicalName();
 
@@ -100,7 +100,7 @@ public class CacheSupport<T> {
 		case YES:
 			return findObjectFromCache(key, expiration, handler);
 		case REBUILD:
-			log.info("Rebuilding cache: " + key);
+			logger.info("Rebuilding cache: " + key);
 			Object ret = handler.doFind();
 			if (ret != null) {
 				putInCache(key, expiration, ret);
