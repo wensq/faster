@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,10 +50,8 @@ public class Property implements Serializable, Cloneable {
     @XmlAttribute
     private String group;
 
-    @XmlTransient
     private transient Set<String> groupNames;
 
-    @XmlTransient
     private transient boolean changed = false;
 
     // --------------------

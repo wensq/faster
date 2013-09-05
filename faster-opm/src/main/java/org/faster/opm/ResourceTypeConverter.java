@@ -15,16 +15,20 @@
  */
 package org.faster.opm;
 
+import java.util.List;
+
 /**
  * 资源类型转换接口
  * <p>
  * 提供外部资源类型向内部资源类型的转换
+ * <p>
+ * 一个外部资源可能会转换为多个内部资源
  *
  * @author sqwen
  * @version 1.0, 2012-5-24
  */
 public interface ResourceTypeConverter {
 
-    String convert(String rawResourceType);
+    List<String> convert(String rawResourceType);
 
 }

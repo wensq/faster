@@ -16,7 +16,7 @@
 package org.faster.opm;
 
 import org.faster.orm.pagination.PagedList;
-import org.faster.ws.GenericDTOs;
+import org.faster.ws.DataCollection;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "Resources")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Resources extends GenericDTOs<Resource> {
+public class Resources extends DataCollection<Resource> {
 
     private static final long serialVersionUID = -2208633315714602241L;
 
@@ -41,7 +41,7 @@ public class Resources extends GenericDTOs<Resource> {
 
     // 返回码，含义类似于：HTTP Status
     @XmlAttribute
-    private Integer status = 200;
+    private Integer status = ResourceStatus.SUCCESS;
 
     public Resources(int status) {
         this.status = status;
@@ -69,8 +69,8 @@ public class Resources extends GenericDTOs<Resource> {
 
     @XmlElement(name = "Resource")
     @Override
-    public List<Resource> getValues() {
-        return super.getValues();
+    public List<Resource> getData() {
+        return super.getData();
     }
 
     public Integer getStatus() {

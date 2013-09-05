@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +61,6 @@ public class Resource implements Serializable, Cloneable {
     @XmlElement(name = "property")
     private List<Property> propertis;
 
-    @XmlTransient
     private transient Map<String, Property> propertyMap;
 
     // --------------------
