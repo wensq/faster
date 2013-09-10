@@ -15,8 +15,6 @@
  */
 package org.faster.orm.criteria;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.sql.Date;
@@ -24,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * @author sqwen
@@ -107,9 +107,14 @@ public class QueryHelper {
 		return p == null ? DataType.STRING : p.type();
 	}
 
-	public static final MatchMode getDefaultStringMatchMode(Field f) {
-		Query p = f.getAnnotation(Query.class);
-		return p == null ? MatchMode.EQ : p.defaultStringMatchMode();
+	public static final MatchMode getMatchMode(Field f) {
+		Query query = f.getAnnotation(Query.class);
+		return query == null ? MatchMode.EQ : query.matchMode();
 	}
+
+    public static final String getDelimiter(Field f) {
+        Query query = f.getAnnotation(Query.class);
+        return query == null ? "," : query.delimiter();
+    }
 
 }

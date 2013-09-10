@@ -31,7 +31,8 @@ public enum MatchMode {
 	GT, GE,
 	NE,
 	BETWEEN,
-	OR;
+	OR,
+    IN;
 
 	public static final MatchMode fromString(String matchMode) {
 		return isBlank(matchMode) ? EQ : MatchMode.valueOf(matchMode.toUpperCase());

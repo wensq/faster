@@ -15,16 +15,16 @@
  */
 package org.faster.orm.criteria;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.faster.orm.criteria.GenericCriteria.ALL;
-import static org.faster.orm.criteria.GenericCriteria.NOT_NULL;
-import static org.faster.orm.criteria.GenericCriteria.NULL;
-
 import org.faster.util.Strings;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.faster.orm.criteria.GenericCriteria.ALL;
+import static org.faster.orm.criteria.GenericCriteria.NOT_NULL;
+import static org.faster.orm.criteria.GenericCriteria.NULL;
 
 /**
  * 查询条件修饰工具类，提供对常用字段的通用render封装，防止出现冗余代码
@@ -176,14 +176,14 @@ public class CriteriaRender {
 	 *            查询条件封装
 	 * @param fieldName
 	 *            字段名称，如type
-	 * @param integerValues
+	 * @param fieldValues
 	 *            需要过滤的多个字段值，字段值用逗号分隔，每个字段值为整形，如：1,2,3
 	 */
-	public static void renderFieldByIntegerFilterValues(DetachedCriteria dc, String fieldName, String integerValues) {
-		if (isBlank(integerValues)) {
+	public static void renderFieldByIntegerFilterValues(DetachedCriteria dc, String fieldName, String fieldValues, String delimiter) {
+		if (isBlank(fieldValues)) {
 			return;
 		}
-		Integer[] array = Strings.toIntegerArray(integerValues.trim(), ",");
+		Integer[] array = Strings.toIntegerArray(fieldValues.trim(), delimiter);
 		if (array.length == 1) {
 			dc.add(Restrictions.eq(fieldName, array[0]));
 		} else {
@@ -191,17 +191,34 @@ public class CriteriaRender {
 		}
 	}
 
-	public static void renderFieldByLongFilterValues(DetachedCriteria dc, String fieldName, String integerValues) {
-		if (isBlank(integerValues)) {
+	public static void renderFieldByLongFilterValues(DetachedCriteria dc, String fieldName, String fieldValues, String delimiter) {
+		if (isBlank(fieldValues)) {
 			return;
 		}
-		Long[] array = Strings.toLongArray(integerValues.trim(), ",");
+		Long[] array = Strings.toLongArray(fieldValues.trim(), delimiter);
 		if (array.length == 1) {
 			dc.add(Restrictions.eq(fieldName, array[0]));
 		} else {
 			dc.add(Restrictions.in(fieldName, array));
 		}
 	}
+
+    public static void renderFieldByStringFilterValues(DetachedCriteria dc, String fieldName, String fieldValues, String delimiter) {
+        if (isBlank(fieldValues)) {
+            return;
+        }
+
+        if (fieldValues.contains(delimiter)) {
+            String[] multiValue = Strings.toStringArray(fieldValues, delimiter);
+            if (multiValue.length == 1) {
+                dc.add(Restrictions.eq(fieldName, multiValue[0]));
+            } else {
+                dc.add(Restrictions.in(fieldName, multiValue));
+            }
+        } else {
+            dc.add(Restrictions.eq(fieldName, fieldValues));
+        }
+    }
 
 	/**
 	 * 添加查询子对象的ID在某个列表内的条件

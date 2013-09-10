@@ -159,12 +159,13 @@ public class GenericCriteria<PO> {
 
 				boolean ignoreEmptyOrZero = QueryHelper.isIgnoreEmptyOrZero(f);
 				DataType dt = QueryHelper.getDataType(f);
+                String delimiter = QueryHelper.getDelimiter(f);
 				switch (dt) {
 				case STRING:
 					if (ignoreEmptyOrZero && isBlank(stringValue)) {
 						continue;
 					}
-					MatchMode mm = QueryHelper.getDefaultStringMatchMode(f);
+					MatchMode mm = QueryHelper.getMatchMode(f);
 					switch (mm) {
 					case EQ:
 						dc.add(Restrictions.eq(fieldName, stringValue));
@@ -187,6 +188,9 @@ public class GenericCriteria<PO> {
 					case ILIKE_END:
 						dc.add(Restrictions.ilike(fieldName, stringValue, org.hibernate.criterion.MatchMode.END));
 						continue;
+                    case IN:
+                        CriteriaRender.renderFieldByStringFilterValues(dc, fieldName, stringValue, delimiter);
+                        continue;
 					default:
 						throw new IllegalArgumentException("Invalid MatchMode for String: " + mm);
 					}
@@ -194,13 +198,13 @@ public class GenericCriteria<PO> {
 					if (ignoreEmptyOrZero && stringValue.equals("0")) {
 						continue;
 					}
-					CriteriaRender.renderFieldByIntegerFilterValues(dc, fieldName, stringValue);
+					CriteriaRender.renderFieldByIntegerFilterValues(dc, fieldName, stringValue, delimiter);
 					continue;
 				case LONG:
 					if (ignoreEmptyOrZero && stringValue.equals("0")) {
 						continue;
 					}
-					CriteriaRender.renderFieldByLongFilterValues(dc, fieldName, stringValue);
+					CriteriaRender.renderFieldByLongFilterValues(dc, fieldName, stringValue, delimiter);
 					continue;
 				case DATE:
 					// TODO 改为根据匹配模式自动生成限制条件

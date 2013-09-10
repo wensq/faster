@@ -50,11 +50,14 @@ public @interface Query {
 	DataType type() default DataType.AUTO;
 
 	/**
-	 * 如果查询字符串未提供匹配模式的话，默认的匹配方式
-	 *
-	 * @return 默认字符串匹配方式
+	 * 如果未提供匹配模式的话，默认的匹配方式
 	 */
-	MatchMode defaultStringMatchMode() default MatchMode.EQ;
+	MatchMode matchMode() default MatchMode.EQ;
+
+    /**
+     * 多值字段的分隔符
+     */
+    String delimiter() default ",";
 
 	/**
 	 * 是否忽略空值
