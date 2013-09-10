@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.faster.opm;
+package org.faster.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
