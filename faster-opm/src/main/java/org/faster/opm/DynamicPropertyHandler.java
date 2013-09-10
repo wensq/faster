@@ -15,6 +15,8 @@
  */
 package org.faster.opm;
 
+import org.faster.util.NestParam;
+
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ public interface DynamicPropertyHandler {
     /**
      * 是否可以处理某个动态属性
      *
-     * @param resourceType 资源类型
+     * @param resourceType          资源类型
      * @param dynamicPropertyParams 动态属性参数
      * @return 是否可以处理
      */

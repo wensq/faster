@@ -15,6 +15,8 @@
  */
 package org.faster.opm;
 
+import org.faster.util.NestParam;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

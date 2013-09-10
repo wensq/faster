@@ -19,8 +19,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Set;
 
-import static org.faster.opm.ResourceRedisKeyHelper.getResourceHashKey;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.faster.opm.ResourceRedisKeyHelper.getResourceHashKey;
 
 /**
  * ID属性的资源过滤器

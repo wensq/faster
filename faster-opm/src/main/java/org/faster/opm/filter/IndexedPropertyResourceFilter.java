@@ -22,8 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.faster.opm.ResourceRedisKeyHelper.getPropertyIndexKey;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.faster.opm.ResourceRedisKeyHelper.getPropertyIndexKey;
 
 /**
  * 已建属性索引的资源过滤器实现
