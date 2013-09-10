@@ -15,16 +15,16 @@
  */
 package org.faster.orm.service.hibernate;
 
+import org.apache.commons.lang3.time.StopWatch;
+import org.faster.orm.model.GenericEntity;
+import org.hibernate.criterion.DetachedCriteria;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.time.StopWatch;
-import org.faster.orm.model.GenericEntity;
-import org.hibernate.criterion.DetachedCriteria;
 
 /**
  * @author sqwen
@@ -120,8 +120,14 @@ public abstract class HibernateDeleteService<PO extends GenericEntity<ID>, ID ex
 	}
 
 	private void doDelete(ID id) {
-		PO po = build(idFieldName, id);
-		doDelete(po);
+        try {
+            execute("delete from " + persistClassName + " where " + idFieldName + " = ?", id);
+        } catch (Exception e) {
+            PO po = get(id);
+            if (po != null) {
+                doDelete(po);
+            }
+        }
 	}
 
 	private void doDelete(Collection<PO> pos) {
