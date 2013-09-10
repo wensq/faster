@@ -15,9 +15,14 @@
  */
 package org.faster.ws;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
+import org.faster.cache.CacheMissHandler;
+import org.faster.cache.CacheStrategy;
+import org.faster.cache.CacheSupport;
+import org.faster.orm.criteria.GenericCriteria;
+import org.faster.orm.model.GenericEntity;
+import org.faster.orm.pagination.PagedList;
+import org.faster.orm.service.GenericService;
+import org.hibernate.criterion.DetachedCriteria;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,35 +30,26 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import org.faster.cache.CacheMissHandler;
-import org.faster.cache.CacheSupport;
-import org.faster.cache.CacheStrategy;
-import org.faster.orm.criteria.GenericCriteria;
-import org.faster.orm.model.GenericEntity;
-import org.faster.orm.pagination.PagedList;
-import org.faster.orm.service.GenericService;
-import org.hibernate.criterion.DetachedCriteria;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 /**
  * 通用范型WebService基类
- * <p>
  *
  * @author sqwen
  */
 @SuppressWarnings("rawtypes")
 @Consumes({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 @Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA extends GenericCriteria<PO>, PO extends GenericEntity<ID>, ID extends Serializable>
+public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO extends GenericEntity<ID>, ID extends Serializable>
 		extends CacheSupport<PO> {
 
-	public static final String CACHE_STRATEGY_QUERY_PARAM = "_cache";
-
-	protected final Class<DTOS> dtosClass;
+	public static final String QUERY_PARAM_CACHE_STRATEGY = "cache";
 
 	protected final Class<PO> poClass;
 
-	protected final String resourceType;
+	protected String poClassName;
 
 	private final String cacheGroup;
 
@@ -62,18 +58,16 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 
 	@SuppressWarnings("unchecked")
 	public GenericWebService() {
-		dtosClass = (Class<DTOS>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
 		poClass = (Class<PO>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[2];
-		resourceType = poClass.getSimpleName();
+				.getGenericSuperclass()).getActualTypeArguments()[1];
+		poClassName = poClass.getSimpleName();
 		cacheGroup = poClass.getCanonicalName();
 	}
 
 	@Path("cache/expire_seconds")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public int setCacheExpireSeconds() {
+	public int getCacheExpireSeconds() {
 		return cacheExpireSeconds;
 	}
 
@@ -96,11 +90,12 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 		return cacheGroup;
 	}
 
+    protected void renderCriteria(CRITERIA criteria) {}
+
 	/**
 	 * 在对象返回前修饰一下属性
 	 *
-	 * @param po
-	 *            此DTO对应的PO
+	 * @param po 持久化对象
 	 */
 	protected void renderBeforeReturn(PO po) {}
 
@@ -119,66 +114,65 @@ public abstract class GenericWebService<DTOS extends GenericDTOs, CRITERIA exten
 		});
 	}
 
-	public int count(final CRITERIA criteria) {
+	public int count(CRITERIA criteria) {
+        renderCriteria(criteria);
 		String key = buildGlobalCacheKey("count:" + criteria);
-		return (Integer) findObjectFromCache(key, CacheStrategy.fromString(criteria.getCacheStrategy()),
+        final CRITERIA c = criteria;
+		return (Integer) findObjectFromCache(key, CacheStrategy.fromString(c.getCacheStrategy()),
 				cacheExpireSeconds,
 				new CacheMissHandler() {
 
 					@Override
 					public Object doFind() {
-						DetachedCriteria dc = criteria.buildCriteria();
+						DetachedCriteria dc = c.buildCriteria();
 						return getGenericService().countByCriteria(dc);
 					}
 				});
 	}
 
 	@SuppressWarnings("unchecked")
-	public DTOS filter(final CRITERIA criteria) {
+	public DataCollection<PO> filter(CRITERIA criteria) {
+        renderCriteria(criteria);
 		String key = buildGlobalCacheKey("filter:" + criteria);
-		return (DTOS) findObjectFromCache(key, CacheStrategy.fromString(criteria.getCacheStrategy()),
+        final CRITERIA c = criteria;
+		return (DataCollection<PO>) findObjectFromCache(key, CacheStrategy.fromString(c.getCacheStrategy()),
 				cacheExpireSeconds,
 				new CacheMissHandler() {
 
 					@Override
 					public Object doFind() {
-						List<PO> pos = getGenericService().findAllByCriteria(criteria);
-						return buildDTOs(pos);
+						List<PO> pos = getGenericService().findAllByCriteria(c);
+						return buildDataCollection(pos);
 					}
 				});
 	}
 
 	@SuppressWarnings("unchecked")
-	public DTOS search(final CRITERIA criteria) {
+	public DataCollection<PO> search(CRITERIA criteria) {
+        renderCriteria(criteria);
 		String key = buildGlobalCacheKey("search:" + criteria);
-		return (DTOS) findObjectFromCache(key, CacheStrategy.fromString(criteria.getCacheStrategy()),
+        final CRITERIA c = criteria;
+		return (DataCollection<PO>) findObjectFromCache(key, CacheStrategy.fromString(c.getCacheStrategy()),
 				cacheExpireSeconds,
 				new CacheMissHandler() {
 
 					@Override
 					public Object doFind() {
-						PagedList<PO> pos = getGenericService().findPageByCriteria(criteria);
-						return buildDTOs(pos);
+						PagedList<PO> pos = getGenericService().findPageByCriteria(c);
+						return new DataCollection(pos);
 					}
 				});
 	}
 
-	@SuppressWarnings("unchecked")
-	protected DTOS buildDTOs(List<PO> pos) {
-		DTOS dtos;
-		try {
-			dtos = dtosClass.newInstance();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
+	protected DataCollection<PO> buildDataCollection(List<PO> pos) {
+        DataCollection<PO> dc = new DataCollection<PO>();
 		if (pos != null && !pos.isEmpty()) {
 			for (PO po : pos) {
 				renderBeforeReturn(po);
 			}
 		}
-		dtos.setValues(pos);
-		return dtos;
+		dc.setData(pos);
+		return dc;
 	}
 
 }

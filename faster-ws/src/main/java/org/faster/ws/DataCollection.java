@@ -15,31 +15,27 @@
  */
 package org.faster.ws;
 
-import java.io.Serializable;
-import java.util.List;
+import org.faster.orm.pagination.PagedList;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
-import org.faster.orm.pagination.PagedList;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 通用范型DTO列表基类
- * <p>
- * 子类需要覆盖构造方法和<tt>getValue</tt>的返回XmlElement定义
  *
  * @author sqwen
  */
-@XmlRootElement(name = "Resources")
+@XmlRootElement(name = "Collection")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(propOrder = { "startNo", "count", "totalCount", "pageNo", "pageCount", "pageSize", "hasPrevious", "hasNext",
-		"values" })
-public class GenericDTOs<DTO> implements Cloneable, Serializable {
+@XmlType(propOrder = { "startNo", "count", "totalCount", "pageNo", "pageCount", "pageSize",
+        "hasPrevious", "hasNext", "dataType", "data"})
+public class DataCollection<DATA> implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 246720674451418194L;
 
@@ -63,46 +59,57 @@ public class GenericDTOs<DTO> implements Cloneable, Serializable {
 	@XmlAttribute
 	protected Integer pageSize;
 
-	@XmlTransient
-	protected List<DTO> values;
+    // 值类型
+    @XmlAttribute
+    protected String dataType;
 
-	public GenericDTOs() {}
+	protected List<DATA> data;
 
-	public GenericDTOs(List<DTO> dtos) {
-		this.values = dtos;
-		if (dtos != null) {
-			count = dtos.size();
+	public DataCollection() {}
+
+	public DataCollection(List<DATA> data) {
+		this.data = data;
+		if (data != null) {
+			count = data.size();
 		}
+        initValueType(data);
 	}
 
-	public GenericDTOs(PagedList<DTO> dtos) {
-		this.values = dtos;
-		if (dtos != null) {
-			count = dtos.size();
-			totalCount = dtos.getTotalRecordCount();
-			pageNo = dtos.getCurrentPageIndex() + 1;
-			pageCount = dtos.getPageCount();
-			pageSize = dtos.getPageSize();
-		}
+    private void initValueType(List<DATA> data) {
+        if (data == null || data.isEmpty()) {
+            return;
+        }
+        dataType = data.get(0).getClass().getCanonicalName();
+    }
+
+	public DataCollection(PagedList<DATA> data) {
+		this.data = data;
+        initByPagedList(data);
+        initValueType(data);
 	}
 
-	public void setValues(List<DTO> values) {
-		if (values == null) {
-			this.values = null;
+    private void initByPagedList(PagedList<DATA> data) {
+        if (data == null) {
+            return;
+        }
+        count = data.size();
+        totalCount = data.getTotalRecordCount();
+        pageNo = data.getCurrentPageIndex() + 1;
+        pageCount = data.getPageCount();
+        pageSize = data.getPageSize();
+    }
+
+	public void setData(List<DATA> data) {
+		if (data == null) {
+			this.data = null;
 			count = 0;
 			return;
 		}
 
-		this.values = values;
-		count = values.size();
-		if (values instanceof PagedList) {
-			PagedList<DTO> dtos = (PagedList<DTO>) values;
-			totalCount = dtos.getTotalRecordCount();
-			pageNo = dtos.getCurrentPageIndex() + 1;
-			pageCount = dtos.getPageCount();
-			pageSize = dtos.getPageSize();
-		}
-	}
+		this.data = data;
+		count = data.size();
+        initValueType(data);
+    }
 
 	@XmlAttribute
 	public Integer getStartNo() {
@@ -135,9 +142,9 @@ public class GenericDTOs<DTO> implements Cloneable, Serializable {
 		return pageNo < pageCount;
 	}
 
-	@XmlElement(name = "Resource")
-	public List<DTO> getValues() {
-		return values;
+    @XmlElement
+	public List<DATA> getData() {
+		return data;
 	}
 
 	public Integer getCount() {
@@ -180,4 +187,11 @@ public class GenericDTOs<DTO> implements Cloneable, Serializable {
 		this.pageSize = pageSize;
 	}
 
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 }
