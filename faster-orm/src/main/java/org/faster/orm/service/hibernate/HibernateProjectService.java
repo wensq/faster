@@ -15,15 +15,15 @@
  */
 package org.faster.orm.service.hibernate;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.faster.util.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.service.hibernate.with.option.HibernateFindPageWithOptionService;
+import org.faster.util.Beans;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author sqwen
@@ -31,34 +31,34 @@ import org.hibernate.criterion.DetachedCriteria;
 public abstract class HibernateProjectService<PO extends GenericEntity<ID>, ID extends Serializable>
 		extends HibernateFindPageWithOptionService<PO, ID> {
 
-	@Override
-	public List<?> project(String propertyName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> List<T> project(String propertyName, Class<T> clazz) {
+        return null;
+    }
 
-	@Override
-	public List<?> projectById(String propertyName, ID[] ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> List<T> projectById(String propertyName, ID[] ids, Class<T> clazz) {
+        return null;
+    }
 
-	@Override
-	public List<?> projectById(String propertyName, List<ID> ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> List<T> projectById(String propertyName, List<ID> ids, Class<T> clazz) {
+        return null;
+    }
 
-	@Override
-	public List<?> projectByCriteria(String propertyName, DetachedCriteria dc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc, Class<T> clazz) {
+        return null;
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public List<?> project(String propertyName, List<PO> pos) {
-		List values = new ArrayList();
+    @Override
+    public <T> T projectByCriteria(String propertyName, DetachedCriteria dc, Class<T> clazz) {
+        return null;
+    }
+
+    @Override
+    public <T> List<T> project(String propertyName, List<PO> pos, Class<T> clazz) {
+        List values = new ArrayList();
 		for (PO po : pos) {
 			Object value = Beans.getProperty(po, propertyName);
 			if (value != null) {
@@ -66,7 +66,7 @@ public abstract class HibernateProjectService<PO extends GenericEntity<ID>, ID e
 			}
 		}
 		return values;
-	}
+    }
 
 	@Override
 	public List<ID> projectId() {

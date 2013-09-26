@@ -15,11 +15,11 @@
  */
 package org.faster.orm.service.hibernate;
 
-import java.io.Serializable;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.pagination.PagedList;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
 
 /**
  * @author sqwen
@@ -27,16 +27,13 @@ import org.hibernate.criterion.DetachedCriteria;
 public abstract class HibernateProjectPageService<PO extends GenericEntity<ID>, ID extends Serializable>
 		extends HibernateProjectService<PO, ID> {
 
-	@Override
-	public PagedList<?> projectPage(String propertyName, int firstResult, int maxResults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> PagedList<T> projectPage(String propertyName, int page, int limit, Class<T> clazz) {
+        return null;
+    }
 
-	@Override
-	public PagedList<?> projectPage(String propertyName, DetachedCriteria dc, int firstResult, int maxResults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    @Override
+    public <T> PagedList<T> projectPage(String propertyName, DetachedCriteria dc, int page, int limit, Class<T> clazz) {
+        return null;
+    }
 }
