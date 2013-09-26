@@ -15,6 +15,12 @@
  */
 package org.faster.orm.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.faster.util.Beans;
+import org.faster.util.DateTimes;
+import org.hibernate.collection.internal.AbstractPersistentCollection;
+
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -23,12 +29,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.faster.util.Beans;
-import org.faster.util.DateTimes;
-import org.hibernate.collection.internal.AbstractPersistentCollection;
 
 /**
  * 实体类父类
