@@ -95,10 +95,11 @@ public abstract class AbstractCacheService implements CacheService {
             log.debug("Direct search completed[found={}]. ({} ms)", ret != null, sw.getTime());
         }
 
-        futureTaskMap.remove(key, ft);
+
         if (ret != null) {
             doPutInCache(key, expiration, ret);
         }
+        futureTaskMap.remove(key, old);
 
         return ret;
     }
