@@ -133,12 +133,26 @@ public class GenericCriteria<PO> {
 				String fieldName = QueryHelper.getFieldName(f);
 				if (fieldName.contains(".")) {
 					String[] subFieldNames = fieldName.split("\\.");
-					String alias = subFieldNames[0];
+					String fieldPath = subFieldNames[0];
+                    String alias = subFieldNames[0];
 					if (!aliases.contains(alias)) {
-						dc.createAlias(alias, alias);
+						dc.createAlias(fieldPath, alias);
 						aliases.add(alias);
 					}
-					// TODO 支持多级alias
+
+                    // 支持多级alias
+                    for (int i = 1; i < subFieldNames.length - 1; i++) {
+                        fieldPath += "." + subFieldNames[i];
+                        alias += "_" + subFieldNames[i];
+                        if (!aliases.contains(alias)) {
+                            dc.createAlias(fieldPath, alias);
+                            aliases.add(alias);
+                        }
+                    }
+
+                    if (subFieldNames.length > 2) {
+                        fieldName = alias + "." + subFieldNames[subFieldNames.length - 1];
+                    }
 				}
 
 				if (obj == null && !ignoreNull) {
@@ -215,6 +229,35 @@ public class GenericCriteria<PO> {
 					Boolean bool = BooleanUtils.toBooleanObject(stringValue);
 					dc.add(Restrictions.eq(fieldName, bool));
 					continue;
+                case LatLong:
+                    LatLngBound b = new LatLngBound(stringValue);
+                    if (b.isValid()) {
+                        String minLatitude = b.getMinLatitude() == null ? "0.0" : b.getMinLatitude().toString();
+                        String maxLatitude = b.getMaxLatitude() == null ? "0.0" : b.getMaxLatitude().toString();
+                        String minLongitude = b.getMinLongitude() == null ? "0.0" : b.getMinLongitude().toString();
+                        String maxLongitude = b.getMaxLongitude() == null ? "0.0" : b.getMaxLongitude().toString();
+                        if ("area".equalsIgnoreCase(fieldName)) {
+                            dc.add(Restrictions.between("latitude", minLatitude, maxLatitude));
+                            dc.add(Restrictions.between("longitude", minLongitude, maxLongitude));
+                        } else {
+                            if (fieldName.contains(".")) {
+                                String alias = fieldName.replace(".", "_");
+                                if (!aliases.contains(alias)) {
+                                    dc.createAlias(fieldName, alias);
+                                    aliases.add(alias);
+                                }
+                                fieldName = alias;
+                            } else {
+                                if (!aliases.contains(fieldName)) {
+                                    dc.createAlias(fieldName, fieldName);
+                                    aliases.add(fieldName);
+                                }
+                            }
+                            dc.add(Restrictions.between(fieldName + ".latitude", minLatitude, maxLatitude));
+                            dc.add(Restrictions.between(fieldName + ".longitude", minLongitude, maxLongitude));
+                        }
+                    }
+                    continue;
 				default:
 					throw new IllegalArgumentException("Unsupported DataType: " + dt);
 				}

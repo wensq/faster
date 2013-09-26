@@ -20,6 +20,6 @@ package org.faster.orm.criteria;
  */
 public enum DataType {
 
-	AUTO, STRING, INTEGER, LONG, DATE, BOOLEAN
+	AUTO, STRING, INTEGER, LONG, DATE, BOOLEAN, LatLong
 
 }
