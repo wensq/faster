@@ -44,13 +44,25 @@ public class Resource implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 8370201719306362332L;
 
-    public static final Resource SUCCESS = new Resource(ResourceStatus.SUCCESS);
-    public static final Resource NOT_FOUND = new Resource(ResourceStatus.NOT_FOUND);
-    public static final Resource INTERNAL_ERROR = new Resource(ResourceStatus.INTERNAL_ERROR);
+    public static final Resource SUCCESS = new Resource(200, "OK");
+
+    public static final Resource NO_CONTENT = new Resource(204, "No Content");
+
+    public static final Resource error(String message) {
+        Resource res = new Resource(500, "ERROR");
+        res.setMessage(message);
+        return res;
+    }
 
     // 返回码，含义类似于：HTTP Status
     @XmlAttribute
     private Integer status = 200;
+
+    @XmlAttribute
+    private String statusCode = "OK";
+
+    @XmlAttribute
+    private String message;
 
     @XmlAttribute
     private String type;
@@ -67,8 +79,9 @@ public class Resource implements Serializable, Cloneable {
     // feature methods
     // --------------------
 
-    public Resource(int status) {
+    public Resource(int status, String statusCode) {
         this.status = status;
+        this.statusCode = statusCode;
     }
 
     public Resource() {}
@@ -298,4 +311,19 @@ public class Resource implements Serializable, Cloneable {
         this.status = status;
     }
 
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

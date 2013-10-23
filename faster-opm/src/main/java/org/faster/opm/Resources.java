@@ -15,15 +15,11 @@
  */
 package org.faster.opm;
 
-import org.faster.orm.pagination.PagedList;
 import org.faster.ws.DataCollection;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 /**
  * @author sqwen
@@ -34,51 +30,5 @@ import java.util.List;
 public class Resources extends DataCollection<Resource> {
 
     private static final long serialVersionUID = -2208633315714602241L;
-
-    public static final Resources SUCCESS = new Resources(ResourceStatus.SUCCESS);
-    public static final Resources NOT_FOUND = new Resources(ResourceStatus.NOT_FOUND);
-    public static final Resources INTERNAL_ERROR = new Resources(ResourceStatus.INTERNAL_ERROR);
-
-    // 返回码，含义类似于：HTTP Status
-    @XmlAttribute
-    private Integer status = ResourceStatus.SUCCESS;
-
-    public Resources(int status) {
-        this.status = status;
-    }
-
-    public Resources() {
-        super();
-    }
-
-    public Resources(List<Resource> dtos) {
-        super(dtos);
-        sanitizeStatus(dtos);
-    }
-
-    private void sanitizeStatus(List<Resource> dtos) {
-        if (dtos == null || dtos.isEmpty()) {
-            status = ResourceStatus.NOT_FOUND;
-        }
-    }
-
-    public Resources(PagedList<Resource> dtos) {
-        super(dtos);
-        sanitizeStatus(dtos);
-    }
-
-    @XmlElement(name = "Resource")
-    @Override
-    public List<Resource> getData() {
-        return super.getData();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 
 }
