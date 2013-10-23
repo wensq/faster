@@ -41,7 +41,17 @@ public class CacheSupport<T> {
 
 	protected CacheService cacheService;
 
-	protected String buildGlobalCacheKey(String localKey) {
+    protected int defaultCacheExpireSeconds = DAY * 30;
+
+    public int getDefaultCacheExpireSeconds() {
+        return defaultCacheExpireSeconds;
+    }
+
+    public void setDefaultCacheExpireSeconds(int defaultCacheExpireSeconds) {
+        this.defaultCacheExpireSeconds = defaultCacheExpireSeconds;
+    }
+
+    protected String buildGlobalCacheKey(String localKey) {
 		return getKeyPrefix() + "-" + localKey;
 	}
 
@@ -71,23 +81,23 @@ public class CacheSupport<T> {
 	}
 
 	public T findFromCache(String key, CacheMissHandler handler) {
-		return findFromCache(key, 0, handler);
+		return findFromCache(key, defaultCacheExpireSeconds, handler);
 	}
 
 	public T findFromCache(String key, CacheStrategy cs, CacheMissHandler handler) {
-		return findFromCache(key, cs, 0, handler);
+		return findFromCache(key, cs, defaultCacheExpireSeconds, handler);
 	}
 
 	public Object findObjectFromCache(String key, CacheMissHandler handler) {
-		return findObjectFromCache(key, 0, handler);
+		return findObjectFromCache(key, defaultCacheExpireSeconds, handler);
 	}
 
 	public Object findObjectFromCache(String key, CacheStrategy cs, CacheMissHandler handler) {
-		return findObjectFromCache(key, cs, 0, handler);
+		return findObjectFromCache(key, cs, defaultCacheExpireSeconds, handler);
 	}
 
 	public Object findObjectFromCache(String key, int expiration, CacheMissHandler handler) {
-		return cacheService.getFromCache(key, expiration, handler);
+        return cacheService.getFromCache(key, expiration, handler);
 	}
 
 	public Object findObjectFromCache(String key, CacheStrategy cs, int expiration, CacheMissHandler handler) {
@@ -124,11 +134,11 @@ public class CacheSupport<T> {
 	}
 
 	public List<T> findAllFromCache(String key, CacheMissHandler handler) {
-		return findAllFromCache(key, 0, handler);
+		return findAllFromCache(key, defaultCacheExpireSeconds, handler);
 	}
 
 	public List<T> findAllFromCache(String key, CacheStrategy cs, CacheMissHandler handler) {
-		return findAllFromCache(key, cs, 0, handler);
+		return findAllFromCache(key, cs, defaultCacheExpireSeconds, handler);
 	}
 
 	@SuppressWarnings("unchecked")

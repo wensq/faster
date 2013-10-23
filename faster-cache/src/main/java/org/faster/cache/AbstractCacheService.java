@@ -59,6 +59,7 @@ public abstract class AbstractCacheService implements CacheService {
     public Object getFromCache(String key, int expiration, CacheMissHandler handler) {
         String internalKey = buildInternalKey(key);
         if (expiration < 0) {
+            log.debug("expirtion({}) is negative, change to default expiration({}).", expiration, DEFAULT_EXPIRATION);
             return directSearch(key, DEFAULT_EXPIRATION, handler);
         }
 

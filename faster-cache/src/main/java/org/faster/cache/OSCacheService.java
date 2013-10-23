@@ -17,6 +17,7 @@ package org.faster.cache;
 
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.List;
 
@@ -44,11 +45,27 @@ public class OSCacheService extends AbstractCacheService {
 
     @Override
     protected Object doGetFromCache(String internalKey, int expiration, CacheMissHandler handler) {
+        StopWatch sw = null;
+        if (log.isDebugEnabled()) {
+            sw = new StopWatch();
+            sw.start();
+            log.debug("Getting from OSCache[key={}]...", internalKey);
+        }
+
+        Object ret = null;
         try {
-            return cache.getFromCache(internalKey, expiration);
+            ret = cache.getFromCache(internalKey, expiration);
+            if (ret != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("OSCache hit[key={}]. ({} ms)", internalKey, sw.getTime());
+                }
+            }
+            return ret;
         } catch (NeedsRefreshException nre) {
-            Object ret = null;
             try {
+                if (log.isDebugEnabled()) {
+                    log.debug("OSCache miss[key={}].", internalKey);
+                }
                 ret = directSearch(internalKey, expiration, handler);
             } finally {
                 if (ret == null) {
