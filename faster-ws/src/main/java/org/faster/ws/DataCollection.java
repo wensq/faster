@@ -39,6 +39,24 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 246720674451418194L;
 
+    @XmlAttribute
+    private int status = 200;
+
+    @XmlAttribute
+    private String statusCode = "OK";
+
+    @XmlAttribute
+    private String message;
+
+    public static final DataCollection SUCCESS = new DataCollection(200, "OK");
+    public static final DataCollection NO_CONTENT = new DataCollection(204, "No Content");
+
+    public static final DataCollection error(String message) {
+        DataCollection ret = new DataCollection(500, "ERROR");
+        ret.setMessage(message);
+        return ret;
+    }
+
 	// 本页数
 	@XmlAttribute
 	protected Integer count;
@@ -67,6 +85,11 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
 
 	public DataCollection() {}
 
+    public DataCollection(int status, String statusCode) {
+        this.status = status;
+        this.statusCode = statusCode;
+    }
+
 	public DataCollection(List<DATA> data) {
 		this.data = data;
 		if (data != null) {
@@ -77,6 +100,8 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
 
     private void initValueType(List<DATA> data) {
         if (data == null || data.isEmpty()) {
+            status = 204;
+            statusCode = "No Content";
             return;
         }
         dataType = data.get(0).getClass().getCanonicalName();
@@ -100,15 +125,22 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
     }
 
 	public void setData(List<DATA> data) {
-		if (data == null) {
+		if (data == null || data.isEmpty()) {
 			this.data = null;
 			count = 0;
+            status = 204;
+            statusCode = "No Content";
 			return;
 		}
 
 		this.data = data;
 		count = data.size();
         initValueType(data);
+    }
+
+    @XmlElement
+    public List<DATA> getData() {
+        return data;
     }
 
 	@XmlAttribute
@@ -140,11 +172,6 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
 			return null;
 		}
 		return pageNo < pageCount;
-	}
-
-    @XmlElement
-	public List<DATA> getData() {
-		return data;
 	}
 
 	public Integer getCount() {
@@ -193,5 +220,29 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
