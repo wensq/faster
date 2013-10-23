@@ -157,7 +157,6 @@ public class RedisResourceService implements ResourceService {
         redis.opsForSet().add(indexRefKey, indexKey);
     }
 
-    @SuppressWarnings("unchecked")
     private void addIndexedPropertyId(String resourceType, String propertyId) {
         String key = getIndexedPropertyKey(resourceType);
         redis.opsForSet().add(key, propertyId);
@@ -271,7 +270,7 @@ public class RedisResourceService implements ResourceService {
         sw.start();
         logger.info("Loading all {} Resources from Redis...", resourceType);
 
-        List<Resource> ret = null;
+        List<Resource> ret = new ArrayList<Resource>();
         if (convertResourceType && hasResourceTypeConverter()) {
             List<String> internalResourceTypes = getInternalResourceType(resourceType);
             for (String resType : internalResourceTypes) {
@@ -280,7 +279,7 @@ public class RedisResourceService implements ResourceService {
             }
         } else {
             String key = getResourceHashKey(resourceType);
-            ret = new ArrayList<Resource>(redis.opsForHash().values(key));
+            ret.addAll(redis.opsForHash().values(key));
         }
 
         logger.info("{} {} Resources loaded from Redis. ({} ms)", new Object[] {ret.size(), resourceType, sw.getTime()});
