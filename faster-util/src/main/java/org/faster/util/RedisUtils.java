@@ -194,8 +194,8 @@ public class RedisUtils {
                 for (Object value : values) {
                     byte[] rawKey = keySerializer.serialize(key);
                     byte[] rawValue = valueSerializer.serialize(value);
-                    Boolean sucessful = connection.sAdd(rawKey, rawValue);
-                    if (sucessful != null && sucessful) {
+                    Long adds = connection.sAdd(rawKey, rawValue);
+                    if (adds != null && adds > 0) {
                         count++;
                     }
                 }
@@ -224,8 +224,8 @@ public class RedisUtils {
                 for (Object value : values) {
                     byte[] rawKey = keySerializer.serialize(key);
                     byte[] rawValue = valueSerializer.serialize(value);
-                    Boolean sucessful = connection.sRem(rawKey, rawValue);
-                    if (sucessful != null && sucessful) {
+                    Long removes = connection.sRem(rawKey, rawValue);
+                    if (removes != null && removes > 0) {
                         count++;
                     }
                 }
