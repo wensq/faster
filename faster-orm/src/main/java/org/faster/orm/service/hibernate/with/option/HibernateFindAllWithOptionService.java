@@ -15,12 +15,6 @@
  */
 package org.faster.orm.service.hibernate.with.option;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
@@ -28,6 +22,12 @@ import org.faster.orm.option.QueryOption;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -55,7 +55,7 @@ public abstract class HibernateFindAllWithOptionService<PO extends GenericEntity
 		StopWatch sw = new StopWatch();
 		sw.start();
 
-		renderCriteria(criteria);
+//		renderCriteria(criteria);
 
 		List<PO> ret = fetchAll(criteria, queryOption);
 		postLoad(ret);
@@ -140,7 +140,7 @@ public abstract class HibernateFindAllWithOptionService<PO extends GenericEntity
 	public List<PO> findAllByEachOther(String aPropertyName, Object aPropertyValue, String bPropertyName,
 			Object bPropertyValue, QueryOption queryOption) {
 		// TODO 改造以提升效率
-		DetachedCriteria dc = buildCriteriaByEachOther(aPropertyName, aPropertyName, bPropertyName, bPropertyValue);
+		DetachedCriteria dc = buildCriteriaByEachOther(aPropertyName, aPropertyValue, bPropertyName, bPropertyValue);
 		return findAllByCriteria(dc, queryOption);
 	}
 
