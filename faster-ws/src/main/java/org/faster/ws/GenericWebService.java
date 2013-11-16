@@ -116,7 +116,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 
 	public int count(CRITERIA criteria) {
         renderCriteria(criteria);
-		String key = buildGlobalCacheKey("count:" + criteria);
+		String key = buildGlobalCacheKey("count:" + criteria.buildCacheKey());
         final CRITERIA c = criteria;
 		return (Integer) findObjectFromCache(key, CacheStrategy.fromString(c.getCacheStrategy()),
 				cacheExpireSeconds,
@@ -133,7 +133,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 	@SuppressWarnings("unchecked")
 	public DataCollection<PO> filter(CRITERIA criteria) {
         renderCriteria(criteria);
-		String key = buildGlobalCacheKey("filter:" + criteria);
+		String key = buildGlobalCacheKey("filter:" + criteria.buildCacheKey());
         final CRITERIA c = criteria;
 		return (DataCollection<PO>) findObjectFromCache(key, CacheStrategy.fromString(c.getCacheStrategy()),
 				cacheExpireSeconds,
@@ -150,7 +150,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 	@SuppressWarnings("unchecked")
 	public DataCollection<PO> search(CRITERIA criteria) {
         renderCriteria(criteria);
-		String key = buildGlobalCacheKey("search:" + criteria);
+		String key = buildGlobalCacheKey("search:" + criteria.buildCacheKey());
         final CRITERIA c = criteria;
 		return (DataCollection<PO>) findObjectFromCache(key, CacheStrategy.fromString(c.getCacheStrategy()),
 				cacheExpireSeconds,
