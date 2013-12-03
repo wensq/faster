@@ -123,6 +123,7 @@ public abstract class HibernateDeleteService<PO extends GenericEntity<ID>, ID ex
         try {
             execute("delete from " + persistClassName + " where " + idFieldName + " = ?", id);
         } catch (Exception e) {
+            log.debug("Delete {}#{} by HQL failed, load and delete again...", persistClassName, id);
             PO po = get(id);
             if (po != null) {
                 doDelete(po);
