@@ -15,12 +15,12 @@
  */
 package org.faster.orm.service.hibernate;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.model.GenericEntity;
 import org.hibernate.criterion.DetachedCriteria;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -167,16 +167,13 @@ public abstract class HibernateDeleteService<PO extends GenericEntity<ID>, ID ex
 
 		int count;
 		try {
-			count = execute("delete from " + persistClassName + " where " + idFieldName + " in ?", ids);
+			count = execute("delete from " + persistClassName + " where " + idFieldName + " in (?)", StringUtils.join(ids, ","));
 		} catch (Exception e) {
 			log.debug("Delete " + persistClassName + " in id list failed, try again...", e);
-			List<PO> pos = new ArrayList<PO>(ids.size());
 			for (ID id : ids) {
-				PO po = build(idFieldName, id);
-				pos.add(po);
+                doDelete(id);
 			}
-			doDelete(pos);
-			count = pos.size();
+			count = ids.size();
 		}
 
 		logMultiComplete("Deleted", count, sw.getTime());
