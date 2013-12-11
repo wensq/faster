@@ -15,17 +15,15 @@
  */
 package org.faster.orm.service.hibernate;
 
+import org.faster.orm.model.GenericEntity;
+import org.faster.orm.service.GenericService;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.time.StopWatch;
-import org.faster.orm.model.GenericEntity;
-import org.faster.orm.service.GenericService;
 
 /**
  * @author sqwen
@@ -98,27 +96,14 @@ public abstract class HibernateBuildService<PO extends GenericEntity<ID>, ID ext
 		return pos;
 	}
 
-	protected void postLoad(Collection<PO> pos) {
-		if (isInitialRequired()) {
-			StopWatch sw = null;
-			if (log.isDebugEnabled()) {
-				sw = new StopWatch();
-				sw.start();
-				log.debug("Initializing {}...", persistClassName);
-			}
-			initialize(pos);
-			if (log.isDebugEnabled()) {
-				log.debug("Initialized {} {}. ({} ms)", new Object[] { pos.size(), persistClassName, sw.getTime() });
-			}
-		}
-	}
+    protected void postLoad(PO po) {
+        if (po == null) {
+            return;
+        }
 
-	protected void postLoad(PO... pos) {
-		if (pos == null || pos.length == 0) {
-			return;
-		}
-
-		postLoad(Arrays.asList(pos));
-	}
+        if (isInitialRequired()) {
+            initialize(po);
+        }
+    }
 
 }

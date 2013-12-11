@@ -55,10 +55,10 @@ public abstract class HibernateFindAllWithOptionService<PO extends GenericEntity
 		StopWatch sw = new StopWatch();
 		sw.start();
 
-//		renderCriteria(criteria);
-
 		List<PO> ret = fetchAll(criteria, queryOption);
-		postLoad(ret);
+        for (PO po : ret) {
+            postLoad(po);
+        }
 
 		logMultiComplete("Found", ret.size(), sw.getTime());
 		return ret;

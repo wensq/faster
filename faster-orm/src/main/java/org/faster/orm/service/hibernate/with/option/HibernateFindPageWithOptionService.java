@@ -15,10 +15,6 @@
  */
 package org.faster.orm.service.hibernate.with.option;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
@@ -27,6 +23,10 @@ import org.faster.orm.pagination.PagedList;
 import org.faster.orm.pagination.SimplePagedList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author sqwen
@@ -66,7 +66,10 @@ public abstract class HibernateFindPageWithOptionService<PO extends GenericEntit
 			log.warn("{}'s model should be fixed, the FetchMode of OneToMany/ManyToMany should set to Lazy.",
 					persistClassName);
 		}
-		postLoad(data);
+
+        for (PO po : data) {
+            postLoad(po);
+        }
 
 		PagedList<PO> ret = new SimplePagedList<PO>(count, firstResult, limit, data);
 
