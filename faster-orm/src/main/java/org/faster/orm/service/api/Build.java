@@ -15,12 +15,12 @@
  */
 package org.faster.orm.service.api;
 
+import org.faster.orm.model.GenericEntity;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.faster.orm.model.GenericEntity;
 
 /**
  * @author sqwen
@@ -37,6 +37,10 @@ public interface Build<PO extends GenericEntity<ID>, ID extends Serializable> {
 
 	PO build(Object form);
 
+	PO build(Object form, String[] permitPropertyNames);
+
 	List<PO> buildFromForms(Collection<?> forms);
+
+	List<PO> buildFromForms(Collection<?> forms, String[] permitPropertyNames);
 
 }

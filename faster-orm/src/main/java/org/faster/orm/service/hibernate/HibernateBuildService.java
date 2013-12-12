@@ -78,7 +78,23 @@ public abstract class HibernateBuildService<PO extends GenericEntity<ID>, ID ext
 		return po;
 	}
 
-	@Override
+    @Override
+    public List<PO> buildFromForms(Collection<?> forms, String[] permitPropertyNames) {
+        List<PO> pos = new ArrayList<PO>(forms.size());
+        for (Object form : forms) {
+            pos.add(build(form, permitPropertyNames));
+        }
+        return pos;
+    }
+
+    @Override
+    public PO build(Object form, String[] permitPropertyNames) {
+        PO po = build();
+        po.updateAttributes(po, permitPropertyNames);
+        return po;
+    }
+
+    @Override
 	public List<PO> buildFromForms(Collection<?> forms) {
 		if (forms == null || forms.isEmpty()) {
 			return Collections.emptyList();
