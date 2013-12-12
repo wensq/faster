@@ -91,43 +91,49 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 		return cacheGroup;
 	}
 
-    public OpResult create(PO po) {
+    public OpResult create(PO dto) {
         if (getPermitPropertyNames() == null) {
             return OpResult.failed("Create denied: not provide permit properties");
         }
 
-        if (po.getId() != null) {
-            return update(po.getId(), po);
+        if (dto.getId() != null) {
+            return update(dto.getId(), dto);
         }
 
         try {
+            PO po = getGenericService().build(dto, getPermitPropertyNames());
             getGenericService().persist(po);
             return OpResult.SUCCESS;
         } catch (Exception e) {
-            logger.error("Add " + poClassName + " failed: " + po, e);
+            logger.error("Add " + poClassName + " failed: " + dto, e);
             return OpResult.failed(e.getMessage());
         }
     }
 
-    public OpResult update(ID id, PO po) {
+
+
+    public OpResult update(ID id, PO dto) {
         if (getPermitPropertyNames() == null) {
             return OpResult.failed("Update denied: not provide permit properties");
         }
 
-        PO old = getGenericService().get(id);
-        if (old == null) {
+        PO po = getGenericService().get(id);
+        if (po == null) {
             return OpResult.failed(poClassName + "#" + id + " does not exists");
         }
 
         try {
-            Beans.slicePopulate(this, po, isIgnoreNull(), getPermitPropertyNames());
-            getGenericService().update(old);
+            Beans.slicePopulate(po, dto, isIgnoreNull(), getPermitPropertyNames());
+            beforeUpdate(po, dto);
+            getGenericService().update(po);
             return OpResult.SUCCESS;
         } catch (Exception e) {
-            logger.error("Update " + poClassName + "#" + id + " failed: " + po, e);
+            logger.error("Update " + poClassName + "#" + id + " failed: " + dto, e);
             return OpResult.failed(e.getMessage());
         }
     }
+
+    protected void beforeUpdate(PO po, PO dto) {}
 
     protected String[] getPermitPropertyNames() {
        return null;
