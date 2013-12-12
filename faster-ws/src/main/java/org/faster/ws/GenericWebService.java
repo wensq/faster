@@ -30,10 +30,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 通用范型WebService基类
@@ -235,5 +239,20 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 		dc.setData(pos);
 		return dc;
 	}
+
+    /**
+     * Some Utilities
+     */
+
+    protected String getFilename(HttpHeaders header) {
+        MultivaluedMap<String, String> heades = header.getRequestHeaders();
+        String cdHeader = heades.getFirst("Content-Disposition");
+        if (cdHeader == null) {
+            return null;
+        }
+        Pattern p = Pattern.compile("filename=\".*\"");
+        Matcher m = p.matcher(cdHeader);
+        return m.find() ? m.group() : null;
+    }
 
 }
