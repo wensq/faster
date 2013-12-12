@@ -110,8 +110,6 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
         }
     }
 
-
-
     public OpResult update(ID id, PO dto) {
         if (getPermitPropertyNames() == null) {
             return OpResult.failed("Update denied: not provide permit properties");
@@ -143,7 +141,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
         return true;
     }
 
-    public OpResult delete(ID id) {
+    public OpResult destroy(ID id) {
         try {
             getGenericService().delete(id);
             return OpResult.SUCCESS;
