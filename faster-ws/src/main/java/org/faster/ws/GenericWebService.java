@@ -22,6 +22,7 @@ import org.faster.orm.criteria.GenericCriteria;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.pagination.PagedList;
 import org.faster.orm.service.GenericService;
+import org.faster.util.Beans;
 import org.hibernate.criterion.DetachedCriteria;
 
 import javax.ws.rs.Consumes;
@@ -40,8 +41,8 @@ import java.util.List;
  * @author sqwen
  */
 @SuppressWarnings("rawtypes")
-@Consumes({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML })
+@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML })
 public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO extends GenericEntity<ID>, ID extends Serializable>
 		extends CacheSupport<PO> {
 
@@ -89,6 +90,62 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 	protected String getCacheGroup() {
 		return cacheGroup;
 	}
+
+    public OpResult create(PO po) {
+        if (getPermitPropertyNames() == null) {
+            return OpResult.failed("Create denied: not provide permit properties");
+        }
+
+        if (po.getId() != null) {
+            return update(po.getId(), po);
+        }
+
+        try {
+            getGenericService().persist(po);
+            return OpResult.SUCCESS;
+        } catch (Exception e) {
+            logger.error("Add " + poClassName + " failed: " + po, e);
+            return OpResult.failed(e.getMessage());
+        }
+    }
+
+    public OpResult update(ID id, PO po) {
+        if (getPermitPropertyNames() == null) {
+            return OpResult.failed("Update denied: not provide permit properties");
+        }
+
+        PO old = getGenericService().get(id);
+        if (old == null) {
+            return OpResult.failed(poClassName + "#" + id + " does not exists");
+        }
+
+        try {
+            Beans.slicePopulate(this, po, isIgnoreNull(), getPermitPropertyNames());
+            getGenericService().update(old);
+            return OpResult.SUCCESS;
+        } catch (Exception e) {
+            logger.error("Update " + poClassName + "#" + id + " failed: " + po, e);
+            return OpResult.failed(e.getMessage());
+        }
+    }
+
+    protected String[] getPermitPropertyNames() {
+       return null;
+    }
+
+    protected boolean isIgnoreNull() {
+        return true;
+    }
+
+    public OpResult delete(ID id) {
+        try {
+            getGenericService().delete(id);
+            return OpResult.SUCCESS;
+        } catch (Exception e) {
+            logger.error("Delete " + poClassName + "#" + id + " failed.", e);
+            return OpResult.failed(e.getMessage());
+        }
+    }
 
     protected void renderCriteria(CRITERIA criteria) {}
 
