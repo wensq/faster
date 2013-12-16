@@ -135,6 +135,30 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
         }
     }
 
+    public OpResult update(ID[] ids, PO dto) {
+        if (getPermitPropertyNames() == null) {
+            return OpResult.failed("Update denied: not provide permit properties");
+        }
+
+        for (ID id : ids) {
+            PO po = getGenericService().get(id);
+            if (po == null) {
+                continue;
+            }
+
+            try {
+                Beans.slicePopulate(po, dto, isIgnoreNull(), getPermitPropertyNames());
+                beforeUpdate(po, dto);
+                getGenericService().update(po);
+            } catch (Exception e) {
+                logger.error("Update " + poClassName + "#" + id + " failed: " + dto, e);
+                return OpResult.failed(e.getMessage());
+            }
+        }
+        return OpResult.SUCCESS;
+    }
+
+
     protected void beforeUpdate(PO po, PO dto) {}
 
     protected String[] getPermitPropertyNames() {
@@ -153,6 +177,18 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
             logger.error("Delete " + poClassName + "#" + id + " failed.", e);
             return OpResult.failed(e.getMessage());
         }
+    }
+
+    public OpResult destroy(ID[] ids) {
+        for (ID id : ids) {
+            try {
+                getGenericService().delete(id);
+            } catch (Exception e) {
+                logger.error("Delete " + poClassName + "#" + id + " failed.", e);
+                return OpResult.failed(e.getMessage());
+            }
+        }
+        return OpResult.SUCCESS;
     }
 
     protected void renderCriteria(CRITERIA criteria) {}
