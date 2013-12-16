@@ -147,7 +147,7 @@ public abstract class HibernateUpdateService<PO extends GenericEntity<ID>, ID ex
 			sw.start();
 		}
 
-		execute("update " + persistClassName + " set " + attributeName + " ? where id = ?", attributeValue, id);
+		execute("update " + persistClassName + " set " + attributeName + " = ? where id = ?", attributeValue, id);
 
 		if (log.isDebugEnabled()) {
 			logComplete("Updated", id, sw.getTime());
