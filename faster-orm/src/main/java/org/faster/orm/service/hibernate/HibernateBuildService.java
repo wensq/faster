@@ -72,42 +72,42 @@ public abstract class HibernateBuildService<PO extends GenericEntity<ID>, ID ext
 	}
 
 	@Override
-	public PO build(Object form) {
+	public PO build(Object dto) {
 		PO po = build();
-		po.updateAttributes(po);
+		po.updateAttributes(dto);
 		return po;
 	}
 
     @Override
-    public List<PO> buildFromForms(Collection<?> forms, String[] permitPropertyNames) {
-        List<PO> pos = new ArrayList<PO>(forms.size());
-        for (Object form : forms) {
-            pos.add(build(form, permitPropertyNames));
+    public List<PO> buildFromDTOs(Collection<?> dtos, String[] permitPropertyNames) {
+        List<PO> pos = new ArrayList<PO>(dtos.size());
+        for (Object dto : dtos) {
+            pos.add(build(dto, permitPropertyNames));
         }
         return pos;
     }
 
     @Override
-    public PO build(Object form, String[] permitPropertyNames) {
+    public PO build(Object dto, String[] permitPropertyNames) {
         PO po = build();
-        po.updateAttributes(po, permitPropertyNames);
+        po.updateAttributes(dto, permitPropertyNames);
         return po;
     }
 
     @Override
-	public List<PO> buildFromForms(Collection<?> forms) {
-		if (forms == null || forms.isEmpty()) {
+	public List<PO> buildFromDTOs(Collection<?> dtos) {
+		if (dtos == null || dtos.isEmpty()) {
 			return Collections.emptyList();
 		}
 
-		if (forms.size() == 1) {
-			PO po = build(forms.iterator().next());
+		if (dtos.size() == 1) {
+			PO po = build(dtos.iterator().next());
 			return Collections.singletonList(po);
 		}
 
-		List<PO> pos = new ArrayList<PO>(forms.size());
-		for (Object form : forms) {
-			pos.add(build(form));
+		List<PO> pos = new ArrayList<PO>(dtos.size());
+		for (Object dto : dtos) {
+			pos.add(build(dto));
 		}
 		return pos;
 	}

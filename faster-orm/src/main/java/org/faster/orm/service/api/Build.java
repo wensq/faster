@@ -35,12 +35,12 @@ public interface Build<PO extends GenericEntity<ID>, ID extends Serializable> {
 
 	List<PO> buildFromMaps(Collection<Map<String, ?>> attributesCollection);
 
-	PO build(Object form);
+	PO build(Object dto);
 
-	PO build(Object form, String[] permitPropertyNames);
+	PO build(Object dto, String[] permitPropertyNames);
 
-	List<PO> buildFromForms(Collection<?> forms);
+	List<PO> buildFromDTOs(Collection<?> dtos);
 
-	List<PO> buildFromForms(Collection<?> forms, String[] permitPropertyNames);
+	List<PO> buildFromDTOs(Collection<?> dtos, String[] permitPropertyNames);
 
 }
