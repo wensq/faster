@@ -90,9 +90,8 @@ public class GenericCriteria<PO> {
 	 */
 	@QueryParam("cache")
 	@DefaultValue("YES")
-	@XmlAttribute
 	@NoQuery
-	protected String cache;
+	protected transient String cache;
 
 	@XmlTransient
 	@NoQuery
@@ -287,6 +286,10 @@ public class GenericCriteria<PO> {
 	 *            查询条件封装
 	 */
 	protected void renderCriteria(DetachedCriteria dc) {}
+
+    public String buildCacheKey() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 
 	@Override
 	public String toString() {
