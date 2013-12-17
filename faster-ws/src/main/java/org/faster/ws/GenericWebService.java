@@ -104,12 +104,13 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
             return update(dto.getId(), dto);
         }
 
+        PO po = null;
         try {
-            PO po = getGenericService().build(dto, getPermitPropertyNames());
+            po = getGenericService().build(dto, getPermitPropertyNames());
             getGenericService().persist(po);
             return OpResult.SUCCESS;
         } catch (Exception e) {
-            logger.error("Add " + poClassName + " failed: " + dto, e);
+            logger.error("Add " + poClassName + " failed: \nDTO: " + dto + "\nPO: " + po, e);
             return OpResult.failed(e.getMessage());
         }
     }
