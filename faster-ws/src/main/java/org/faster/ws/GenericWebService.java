@@ -107,8 +107,8 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
         PO po = null;
         try {
             po = getGenericService().build(dto, getPermitPropertyNames());
-            getGenericService().persist(po);
-            return OpResult.SUCCESS;
+            ID id = getGenericService().save(po);
+            return OpResult.created(id + "");
         } catch (Exception e) {
             logger.error("Add " + poClassName + " failed: \nDTO: " + dto + "\nPO: " + po, e);
             return OpResult.failed(e.getMessage());

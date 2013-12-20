@@ -19,6 +19,8 @@ public class OpResult {
 
     private String message;
 
+    private String resourceId;
+
     public OpResult() {}
 
     public OpResult(boolean success) {
@@ -40,6 +42,13 @@ public class OpResult {
         this.success = false;
         this.code = code;
         this.message = message;
+    }
+
+    public static final OpResult created(String resourceId) {
+        OpResult ret = new OpResult();
+        ret.setSuccess(true);
+        ret.setResourceId(resourceId);
+        return ret;
     }
 
     public static final OpResult failed(Integer errorCode) {
@@ -76,5 +85,13 @@ public class OpResult {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
     }
 }
