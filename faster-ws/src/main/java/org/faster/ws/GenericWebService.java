@@ -15,6 +15,7 @@
  */
 package org.faster.ws;
 
+import org.apache.commons.lang3.StringUtils;
 import org.faster.cache.CacheMissHandler;
 import org.faster.cache.CacheStrategy;
 import org.faster.cache.CacheSupport;
@@ -181,13 +182,11 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
     }
 
     public OpResult destroy(ID[] ids) {
-        for (ID id : ids) {
-            try {
-                getGenericService().delete(id);
-            } catch (Exception e) {
-                logger.error("Delete " + poClassName + "#" + id + " failed.", e);
-                return OpResult.failed(e.getMessage());
-            }
+        try {
+            getGenericService().delete(ids);
+        } catch (Exception e) {
+            logger.error("Delete " + poClassName + "#" + StringUtils.join(ids, ",") + " failed.", e);
+            return OpResult.failed(e.getMessage());
         }
         return OpResult.SUCCESS;
     }
