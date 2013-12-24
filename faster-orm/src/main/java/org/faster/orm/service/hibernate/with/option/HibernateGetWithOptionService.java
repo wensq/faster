@@ -15,17 +15,17 @@
  */
 package org.faster.orm.service.hibernate.with.option;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.faster.orm.service.hibernate.HibernateFindPageService;
 import org.hibernate.CacheMode;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author sqwen
@@ -50,7 +50,9 @@ public abstract class HibernateGetWithOptionService<PO extends GenericEntity<ID>
 			getSession().setCacheMode(queryOption.isCacheEnabled() ? CacheMode.NORMAL : CacheMode.IGNORE);
 			ret = (PO) getSession().get(persistClass, id);
 			getSession().setCacheMode(origCacheMode);
-			postLoad(ret);
+            if (ret != null) {
+                postLoad(ret);
+            }
 		}
 
 		if (log.isDebugEnabled()) {
