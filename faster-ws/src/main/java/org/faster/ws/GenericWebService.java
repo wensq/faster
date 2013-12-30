@@ -109,11 +109,19 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
         try {
             po = getGenericService().build(dto, getPermitPropertyNames());
             ID id = getGenericService().save(po);
-            return OpResult.created(id + "");
+            return OpResult.created(String.valueOf(id));
         } catch (Exception e) {
             logger.error("Add " + poClassName + " failed: \nDTO: " + dto + "\nPO: " + po, e);
             return OpResult.failed(e.getMessage());
         }
+    }
+
+    public OpResult[] create(PO[] dtos) {
+        OpResult[] ret = new OpResult[dtos.length];
+        for (int i = 0; i < dtos.length; i++) {
+          ret[i] = create(dtos[i]);
+        }
+        return ret;
     }
 
     public OpResult update(ID id, PO dto) {
@@ -157,7 +165,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
                 return OpResult.failed(e.getMessage());
             }
         }
-        return OpResult.SUCCESS;
+        return OpResult.success().count(ids.length);
     }
 
 
@@ -183,12 +191,23 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 
     public OpResult destroy(ID[] ids) {
         try {
-            getGenericService().delete(ids);
+            int count = getGenericService().delete(ids);
+            return OpResult.success().count(count);
         } catch (Exception e) {
             logger.error("Delete " + poClassName + "#" + StringUtils.join(ids, ",") + " failed.", e);
             return OpResult.failed(e.getMessage());
         }
-        return OpResult.SUCCESS;
+    }
+
+    public OpResult destroy(CRITERIA criteria) {
+        renderCriteria(criteria);
+        try {
+            int count = getGenericService().deleteByCriteria(criteria.buildCriteria());
+            return OpResult.success().count(count);
+        } catch (Exception e) {
+            logger.error("Delete " + poClassName + " by " + criteria + " failed.", e);
+            return OpResult.failed(e.getMessage());
+        }
     }
 
     protected void renderCriteria(CRITERIA criteria) {}
