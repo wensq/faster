@@ -2,6 +2,7 @@ package org.faster.ws;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -13,13 +14,20 @@ public class OpResult {
 
     public static final OpResult SUCCESS = new OpResult(true);
 
-    private boolean success;
-
+    @XmlAttribute
     private Integer code;
 
+    @XmlAttribute
+    private boolean success;
+
+    @XmlAttribute
     private String message;
 
-    private String resourceId;
+    @XmlAttribute
+    private Integer count;
+
+    @XmlAttribute
+    private String createdId;
 
     public OpResult() {}
 
@@ -32,35 +40,51 @@ public class OpResult {
         this.message = message;
     }
 
-    public OpResult(boolean success, Integer code, String message) {
-        this.success = false;
-        this.code = code;
-        this.message = message;
+    public static final OpResult success() {
+        return new OpResult(true);
     }
 
-    public OpResult(Integer code, String message) {
-        this.success = false;
-        this.code = code;
-        this.message = message;
+    public static final OpResult success(String message) {
+        return success().message(message);
     }
 
-    public static final OpResult created(String resourceId) {
+    public static final OpResult created(String createdId) {
         OpResult ret = new OpResult();
         ret.setSuccess(true);
-        ret.setResourceId(resourceId);
+        ret.setCreatedId(createdId);
         return ret;
     }
 
-    public static final OpResult failed(Integer errorCode) {
-        return new OpResult(false, errorCode, null);
+    public static final OpResult failed() {
+        return new OpResult(false);
     }
 
     public static final OpResult failed(String errorMessage) {
-        return new OpResult(false, null, errorMessage);
+        return failed().message(errorMessage);
     }
 
-    public static final OpResult failed(Integer errorCode, String errorMessage) {
-        return new OpResult(errorCode, errorMessage);
+    public OpResult code(Integer code) {
+        this.code = code;
+        return this;
+    }
+
+    public OpResult message(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public OpResult count(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    public OpResult createdId(String createdId) {
+        this.createdId = createdId;
+        return this;
+    }
+
+    public OpResult createdId(Number createdId) {
+        return createdId( String.valueOf(createdId) );
     }
 
     public boolean isSuccess() {
@@ -87,11 +111,19 @@ public class OpResult {
         this.message = message;
     }
 
-    public String getResourceId() {
-        return resourceId;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setResourceId(String resourceId) {
-        this.resourceId = resourceId;
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public String getCreatedId() {
+        return createdId;
+    }
+
+    public void setCreatedId(String createdId) {
+        this.createdId = createdId;
     }
 }
