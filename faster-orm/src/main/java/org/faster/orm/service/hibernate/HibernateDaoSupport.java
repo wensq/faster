@@ -52,7 +52,7 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
 
 	protected SessionFactory sessionFactory;
 
-	protected final Class<PO> persistClass;
+	protected Class<PO> persistClass;
 
 	protected final String persistClassName;
 
@@ -68,16 +68,23 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
 
 	@SuppressWarnings("unchecked")
 	public HibernateDaoSupport() {
-        Type genericSuperClass = getClass().getGenericSuperclass();
-        if (getClass().getName().contains("$$EnhancerByCGLIB$$")) {
-            genericSuperClass = getClass().getSuperclass().getGenericSuperclass();
+        persistClass = getPersistClass();
+        if (persistClass == null) {
+            Type genericSuperClass = getClass().getGenericSuperclass();
+            if (getClass().getName().contains("$$EnhancerByCGLIB$$")) {
+                genericSuperClass = getClass().getSuperclass().getGenericSuperclass();
+            }
+            persistClass = (Class<PO>) ((ParameterizedType) genericSuperClass).getActualTypeArguments()[0];
         }
-		persistClass = (Class<PO>) ((ParameterizedType) genericSuperClass).getActualTypeArguments()[0];
 		Cache cache = persistClass.getAnnotation(Cache.class);
         cacheEnabled = cache != null && cache.usage() != CacheConcurrencyStrategy.NONE;
 		persistClassName = persistClass.getSimpleName();
 		parsePersistentFields();
 	}
+
+    protected Class getPersistClass() {
+        return null;
+    }
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
