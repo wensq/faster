@@ -68,11 +68,6 @@
     </distributionManagement>
 
 	<repositories>
-		<repository>
-			<id>sqwen</id>
-			<name>Sqwen's maven repository</name>
-			<url>http://127.0.0.1:8081/nexus/content/groups/public/</url>
-		</repository>
         <repository>
             <id>EASTCOM-public</id>
             <name>EASTCOM Software public maven respository</name>
