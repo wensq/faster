@@ -112,7 +112,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
             return OpResult.created(String.valueOf(id));
         } catch (Exception e) {
             logger.error("Add " + poClassName + " failed: \nDTO: " + dto + "\nPO: " + po, e);
-            return OpResult.failed(e.getMessage());
+            return OpResult.internalServerError(e.getMessage());
         }
     }
 
@@ -126,28 +126,28 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 
     public OpResult update(ID id, PO dto) {
         if (getPermitPropertyNames() == null) {
-            return OpResult.failed("Update denied: not provide permit properties");
+            return OpResult.internalServerError("Update denied: not provide permit properties");
         }
 
         PO po = getGenericService().get(id);
         if (po == null) {
-            return OpResult.failed(poClassName + "#" + id + " does not exists");
+            return OpResult.notFound().message(poClassName + "#" + id + " does not exists");
         }
 
         try {
             Beans.slicePopulate(po, dto, isIgnoreNull(), getPermitPropertyNames());
             beforeUpdate(po, dto);
             getGenericService().update(po);
-            return OpResult.SUCCESS;
+            return OpResult.OK;
         } catch (Exception e) {
             logger.error("Update " + poClassName + "#" + id + " failed: " + dto, e);
-            return OpResult.failed(e.getMessage());
+            return OpResult.internalServerError(e.getMessage());
         }
     }
 
     public OpResult update(ID[] ids, PO dto) {
         if (getPermitPropertyNames() == null) {
-            return OpResult.failed("Update denied: not provide permit properties");
+            return OpResult.internalServerError("Update denied: not provide permit properties");
         }
 
         for (ID id : ids) {
@@ -162,10 +162,10 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
                 getGenericService().update(po);
             } catch (Exception e) {
                 logger.error("Update " + poClassName + "#" + id + " failed: " + dto, e);
-                return OpResult.failed(e.getMessage());
+                return OpResult.internalServerError(e.getMessage());
             }
         }
-        return OpResult.success().count(ids.length);
+        return OpResult.ok().count(ids.length);
     }
 
 
@@ -181,21 +181,21 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
 
     public OpResult destroy(ID id) {
         try {
-            getGenericService().delete(id);
-            return OpResult.SUCCESS;
+            int count = getGenericService().delete(id);
+            return OpResult.ok().count(count);
         } catch (Exception e) {
             logger.error("Delete " + poClassName + "#" + id + " failed.", e);
-            return OpResult.failed(e.getMessage());
+            return OpResult.internalServerError(e.getMessage());
         }
     }
 
     public OpResult destroy(ID[] ids) {
         try {
             int count = getGenericService().delete(ids);
-            return OpResult.success().count(count);
+            return OpResult.ok().count(count);
         } catch (Exception e) {
             logger.error("Delete " + poClassName + "#" + StringUtils.join(ids, ",") + " failed.", e);
-            return OpResult.failed(e.getMessage());
+            return OpResult.internalServerError(e.getMessage());
         }
     }
 
@@ -203,10 +203,10 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
         renderCriteria(criteria);
         try {
             int count = getGenericService().deleteByCriteria(criteria.buildCriteria());
-            return OpResult.success().count(count);
+            return OpResult.ok().count(count);
         } catch (Exception e) {
             logger.error("Delete " + poClassName + " by " + criteria + " failed.", e);
-            return OpResult.failed(e.getMessage());
+            return OpResult.internalServerError(e.getMessage());
         }
     }
 
