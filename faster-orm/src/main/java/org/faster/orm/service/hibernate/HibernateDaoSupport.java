@@ -19,7 +19,6 @@ import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.option.QueryOption;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.annotations.Cache;
@@ -282,36 +281,6 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
             throw new RuntimeException(e);
         }
 		return map;
-	}
-
-	public int execute(String queryString) {
-		return execute(queryString, (Object[]) null);
-	}
-
-	public int execute(String queryString, Object value) {
-		return execute(queryString, new Object[] { value });
-	}
-
-	public int execute(final String queryString, final Object... values) {
-		Query queryObject = getSession().createQuery(queryString);
-		if (values != null) {
-			for (int i = 0; i < values.length; i++) {
-				queryObject.setParameter(i, values[i]);
-			}
-		}
-
-		return queryObject.executeUpdate();
-	}
-
-	public int execute(final String queryString, final List<?> values) {
-		Query queryObject = getSession().createQuery(queryString);
-		if (values != null) {
-			for (int i = 0; i < values.size(); i++) {
-				queryObject.setParameter(i, values.get(i));
-			}
-		}
-
-		return queryObject.executeUpdate();
 	}
 
 	// 日志常用操作方法封装

@@ -16,7 +16,6 @@
 package org.faster.orm.service.hibernate;
 
 import org.faster.orm.model.GenericEntity;
-import org.faster.orm.service.GenericService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,8 +28,7 @@ import java.util.Map;
  * @author sqwen
  */
 public abstract class HibernateBuildService<PO extends GenericEntity<ID>, ID extends Serializable>
-		extends HibernateDaoSupport<PO, ID>
-		implements GenericService<PO, ID> {
+		extends HibernateExecuteService<PO, ID> {
 
 	@Override
 	public PO build() {

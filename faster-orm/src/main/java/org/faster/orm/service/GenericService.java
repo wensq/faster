@@ -15,19 +15,18 @@
  */
 package org.faster.orm.service;
 
-import java.io.Serializable;
-
 import org.faster.orm.model.GenericEntity;
+import org.faster.orm.service.api.Build;
 import org.faster.orm.service.api.Count;
 import org.faster.orm.service.api.Create;
 import org.faster.orm.service.api.Delete;
+import org.faster.orm.service.api.Execute;
 import org.faster.orm.service.api.Exists;
 import org.faster.orm.service.api.Find;
 import org.faster.orm.service.api.FindAll;
 import org.faster.orm.service.api.FindPage;
 import org.faster.orm.service.api.Get;
 import org.faster.orm.service.api.Initialize;
-import org.faster.orm.service.api.Build;
 import org.faster.orm.service.api.Persist;
 import org.faster.orm.service.api.Project;
 import org.faster.orm.service.api.ProjectPage;
@@ -42,11 +41,14 @@ import org.faster.orm.service.api.with.option.GetWithOption;
 import org.faster.orm.service.api.with.option.ProjectPageWithOption;
 import org.faster.orm.service.api.with.option.ProjectWithOption;
 
+import java.io.Serializable;
+
 /**
  * @author sqwen
  */
 public interface GenericService<PO extends GenericEntity<ID>, ID extends Serializable>
-		extends Build<PO, ID>, Persist<PO, ID>, Save<PO, ID>, Create<PO, ID>, Update<PO, ID>, Delete<PO, ID>,
+		extends Execute<PO, ID>,
+        Build<PO, ID>, Persist<PO, ID>, Save<PO, ID>, Create<PO, ID>, Update<PO, ID>, Delete<PO, ID>,
 		Count<PO, ID>, Exists<PO, ID>,
 		Get<PO, ID>, Find<PO, ID>, FindAll<PO, ID>, FindPage<PO, ID>,
 		GetWithOption<PO, ID>, FindWithOption<PO, ID>, FindAllWithOption<PO, ID>, FindPageWithOption<PO, ID>,
