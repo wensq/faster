@@ -25,6 +25,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>faster-test</artifactId>
+    <name>faster test module</name>
 
     <dependencies>
         <dependency>
