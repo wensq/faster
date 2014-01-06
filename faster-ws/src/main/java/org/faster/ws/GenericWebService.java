@@ -46,8 +46,8 @@ import java.util.regex.Pattern;
  * @author sqwen
  */
 @SuppressWarnings("rawtypes")
-@Consumes({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML })
-@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML })
+@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_XML })
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_XML })
 public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO extends GenericEntity<ID>, ID extends Serializable>
 		extends CacheSupport<PO> {
 
@@ -150,6 +150,7 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
             return OpResult.internalServerError("Update denied: not provide permit properties");
         }
 
+        int count = 0;
         for (ID id : ids) {
             PO po = getGenericService().get(id);
             if (po == null) {
@@ -160,12 +161,13 @@ public abstract class GenericWebService<CRITERIA extends GenericCriteria<PO>, PO
                 Beans.slicePopulate(po, dto, isIgnoreNull(), getPermitPropertyNames());
                 beforeUpdate(po, dto);
                 getGenericService().update(po);
+                count++;
             } catch (Exception e) {
                 logger.error("Update " + poClassName + "#" + id + " failed: " + dto, e);
                 return OpResult.internalServerError(e.getMessage());
             }
         }
-        return OpResult.ok().count(ids.length);
+        return OpResult.ok().count(count);
     }
 
 
