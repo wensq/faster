@@ -38,7 +38,7 @@ public abstract class HibernateFindWithOptionService<PO extends GenericEntity<ID
 	@Override
 	public PO findByCriteria(DetachedCriteria criteria, QueryOption queryOption) {
 		log.info("Finding one {} with cache {} by {}...",
-				new Object[] { persistClassName, getCacheDisplay(cacheEnabled), criteria });
+				new Object[] { persistClassName, getCacheDisplay(queryOption.isCacheEnabled()), criteria });
 		StopWatch sw = new StopWatch();
 		sw.start();
 

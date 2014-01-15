@@ -37,7 +37,7 @@ public abstract class HibernateFindAllWithOptionService<PO extends GenericEntity
 
 	@Override
 	public List<PO> findAll(QueryOption queryOption) {
-		log.info("Finding all {} with cache {}...", persistClassName, getCacheDisplay(cacheEnabled));
+		log.info("Finding all {} with cache {}...", persistClassName, getCacheDisplay(queryOption.isCacheEnabled()));
 		StopWatch sw = new StopWatch();
 		sw.start();
 
@@ -51,7 +51,7 @@ public abstract class HibernateFindAllWithOptionService<PO extends GenericEntity
 	@Override
 	public List<PO> findAllByCriteria(DetachedCriteria criteria, QueryOption queryOption) {
 		log.info("Finding all {} with cache {} by {}...",
-				new Object[] { persistClassName, getCacheDisplay(cacheEnabled), criteria });
+				new Object[] { persistClassName, getCacheDisplay(queryOption.isCacheEnabled()), criteria });
 		StopWatch sw = new StopWatch();
 		sw.start();
 
