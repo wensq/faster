@@ -47,7 +47,7 @@ public abstract class HibernateFindWithOptionService<PO extends GenericEntity<ID
 		PO ret = (PO) fetchSingle(criteria, queryOption);
 		postLoad(ret);
 
-		log.info("{} a {}. (" + sw.getTime() + " ms)",
+		log.info("{} a {}. ({} ms)",
 				new Object[] { ret == null ? "Not found" : "Found", persistClassName, sw.getTime() });
 		return ret;
 	}
