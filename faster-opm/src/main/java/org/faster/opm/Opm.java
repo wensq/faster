@@ -40,8 +40,13 @@ public class Opm<T> {
 
     public Resource build(T instance) {
         Class<?> clazz = instance.getClass();
+        return build(ResourceHelper.getResourceType(clazz), instance);
+    }
+
+    public Resource build(String type, T instance) {
+        Class<?> clazz = instance.getClass();
         Resource res = new Resource();
-        res.setType(ResourceHelper.getResourceType(clazz));
+        res.setType(type);
         res.setId(PropertyHelper.getResourceID(instance));
         List<Property> properties = new ArrayList<Property>();
 
@@ -102,9 +107,22 @@ public class Opm<T> {
             return Collections.emptyList();
         }
 
+        String type = ResourceHelper.getResourceType(instances.iterator().next().getClass());
         List<Resource> ret = new ArrayList<Resource>(instances.size());
         for (T instance : instances) {
-            ret.add(build(instance));
+            ret.add(build(type, instance));
+        }
+        return ret;
+    }
+
+    public List<Resource> buildAll(String type, Collection<T> instances) {
+        if (instances == null || instances.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Resource> ret = new ArrayList<Resource>(instances.size());
+        for (T instance : instances) {
+            ret.add(build(type, instance));
         }
         return ret;
     }
