@@ -104,7 +104,13 @@ public class DataCollection<DATA> implements Cloneable, Serializable {
             statusCode = "No Content";
             return;
         }
-        dataType = data.get(0).getClass().getCanonicalName();
+
+        for (DATA item : data) {
+            if (item != null) {
+                dataType = item.getClass().getCanonicalName();
+                return;
+            }
+        }
     }
 
 	public DataCollection(PagedList<DATA> data) {
