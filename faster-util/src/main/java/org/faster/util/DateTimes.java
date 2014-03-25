@@ -56,7 +56,7 @@ public class DateTimes {
 	public static final String TIMESTAMP_PATTERN_COMPACT = "yyyyMMddHHmmss";
 
 	public static final String[] COMMON_TIMESTAMP_PATTERN = new String[] { TIMESTAMP_PATTERN,
-			TIMESTAMP_PATTERN_UNDERSCORE };
+			TIMESTAMP_PATTERN_UNDERSCORE, DATE_PATTERN };
 
 	private DateTimes() {}
 
