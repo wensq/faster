@@ -160,6 +160,11 @@ public class GenericCriteria<PO> {
 				}
 
 				String stringValue = String.valueOf(obj);
+                boolean ignoreEmptyOrZero = QueryHelper.isIgnoreEmptyOrZero(f);
+                if (ignoreEmptyOrZero && isBlank(stringValue)) {
+                    continue;
+                }
+
 				if (stringValue.startsWith(NULL)) {
 					dc.add(Restrictions.isNull(fieldName));
 					continue;
@@ -170,15 +175,12 @@ public class GenericCriteria<PO> {
 					continue;
 				}
 
-				boolean ignoreEmptyOrZero = QueryHelper.isIgnoreEmptyOrZero(f);
-				DataType dt = QueryHelper.getDataType(f);
                 String delimiter = QueryHelper.getDelimiter(f);
+				DataType dt = QueryHelper.getDataType(f);
+                MatchMode mm = QueryHelper.getMatchMode(f);
+
 				switch (dt) {
 				case STRING:
-					if (ignoreEmptyOrZero && isBlank(stringValue)) {
-						continue;
-					}
-					MatchMode mm = QueryHelper.getMatchMode(f);
 					switch (mm) {
 					case EQ:
 						dc.add(Restrictions.eq(fieldName, stringValue));
@@ -211,23 +213,117 @@ public class GenericCriteria<PO> {
 					if (ignoreEmptyOrZero && stringValue.equals("0")) {
 						continue;
 					}
-					CriteriaRender.renderFieldByIntegerFilterValues(dc, fieldName, stringValue, delimiter);
-					continue;
+
+                    Integer intValue = 0;
+                    if (mm != MatchMode.IN) {
+                        try {
+                            intValue = Integer.valueOf(stringValue);
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException(stringValue + " is not valid int value and can't use MatchMode: " + mm);
+                        }
+                    }
+
+                    switch (mm) {
+                        case EQ:
+                            dc.add(Restrictions.eq(fieldName, intValue));
+                            continue;
+                        case NE:
+                            dc.add(Restrictions.ne(fieldName, intValue));
+                            continue;
+                        case IN:
+					        CriteriaRender.renderFieldByIntegerFilterValues(dc, fieldName, stringValue, delimiter);
+                            continue;
+                        case GT:
+                            dc.add(Restrictions.gt(fieldName, intValue));
+                            continue;
+                        case GE:
+                            dc.add(Restrictions.ge(fieldName, intValue));
+                            continue;
+                        case LT:
+                            dc.add(Restrictions.lt(fieldName, intValue));
+                            continue;
+                        case LE:
+                            dc.add(Restrictions.le(fieldName, intValue));
+                            continue;
+                        default:
+                            throw new IllegalArgumentException("Invalid MatchMode for Long: " + mm);
+                    }
 				case LONG:
 					if (ignoreEmptyOrZero && stringValue.equals("0")) {
 						continue;
 					}
-					CriteriaRender.renderFieldByLongFilterValues(dc, fieldName, stringValue, delimiter);
-					continue;
+
+                    Long longValue = 0L;
+                    if (mm != MatchMode.IN) {
+                        try {
+                            longValue = Long.valueOf(stringValue);
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException(stringValue + " is not valid long value and can't use MatchMode: " + mm);
+                        }
+                    }
+
+                    switch (mm) {
+                        case EQ:
+                            dc.add(Restrictions.eq(fieldName, longValue));
+                            continue;
+                        case NE:
+                            dc.add(Restrictions.ne(fieldName, longValue));
+                            continue;
+                        case IN:
+					        CriteriaRender.renderFieldByLongFilterValues(dc, fieldName, stringValue, delimiter);
+                            continue;
+                        case GT:
+                            dc.add(Restrictions.gt(fieldName, longValue));
+                            continue;
+                        case GE:
+                            dc.add(Restrictions.ge(fieldName, longValue));
+                            continue;
+                        case LT:
+                            dc.add(Restrictions.lt(fieldName, longValue));
+                            continue;
+                        case LE:
+                            dc.add(Restrictions.le(fieldName, longValue));
+                            continue;
+                        default:
+                            throw new IllegalArgumentException("Invalid MatchMode for Long: " + mm);
+                    }
 				case DATE:
 					// TODO 改为根据匹配模式自动生成限制条件
 					Date date = DateTimes.parseStringToDate(stringValue);
-					dc.add(Restrictions.eq(fieldName, date));
-					continue;
+                    switch (mm) {
+                        case EQ:
+                            dc.add(Restrictions.eq(fieldName, date));
+                            continue;
+                        case NE:
+                            dc.add(Restrictions.ne(fieldName, date));
+                            continue;
+                        case GT:
+                            dc.add(Restrictions.gt(fieldName, date));
+                            continue;
+                        case GE:
+                            dc.add(Restrictions.ge(fieldName, date));
+                            continue;
+                        case LT:
+                            dc.add(Restrictions.lt(fieldName, date));
+                            continue;
+                        case LE:
+                            dc.add(Restrictions.le(fieldName, date));
+                            continue;
+                        default:
+                            throw new IllegalArgumentException("Invalid MatchMode for Date: " + mm);
+                    }
 				case BOOLEAN:
 					Boolean bool = BooleanUtils.toBooleanObject(stringValue);
-					dc.add(Restrictions.eq(fieldName, bool));
-					continue;
+                    switch (mm) {
+                        case EQ:
+					        dc.add(Restrictions.eq(fieldName, bool));
+                            continue;
+                        case NE:
+                            dc.add(Restrictions.ne(fieldName, bool));
+                            continue;
+                        default:
+                            throw new IllegalArgumentException("Invalid MatchMode for Boolean: " + mm);
+                    }
                 case LatLong:
                     LatLngBound b = new LatLngBound(stringValue);
                     if (b.isValid()) {
