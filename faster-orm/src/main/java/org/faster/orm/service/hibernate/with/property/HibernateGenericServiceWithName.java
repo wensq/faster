@@ -15,24 +15,24 @@
  */
 package org.faster.orm.service.hibernate.with.property;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.faster.util.Beans;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.option.QueryOption;
 import org.faster.orm.pagination.PagedList;
 import org.faster.orm.service.GenericServiceWithName;
 import org.faster.orm.service.hibernate.HibernateGenericService;
+import org.faster.util.Beans;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author sqwen
@@ -184,19 +184,22 @@ public class HibernateGenericServiceWithName<PO extends GenericEntity<ID>, ID ex
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> projectNameById(QueryOption queryOption, ID... ids) {
-		return (List<String>) projectById(getFieldNameOfName(), ids, queryOption);
+//		return (List<String>) this.<String>projectById(getFieldNameOfName(), ids, queryOption);
+        return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> projectNameById(Collection<ID> ids, QueryOption queryOption) {
-		return (List<String>) projectById(getFieldNameOfName(), ids, queryOption);
+        return null;
+//		return (List<String>) this.<String>projectById(getFieldNameOfName(), ids, queryOption);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> projectNameByCriteria(DetachedCriteria dc, QueryOption queryOption) {
-		return (List<String>) projectByCriteria(getFieldNameOfName(), dc, queryOption);
+//		return (List<String>) projectByCriteria(getFieldNameOfName(), dc, queryOption);
+        return null;
 	}
 
 }

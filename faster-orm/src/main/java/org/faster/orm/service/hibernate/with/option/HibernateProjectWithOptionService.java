@@ -15,15 +15,17 @@
  */
 package org.faster.orm.service.hibernate.with.option;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
+import org.apache.commons.lang3.time.StopWatch;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.faster.orm.service.hibernate.HibernateProjectPageService;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author sqwen
@@ -31,30 +33,44 @@ import org.hibernate.criterion.Projections;
 public abstract class HibernateProjectWithOptionService<PO extends GenericEntity<ID>, ID extends Serializable>
 		extends HibernateProjectPageService<PO, ID> {
 
-	@Override
-	public List<?> project(String propertyName, QueryOption queryOption) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> T project(Projection projection, QueryOption queryOption) {
+        return projectByCriteria(projection, buildCriteria(), queryOption);
+    }
 
-	@Override
-	public List<?> projectById(String propertyName, ID[] ids, QueryOption queryOption) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> T projectByCriteria(Projection projection, DetachedCriteria criteria, QueryOption queryOption) {
+        log.info("Projecting {} of {} with cache {} by {}...",
+                projection, persistClassName, getCacheDisplay(queryOption.isCacheEnabled()), criteria);
+        StopWatch sw = new StopWatch();
+        sw.start();
 
-	@Override
-	public List<?> projectByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        renderCriteria(criteria);
 
-	@Override
-	public List<?> projectById(String propertyName, Collection<ID> ids, QueryOption queryOption) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        T ret = (T) fetchSingle(criteria, queryOption);
 
+        log.info("Project {}. ({} ms)", ret == null ? "Not found" : ret, sw.getTime());
+        return ret;
+    }
+
+//	@Override
+//	public List<?> projectById(String propertyName, ID[] ids, QueryOption queryOption) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<?> projectByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<?> projectById(String propertyName, Collection<ID> ids, QueryOption queryOption) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
 	@Override
 	public List<ID> projectId(QueryOption queryOption) {
 		return projectIdByCriteria(buildCriteria(), queryOption);
@@ -67,4 +83,23 @@ public abstract class HibernateProjectWithOptionService<PO extends GenericEntity
 		return fetchAll(dc, queryOption);
 	}
 
+    @Override
+    public <T> List<T> projectById(String propertyName, ID[] ids, QueryOption queryOption) {
+        return null;
+    }
+
+    @Override
+    public <T> List<T> projectById(String propertyName, Collection<ID> ids, QueryOption queryOption) {
+        return null;
+    }
+
+    @Override
+    public <T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption) {
+        return null;
+    }
+
+    @Override
+    public <T> T projectByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption) {
+        return null;
+    }
 }

@@ -15,12 +15,14 @@
  */
 package org.faster.orm.service.hibernate.with.option;
 
-import java.io.Serializable;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.faster.orm.pagination.PagedList;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projection;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author sqwen
@@ -28,17 +30,33 @@ import org.hibernate.criterion.DetachedCriteria;
 public abstract class HibernateProjectPageWithOptionService<PO extends GenericEntity<ID>, ID extends Serializable>
 		extends HibernateProjectWithOptionService<PO, ID> {
 
-	@Override
-	public PagedList<?> project(String propertyName, int firstResult, int maxResults, QueryOption queryOption) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> T project(Projection projection, QueryOption queryOption) {
+        return super.project(projection, queryOption);
+    }
 
-	@Override
-	public PagedList<?> project(String propertyName, DetachedCriteria dc, int firstResult, int maxResults,
-			QueryOption queryOption) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> T projectByCriteria(Projection projection, DetachedCriteria criteria, QueryOption queryOption) {
+        return super.projectByCriteria(projection, criteria, queryOption);
+    }
 
+    @Override
+    public List<ID> projectId(QueryOption queryOption) {
+        return super.projectId(queryOption);
+    }
+
+    @Override
+    public List<ID> projectIdByCriteria(DetachedCriteria dc, QueryOption queryOption) {
+        return super.projectIdByCriteria(dc, queryOption);
+    }
+
+    @Override
+    public <T> PagedList<T> project(String propertyName, int firstResult, int maxResults, QueryOption queryOption) {
+        return null;
+    }
+
+    @Override
+    public <T> PagedList<T> project(String propertyName, DetachedCriteria dc, int firstResult, int maxResults, QueryOption queryOption) {
+        return null;
+    }
 }
