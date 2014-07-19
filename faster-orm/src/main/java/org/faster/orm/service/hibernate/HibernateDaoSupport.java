@@ -70,7 +70,7 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
         persistClass = getPersistClass();
         if (persistClass == null) {
             Type genericSuperClass = getClass().getGenericSuperclass();
-            if (getClass().getName().contains("$$EnhancerByCGLIB$$")) {
+            if (getClass().getName().contains("$$EnhancerBy")) {
                 genericSuperClass = getClass().getSuperclass().getGenericSuperclass();
             }
             persistClass = (Class<PO>) ((ParameterizedType) genericSuperClass).getActualTypeArguments()[0];
@@ -252,18 +252,10 @@ public class HibernateDaoSupport<PO extends GenericEntity<ID>, ID extends Serial
 		if (propertyValueMap != null) {
 			for (String propertyName : propertyValueMap.keySet()) {
 				Object propertyValue = propertyValueMap.get(propertyName);
-				renderCriteriaByPropertyAndValue(dc, propertyName, propertyValue);
+                dc.add(Restrictions.eqOrIsNull(propertyName, propertyValue));
 			}
 		}
 		return dc;
-	}
-
-	private void renderCriteriaByPropertyAndValue(DetachedCriteria dc, String propertyName, Object propertyValue) {
-		if (propertyValue == null) {
-			dc.add(Restrictions.isNull(propertyName));
-		} else {
-			dc.add(Restrictions.eq(propertyName, propertyValue));
-		}
 	}
 
 	protected Map<String, Object> buildPersistPropertyValueMap(PO example) {

@@ -18,8 +18,8 @@ package org.faster.orm.service.hibernate;
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.Options;
 import org.faster.orm.service.hibernate.with.option.HibernateFindPageWithOptionService;
-import org.faster.util.Beans;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,43 +32,41 @@ public abstract class HibernateProjectService<PO extends GenericEntity<ID>, ID e
 		extends HibernateFindPageWithOptionService<PO, ID> {
 
     @Override
-    public <T> List<T> project(String propertyName, Class<T> clazz) {
+    public <T> T project(Projection projection) {
+        return project(projection, Options.getCacheEnabledQueryOption(cacheEnabled));
+    }
+
+    @Override
+    public <T> T projectByCriteria(Projection projection, DetachedCriteria dc) {
+        return projectByCriteria(projection, dc, Options.getCacheEnabledQueryOption(cacheEnabled));
+    }
+
+    @Override
+    public <T> List<T> projectById(String propertyName, ID[] ids) {
         return null;
     }
 
     @Override
-    public <T> List<T> projectById(String propertyName, ID[] ids, Class<T> clazz) {
+    public <T> List<T> projectById(String propertyName, List<ID> ids) {
         return null;
     }
 
     @Override
-    public <T> List<T> projectById(String propertyName, List<ID> ids, Class<T> clazz) {
+    public <T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc) {
         return null;
     }
 
     @Override
-    public <T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc, Class<T> clazz) {
+    public <T> T projectByCriteria(String propertyName, DetachedCriteria dc) {
         return null;
     }
 
     @Override
-    public <T> T projectByCriteria(String propertyName, DetachedCriteria dc, Class<T> clazz) {
+    public <T> List<T> project(String propertyName, List<PO> pos) {
         return null;
     }
 
     @Override
-    public <T> List<T> project(String propertyName, List<PO> pos, Class<T> clazz) {
-        List values = new ArrayList();
-		for (PO po : pos) {
-			Object value = Beans.getProperty(po, propertyName);
-			if (value != null) {
-				values.add(value);
-			}
-		}
-		return values;
-    }
-
-	@Override
 	public List<ID> projectId() {
 		return projectId(Options.getCacheEnabledQueryOption(cacheEnabled));
 	}

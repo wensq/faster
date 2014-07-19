@@ -28,12 +28,12 @@ public abstract class HibernateProjectPageService<PO extends GenericEntity<ID>, 
 		extends HibernateProjectService<PO, ID> {
 
     @Override
-    public <T> PagedList<T> projectPage(String propertyName, int page, int limit, Class<T> clazz) {
+    public <T> PagedList<T> projectPage(String propertyName, int page, int limit) {
         return null;
     }
 
     @Override
-    public <T> PagedList<T> projectPage(String propertyName, DetachedCriteria dc, int page, int limit, Class<T> clazz) {
+    public <T> PagedList<T> projectPage(String propertyName, DetachedCriteria dc, int page, int limit) {
         return null;
     }
 }
