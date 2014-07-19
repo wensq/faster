@@ -15,21 +15,21 @@
  */
 package org.faster.orm.service.api.with.option;
 
-import java.io.Serializable;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.faster.orm.pagination.PagedList;
 import org.hibernate.criterion.DetachedCriteria;
+
+import java.io.Serializable;
 
 /**
  * @author sqwen
  */
 public interface ProjectPageWithOption<PO extends GenericEntity<ID>, ID extends Serializable> {
 
-	PagedList<?> project(String propertyName, int firstResult, int maxResults, QueryOption queryOption);
+	<T> PagedList<T> project(String propertyName, int firstResult, int maxResults, QueryOption queryOption);
 
-	PagedList<?> project(String propertyName, DetachedCriteria dc, int firstResult, int maxResults,
+	<T> PagedList<T> project(String propertyName, DetachedCriteria dc, int firstResult, int maxResults,
 			QueryOption queryOption);
 
 }

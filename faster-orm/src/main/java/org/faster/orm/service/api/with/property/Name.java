@@ -15,14 +15,14 @@
  */
 package org.faster.orm.service.api.with.property;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.pagination.PagedList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author sqwen

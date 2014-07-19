@@ -15,26 +15,31 @@
  */
 package org.faster.orm.service.api.with.option;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 import org.faster.orm.model.GenericEntity;
 import org.faster.orm.option.QueryOption;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projection;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author sqwen
  */
 public interface ProjectWithOption<PO extends GenericEntity<ID>, ID extends Serializable> {
 
-	List<?> project(String propertyName, QueryOption queryOption);
+    <T> T project(Projection projection, QueryOption queryOption);
 
-	List<?> projectById(String propertyName, ID[] ids, QueryOption queryOption);
+    <T> T projectByCriteria(Projection projection, DetachedCriteria dc, QueryOption queryOption);
 
-	List<?> projectById(String propertyName, Collection<ID> ids, QueryOption queryOption);
+	<T> List<T> projectById(String propertyName, ID[] ids, QueryOption queryOption);
 
-	List<?> projectByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption);
+	<T> List<T> projectById(String propertyName, Collection<ID> ids, QueryOption queryOption);
+
+	<T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption);
+
+    <T> T projectByCriteria(String propertyName, DetachedCriteria dc, QueryOption queryOption);
 
 	List<ID> projectId(QueryOption queryOption);
 

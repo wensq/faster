@@ -17,6 +17,7 @@ package org.faster.orm.service.api;
 
 import org.faster.orm.model.GenericEntity;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projection;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,17 +27,19 @@ import java.util.List;
  */
 public interface Project<PO extends GenericEntity<ID>, ID extends Serializable> {
 
-	<T> List<T> project(String propertyName, Class<T> clazz);
+	<T> T project(Projection projection);
 
-	<T> List<T> projectById(String propertyName, ID[] ids, Class<T> clazz);
+	<T> T projectByCriteria(Projection projection, DetachedCriteria dc);
 
-	<T> List<T> projectById(String propertyName, List<ID> ids, Class<T> clazz);
+    <T> List<T> projectById(String propertyName, ID[] ids);
 
-	<T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc, Class<T> clazz);
+    <T> List<T> projectById(String propertyName, List<ID> ids);
 
-    <T> T projectByCriteria(String propertyName, DetachedCriteria dc, Class<T> clazz);
+    <T> List<T> projectAllByCriteria(String propertyName, DetachedCriteria dc);
 
-	<T> List<T> project(String propertyName, List<PO> pos, Class<T> clazz);
+    <T> T projectByCriteria(String propertyName, DetachedCriteria dc);
+
+    <T> List<T> project(String propertyName, List<PO> pos);
 
 	List<ID> projectId();
 
