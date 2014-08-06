@@ -24,11 +24,11 @@ public final class Arrays {
 
     private Arrays() {}
 
-    public static <T> T[] slice(T[] objs, String... slicePropertyNames) {
-        return slice(objs, true, slicePropertyNames);
+    public static <T> T[] sliceProperty(T[] objs, String... slicePropertyNames) {
+        return sliceProperty(objs, true, slicePropertyNames);
     }
 
-    public static <T> T[] slice(T[] objs, boolean ignoreNullValue, String... slicePropertyNames) {
+    public static <T> T[] sliceProperty(T[] objs, boolean ignoreNullValue, String... slicePropertyNames) {
         if (objs == null || objs.length == 0) {
             return null;
         }
