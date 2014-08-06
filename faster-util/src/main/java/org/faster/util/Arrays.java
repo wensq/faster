@@ -15,18 +15,20 @@
  */
 package org.faster.util;
 
+import java.lang.reflect.Array;
+
 /**
  * @author sqwen
  */
-public class Arrays {
+public final class Arrays {
 
     private Arrays() {}
 
-    public static final <T> T[] slice(T[] objs, String... slicePropertyNames) {
+    public static <T> T[] slice(T[] objs, String... slicePropertyNames) {
         return slice(objs, true, slicePropertyNames);
     }
 
-    public static final <T> T[] slice(T[] objs, boolean ignoreNullValue, String... slicePropertyNames) {
+    public static <T> T[] slice(T[] objs, boolean ignoreNullValue, String... slicePropertyNames) {
         if (objs == null || objs.length == 0) {
             return null;
         }
@@ -42,8 +44,11 @@ public class Arrays {
         return ret;
     }
 
-    public static final <T> T[] toArray(T obj) {
-        return (T[]) java.util.Arrays.asList(obj).toArray();
+    public static <T> T[] toArray(T obj) {
+        Class<T> clazz = (Class<T>) obj.getClass();
+        T[] array = (T[]) Array.newInstance(clazz, 1);
+        array[0] = obj;
+        return array;
     }
 
 }
