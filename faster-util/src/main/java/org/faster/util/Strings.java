@@ -27,7 +27,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 /**
  * @author sqwen
  */
-public class Strings {
+public final class Strings {
 
 	public static final String DEFAULT_DELIMITER = "&&";
 
@@ -483,7 +483,7 @@ public class Strings {
 	 *            字符串里面的数字分隔符正则表达式
 	 * @return Long数组
 	 */
-	public static final Long[] toLongArray(String stringWithDelimiter,
+	public static Long[] toLongArray(String stringWithDelimiter,
 			String delimiterPattern) {
 		if (isBlank(stringWithDelimiter)) {
 			return new Long[0];
@@ -503,7 +503,7 @@ public class Strings {
 	 *            原字符串
 	 * @return Long数组
 	 */
-	public static final Long[] toLongArray(String stringWithDelimiter) {
+	public static Long[] toLongArray(String stringWithDelimiter) {
 		return toLongArray(stringWithDelimiter, ",\\s*");
 	}
 
@@ -516,7 +516,7 @@ public class Strings {
 	 *            字符串里面的数字分隔符正则表达式
 	 * @return Integer数组
 	 */
-	public static final Integer[] toIntegerArray(String stringWithDelimiter,
+	public static Integer[] toIntegerArray(String stringWithDelimiter,
 			String delimiterPattern) {
 		if (stringWithDelimiter == null) {
 			return new Integer[0];
@@ -540,7 +540,7 @@ public class Strings {
 	 *            原字符串
 	 * @return Integer数组
 	 */
-	public static final Integer[] toIntegerArray(String stringWithDelimiter) {
+	public static Integer[] toIntegerArray(String stringWithDelimiter) {
 		return toIntegerArray(stringWithDelimiter, ",\\s*");
 	}
 
@@ -553,7 +553,7 @@ public class Strings {
 	 *            字符串里面的数字分隔符正则表达式
 	 * @return int数组
 	 */
-	public static final int[] toIntArray(String stringWithDelimiter,
+	public static int[] toIntArray(String stringWithDelimiter,
 			String delimiterPattern) {
 		if (stringWithDelimiter == null) {
 			return new int[0];
@@ -573,7 +573,7 @@ public class Strings {
 	 *            原字符串
 	 * @return int数组
 	 */
-	public static final int[] toIntArray(String stringWithDelimiter) {
+	public static int[] toIntArray(String stringWithDelimiter) {
 		return toIntArray(stringWithDelimiter, ",\\s*");
 	}
 
@@ -584,7 +584,7 @@ public class Strings {
 	 *            备选值
 	 * @return 第一个非空的字符串
 	 */
-	public static final String getFirstNotBlankValue(String... candidates) {
+	public static String getFirstNotBlankValue(String... candidates) {
 		if (candidates == null) {
 			return null;
 		}

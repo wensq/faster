@@ -47,7 +47,7 @@ import java.util.List;
  * @author sqwen
  * @version 1.0, 2012-5-13
  */
-public class NestParam implements Serializable {
+public final class NestParam implements Serializable {
 
     private static final long serialVersionUID = 8228473978708403349L;
 

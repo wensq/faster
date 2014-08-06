@@ -7,16 +7,16 @@ import java.util.Map;
 /**
  * @author sqwen
  */
-public class Maps {
+public final class Maps {
 
     private Maps() {}
 
-    public static final <K, V> Map<K, V> map(K key, V value) {
+    public static <K, V> Map<K, V> map(K key, V value) {
         return Collections.singletonMap(key, value);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final Map<?, ?> map(Object... values) {
+    public static Map<?, ?> map(Object... values) {
         if (values == null || values.length == 0) {
             return Collections.emptyMap();
         }
@@ -32,12 +32,12 @@ public class Maps {
         return ret;
     }
 
-    public static final Map<String, ?> slice(Map<String, ?> map, String... keys) {
+    public static Map<String, ?> slice(Map<String, ?> map, String... keys) {
         return slice(map, true, keys);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final Map<String, ?> slice(Map<String, ?> map, boolean ignoreNullValue, String... keys) {
+    public static Map<String, ?> slice(Map<String, ?> map, boolean ignoreNullValue, String... keys) {
         if (keys == null || keys.length == 0) {
             return map;
         }

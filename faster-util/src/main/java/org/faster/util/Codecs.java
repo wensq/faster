@@ -25,9 +25,11 @@ import java.net.URLEncoder;
  * @author calvin
  * @author sqwen
  */
-public class Codecs {
+public final class Codecs {
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
+
+    private Codecs() {}
 
 	/**
 	 * Hex编码.

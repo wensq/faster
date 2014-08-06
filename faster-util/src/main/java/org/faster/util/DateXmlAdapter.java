@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * @author sqwen
  */
-public class DateXmlAdapter extends XmlAdapter<String, Date> {
+public final class DateXmlAdapter extends XmlAdapter<String, Date> {
 
     private DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 

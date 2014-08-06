@@ -28,7 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @author sqwen
  * @version 1.0, 2012-5-13
  */
-public class NestParamParser {
+public final class NestParamParser {
 
     // 同级字段分隔符
     private char fieldDelimiter = ',';

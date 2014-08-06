@@ -17,7 +17,9 @@ import java.io.StringWriter;
  * @author calvin
  * @author sqwen
  */
-public class Exceptions {
+public final class Exceptions {
+
+    private Exceptions() {}
 
     /**
      * 封装异常到自定义的应用异常

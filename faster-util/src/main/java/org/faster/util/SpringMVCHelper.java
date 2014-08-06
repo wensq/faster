@@ -18,15 +18,15 @@ package org.faster.util;
 /**
  * @author sqwen
  */
-public class SpringMVCHelper {
+public final class SpringMVCHelper {
 
 	private SpringMVCHelper() {}
 
-	public static final String redirect_to(String path) {
+	public static String redirect_to(String path) {
 		return "redirect:" + path;
 	}
 
-	public static final String forward_to(String path) {
+	public static String forward_to(String path) {
 		return "forward:" + path;
 	}
 

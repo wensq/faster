@@ -5,13 +5,13 @@
  */
 package org.faster.util;
 
+import org.apache.commons.lang3.Validate;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-
-import org.apache.commons.lang3.Validate;
 
 /**
  * 支持SHA-1/MD5消息摘要的工具类.
@@ -20,13 +20,15 @@ import org.apache.commons.lang3.Validate;
  *
  * @author calvin
  */
-public class Digests {
+public final class Digests {
 
 	public static final String SHA256 = "SHA-256";
 
 	public static final String MD5 = "MD5";
 
 	private static final SecureRandom random = new SecureRandom();
+
+    private Digests() {}
 
 	public static byte[] sha256(byte[] input) {
 		return digest(input, SHA256, null, 1);

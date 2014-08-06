@@ -29,7 +29,7 @@ import java.util.Date;
 /**
  * @author sqwen
  */
-public class DateTimes {
+public final class DateTimes {
 
 	public static final long DAY = 86400000;
 
@@ -60,7 +60,7 @@ public class DateTimes {
 
 	private DateTimes() {}
 
-	public static final String formatDateToString(Date date, String formatPattern) {
+	public static String formatDateToString(Date date, String formatPattern) {
 		if (date == null) {
 			return "";
 		}
@@ -74,34 +74,34 @@ public class DateTimes {
 	 *            日期对象
 	 * @return 时间戳格式的字符串
 	 */
-	public static final String formatDateToTimestampString(Date date) {
+	public static String formatDateToTimestampString(Date date) {
 		return formatDateToString(date, TIMESTAMP_PATTERN);
 	}
 
-	public static final String formatDateToShortTimestampString(Date date) {
+	public static String formatDateToShortTimestampString(Date date) {
 		return formatDateToString(date, SHORT_TIMESTAMP_PATTERN);
 	}
 
-	public static final String formatDateToDateString(Date date) {
+	public static String formatDateToDateString(Date date) {
 		return formatDateToString(date, DATE_PATTERN);
 	}
 
-	public static final String nowToTimestampString() {
+	public static String nowToTimestampString() {
 		return formatDateToTimestampString(new Date());
 	}
 
-	public static final String formatDateToCompactTimestampString(Date date) {
+	public static String formatDateToCompactTimestampString(Date date) {
 		return formatDateToString(date, TIMESTAMP_PATTERN_COMPACT);
 	}
 
-	public static final String nowCompactTimestampString() {
+	public static String nowCompactTimestampString() {
 		return formatDateToCompactTimestampString(new Date());
 	}
 
 	/**
 	 * 字符串转换为其格式所符合的日期类型
 	 */
-	public final static Date parseStringToDate(String str, String pattern) {
+	public static Date parseStringToDate(String str, String pattern) {
 		try {
 			return DateUtils.parseDate(str, pattern);
 		} catch (ParseException e) {
@@ -119,7 +119,7 @@ public class DateTimes {
 	 *            比如2010-05-26 16:11:00
 	 * @return 日期对象
 	 */
-	public static final Date parseStringToDate(String str, String[] patterns) {
+	public static Date parseStringToDate(String str, String[] patterns) {
 		try {
 			return DateUtils.parseDate(str, patterns);
 		} catch (ParseException e) {
@@ -129,31 +129,31 @@ public class DateTimes {
 		}
 	}
 
-	public static final Date parseStringToDate(String timeString) {
+	public static Date parseStringToDate(String timeString) {
 		return parseStringToDate(timeString, COMMON_TIMESTAMP_PATTERN);
 	}
 
-	public static final Date parseStringToDateAndTruncateToMinute(String timeString) {
+	public static Date parseStringToDateAndTruncateToMinute(String timeString) {
 		Date date = parseStringToDate(timeString);
 		return DateUtils.truncate(date, Calendar.MINUTE);
 	}
 
-	public static final Date parseStringToDateAndTruncateToHour(String timeString) {
+	public static Date parseStringToDateAndTruncateToHour(String timeString) {
 		Date date = parseStringToDate(timeString);
 		return DateUtils.truncate(date, Calendar.HOUR_OF_DAY);
 	}
 
-	public static final Date parseStringToDateAndTruncateToDate(String timeString) {
+	public static Date parseStringToDateAndTruncateToDate(String timeString) {
 		Date date = parseStringToDate(timeString);
 		return DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
 	}
 
-	public static final long convertToMilliSecond(int day, int hour, int minute,
+	public static long convertToMilliSecond(int day, int hour, int minute,
 			int second, int ms) {
 		return day * DAY + hour * HOUR + minute * MINUTE + second * SECOND + ms;
 	}
 
-	public static final String formatIntervalToHumanReadableString(int day, int hour,
+	public static String formatIntervalToHumanReadableString(int day, int hour,
                                                                    int minute, int second, int ms) {
 		StringBuilder sb = new StringBuilder();
 		if (day > 0) {
@@ -180,13 +180,13 @@ public class DateTimes {
 		return convertCalendarToTimeId(cal);
 	}
 
-	public static final long convertDateToTimeId(Date date) {
+	public static long convertDateToTimeId(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return convertCalendarToTimeId(cal);
 	}
 
-	public static final long convertCalendarToTimeId(Calendar cal) {
+	public static long convertCalendarToTimeId(Calendar cal) {
 		long year = cal.get(Calendar.YEAR);
 		long month = cal.get(Calendar.MONTH) + 1;
 		long day = cal.get(Calendar.DAY_OF_MONTH);
@@ -197,7 +197,7 @@ public class DateTimes {
 				* 10000 + minute * 100 + second;
 	}
 
-	public static final Date convertTimeIdToDate(long timeId) {
+	public static Date convertTimeIdToDate(long timeId) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, (int) (timeId / 10000000000L));
 		int left = (int) (timeId % 10000000000L);
@@ -227,7 +227,7 @@ public class DateTimes {
 	 *            指定的日期
 	 * @return 指定的日期是否为周末
 	 */
-	public final static boolean isWeekend(Date date) {
+	public static boolean isWeekend(Date date) {
 		if (date == null) {
 			throw new IllegalArgumentException("date must not be null!");
 		}
@@ -237,13 +237,13 @@ public class DateTimes {
 		return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
 	}
 
-	public final static int getHourOfDay(Date date) {
+	public static int getHourOfDay(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal.get(Calendar.HOUR_OF_DAY);
 	}
 
-	public final static int getMinute(Date date) {
+	public static int getMinute(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal.get(Calendar.MINUTE);
@@ -254,7 +254,7 @@ public class DateTimes {
 	 * @param date 日期
 	 * @return 某天的开始时间
 	 */
-	public final static Date getDayDate(Date date) {
+	public static Date getDayDate(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -271,7 +271,7 @@ public class DateTimes {
 	 *            指定的日期
 	 * @return 下一天开始的时间
 	 */
-	public final static Date getNextDay(Date date) {
+	public static Date getNextDay(Date date) {
 		return getRecentDay(date, 1);
 	}
 
@@ -282,11 +282,11 @@ public class DateTimes {
 	 *            指定的日期
 	 * @return 上一天开始的时间
 	 */
-	public final static Date getPreviousDay(Date date) {
+	public static Date getPreviousDay(Date date) {
 		return getRecentDay(date, -1);
 	}
 
-	public final static Date getRecentDay(Date date, Integer days) {
+	public static Date getRecentDay(Date date, Integer days) {
 		date = getDayDate(date);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
@@ -304,7 +304,7 @@ public class DateTimes {
 	 *            设定时间范围的参数之一,单位:秒.
 	 * @return Date date一个指定时间范围的对象即一个时间点
 	 */
-	public final static Date convertToTodayTime(int hour, int minute, int second) {
+	public static Date convertToTodayTime(int hour, int minute, int second) {
 		Calendar time = Calendar.getInstance();
 		time.add(Calendar.HOUR, hour);
 		time.add(Calendar.MINUTE, minute);
@@ -312,13 +312,13 @@ public class DateTimes {
 		return time.getTime();
 	}
 
-	public final static Date getTimeAfterMinutes(int afterMinutes) {
+	public static Date getTimeAfterMinutes(int afterMinutes) {
 		Calendar time = Calendar.getInstance();
 		time.add(Calendar.MINUTE, afterMinutes);
 		return time.getTime();
 	}
 
-	public static final Date buildDateNextHours(int n) {
+	public static Date buildDateNextHours(int n) {
 		Calendar calTime = Calendar.getInstance();
 		calTime.add(Calendar.HOUR_OF_DAY, n);
 		return DateUtils.truncate(calTime.getTime(), Calendar.HOUR_OF_DAY);
@@ -329,7 +329,7 @@ public class DateTimes {
 	 *
 	 * @return 当前时间整点时刻的+n个小时的的整点字符串
 	 */
-	public static final String buildTimestampStringNextHours(int n) {
+	public static String buildTimestampStringNextHours(int n) {
 		Date date = buildDateNextHours(n);
 		return formatDateToTimestampString(date);
 	}
@@ -350,7 +350,7 @@ public class DateTimes {
 	 *            以单位为毫秒的时间间隔
 	 * @return 易读的字符串
 	 */
-	public static final String formatIntervalToReadableString(long interval) {
+	public static String formatIntervalToReadableString(long interval) {
 		int day = (int) (interval / DAY);
 		int hour = (int) (interval % DAY / HOUR);
 		int minute = (int) (interval % HOUR / MINUTE);
@@ -366,7 +366,7 @@ public class DateTimes {
 	 *            以单位为毫秒的时间间隔
 	 * @return 易读的字符串
 	 */
-	public static final String formatIntervalToReadableStringWithMilliSecond(long interval) {
+	public static String formatIntervalToReadableStringWithMilliSecond(long interval) {
 		int day = (int) (interval / DAY);
 		int hour = (int) (interval % DAY / HOUR);
 		int minute = (int) (interval % HOUR / MINUTE);
@@ -381,7 +381,7 @@ public class DateTimes {
 	 * @param interval 以单位为毫秒的时间间隔
 	 * @return 易读的字符串
 	 */
-	public static final String formatIntervalToReadablePrecisionTime(long interval) {
+	public static String formatIntervalToReadablePrecisionTime(long interval) {
 		int day = (int) (interval / DAY);
 		int hour = (int) (interval % DAY / HOUR);
 		int minute = (int) (interval % HOUR / MINUTE);
@@ -390,7 +390,7 @@ public class DateTimes {
 		return formatToReadableTimeString(day, hour, minute, second, ms);
 	}
 
-	public static final String formatToReadableTimeString(int day, int hour,
+	public static String formatToReadableTimeString(int day, int hour,
 			int minute, int second, int ms) {
 		StringBuilder sb = new StringBuilder();
 		double secondNew = second;

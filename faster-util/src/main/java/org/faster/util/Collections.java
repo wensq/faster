@@ -20,13 +20,15 @@ import java.util.*;
 /**
  * @author sqwen
  */
-public class Collections {
+public final class Collections {
 
-    public static final <T> T[] toArray(Collection<T> objs) {
+    private Collections() {}
+
+    public static <T> T[] toArray(Collection<T> objs) {
         return (T[]) objs.toArray();
     }
 
-	public static final <T> Set<T> toSet(T... elements) {
+	public static <T> Set<T> toSet(T... elements) {
 		if (elements == null) {
 			return java.util.Collections.emptySet();
 		}
@@ -36,7 +38,7 @@ public class Collections {
 		return set;
 	}
 
-	public static final <T> Set<T> toSet(Collection<T> elements) {
+	public static <T> Set<T> toSet(Collection<T> elements) {
 		if (elements == null) {
 			return java.util.Collections.emptySet();
 		}
@@ -44,11 +46,11 @@ public class Collections {
 		return new LinkedHashSet<T>(elements);
 	}
 
-    public static final <T> List<T> slice(Collection<T> objs, String... slicePropertyNames) {
+    public static <T> List<T> slice(Collection<T> objs, String... slicePropertyNames) {
         return slice(objs, true, slicePropertyNames);
     }
 
-    public static final <T> List<T> slice(Collection<T> objs, boolean ignoreNullValue, String... slicePropertyNames) {
+    public static <T> List<T> slice(Collection<T> objs, boolean ignoreNullValue, String... slicePropertyNames) {
         if (objs == null || objs.isEmpty()) {
             return null;
         }

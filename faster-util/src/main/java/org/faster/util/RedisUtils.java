@@ -30,7 +30,7 @@ import java.util.Map;
  * @author sqwen
  * @date 2012-4-22
  */
-public class RedisUtils {
+public final class RedisUtils {
 
     private static final Log log = LogFactory.getLog(RedisUtils.class);
 
@@ -45,7 +45,7 @@ public class RedisUtils {
      *            新键
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final void copy(RedisTemplate redis, final String key, String newKey) {
+    public static void copy(RedisTemplate redis, final String key, String newKey) {
         DataType dt = redis.type(key);
         switch (dt) {
             case STRING:
@@ -99,7 +99,7 @@ public class RedisUtils {
      * @return 指定排序上的值
      */
     @SuppressWarnings("rawtypes")
-    public static final Object zgetByScore(RedisTemplate redis, String key, long score) {
+    public static Object zgetByScore(RedisTemplate redis, String key, long score) {
         return zgetByScore(redis, key, Double.valueOf(score + ""));
     }
 
@@ -113,7 +113,7 @@ public class RedisUtils {
      * @return 指定排序上的值
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final Object zgetByScore(RedisTemplate redis, String key, double score) {
+    public static Object zgetByScore(RedisTemplate redis, String key, double score) {
         return getFirst(redis.opsForZSet().rangeByScore(key, score, score));
     }
 
@@ -127,7 +127,7 @@ public class RedisUtils {
      * @return 指定排序上的值
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final Object zgetByRank(RedisTemplate redis, String key, long rank) {
+    public static Object zgetByRank(RedisTemplate redis, String key, long rank) {
         return getFirst(redis.opsForZSet().range(key, rank, rank));
     }
 
@@ -139,7 +139,7 @@ public class RedisUtils {
      * @return 第一个对象
      */
     @SuppressWarnings("rawtypes")
-    public static final Object zgetFirst(RedisTemplate redis, String key) {
+    public static Object zgetFirst(RedisTemplate redis, String key) {
         return zgetByRank(redis, key, 0);
     }
 
@@ -151,11 +151,11 @@ public class RedisUtils {
      * @return 最后一个对象
      */
     @SuppressWarnings("rawtypes")
-    public static final Object zgetLast(RedisTemplate redis, String key) {
+    public static Object zgetLast(RedisTemplate redis, String key) {
         return zgetByRank(redis, key, -1);
     }
 
-    private static final Object getFirst(Collection<?> c) {
+    private static Object getFirst(Collection<?> c) {
         if (c == null || c.isEmpty()) {
             return null;
         }
@@ -170,7 +170,7 @@ public class RedisUtils {
      * @return 对应一批hash数据
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static final List<Map<String, Object>> multiGetHash(RedisTemplate redis, Collection<String> keys) {
+    public static List<Map<String, Object>> multiGetHash(RedisTemplate redis, Collection<String> keys) {
         List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>(keys.size());
         for (String key : keys) {
             ret.add(redis.opsForHash().entries(key));
@@ -179,7 +179,7 @@ public class RedisUtils {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static final int saddAll(final RedisTemplate redis, final String key,
+    public static int saddAll(final RedisTemplate redis, final String key,
                                     final Collection<? extends Object> values) {
         StopWatch sw = new StopWatch();
         sw.start();
@@ -209,7 +209,7 @@ public class RedisUtils {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static final int sremAll(final RedisTemplate redis, final String key,
+    public static int sremAll(final RedisTemplate redis, final String key,
                                     final Collection<? extends Object> values) {
         StopWatch sw = new StopWatch();
         sw.start();

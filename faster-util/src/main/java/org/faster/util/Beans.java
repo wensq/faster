@@ -22,11 +22,11 @@ import java.util.Map;
 /**
  * @author sqwen
  */
-public class Beans {
+public final class Beans {
 
 	private Beans() {}
 
-    public static final <T> T newInstance(Class<T> clazz) {
+    public static <T> T newInstance(Class<T> clazz) {
         try {
             return clazz.newInstance();
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class Beans {
         }
     }
 
-	public static final void populate(Object bean, Map<String, ?> map) {
+	public static void populate(Object bean, Map<String, ?> map) {
 		try {
 			org.apache.commons.beanutils.BeanUtils.populate(bean, map);
 		} catch (Exception e) {
@@ -42,16 +42,16 @@ public class Beans {
 		}
 	}
 
-	public static final void slicePopulate(Object bean, Map<String, ?> map, String... slicePropertyNames) {
+	public static void slicePopulate(Object bean, Map<String, ?> map, String... slicePropertyNames) {
 		Map<String, ?> sliceMap = Maps.slice(map, slicePropertyNames);
 		populate(bean, sliceMap);
 	}
 
-	public static final Object getProperty(Object bean, String propertyName) {
+	public static Object getProperty(Object bean, String propertyName) {
 		return new WrapDynaBean(bean).get(propertyName);
 	}
 
-	public static final void setProperty(Object bean, String propertyName, Object propertyValue) {
+	public static void setProperty(Object bean, String propertyName, Object propertyValue) {
 		try {
 			org.apache.commons.beanutils.BeanUtils.setProperty(bean, propertyName, propertyValue);
 		} catch (Exception e) {
@@ -59,7 +59,7 @@ public class Beans {
 		}
 	}
 
-	public static final void populate(Object dest, Object orig) {
+	public static void populate(Object dest, Object orig) {
 		try {
 			org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
 		} catch (Exception e) {
@@ -74,11 +74,11 @@ public class Beans {
 	 * @param orig 原对象
 	 * @param slicePropertyNames 需要拷贝的属性列表
 	 */
-	public static final void slicePopulate(Object dest, Object orig, String... slicePropertyNames) {
+	public static void slicePopulate(Object dest, Object orig, String... slicePropertyNames) {
 		slicePopulate(dest, orig, true, slicePropertyNames);
 	}
 
-	public static final boolean isNullOrEmpty(Object value) {
+	public static boolean isNullOrEmpty(Object value) {
 		if (value == null) {
 			return true;
 		}
@@ -100,7 +100,7 @@ public class Beans {
 	 * @param ignoreNullValue 是否忽略空值（包括字符串的空字符串）
 	 * @param propertyNames 需要拷贝的属性列表
 	 */
-	public static final void slicePopulate(Object dest, Object orig, boolean ignoreNullValue, String... propertyNames) {
+	public static void slicePopulate(Object dest, Object orig, boolean ignoreNullValue, String... propertyNames) {
 		WrapDynaBean destBean = new WrapDynaBean(dest);
 		WrapDynaBean origBean = new WrapDynaBean(orig);
 		for (String propertyName : propertyNames) {
@@ -113,12 +113,12 @@ public class Beans {
 		}
 	}
 
-    public static final <T> T slice(T orig, String... propertyNames) {
+    public static <T> T slice(T orig, String... propertyNames) {
         return slice(orig, true, propertyNames);
     }
 
     @SuppressWarnings("unchecked")
-    public static final <T> T slice(T orig, boolean ignoreNullValue, String... propertyNames) {
+    public static <T> T slice(T orig, boolean ignoreNullValue, String... propertyNames) {
         if (propertyNames == null || propertyNames.length == 0) {
             return orig;
         }
