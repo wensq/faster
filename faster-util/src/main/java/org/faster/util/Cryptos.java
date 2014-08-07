@@ -21,6 +21,7 @@ import java.util.Arrays;
  * 支持Hex与Base64两种编码方式.
  *
  * @author calvin
+ * @author sqwen
  */
 public final class Cryptos {
 
@@ -59,13 +60,13 @@ public final class Cryptos {
 	}
 
 	/**
-	 * 校验HMAC-SHA1签名是否正确.
+	 * 校验HMAC-SHA1签名是否匹配.
 	 *
 	 * @param expected 已存在的签名
 	 * @param input 原始输入字符串
 	 * @param key 密钥
 	 */
-	public static boolean isMacValid(byte[] expected, byte[] input, byte[] key) {
+	public static boolean isHmacSha1Match(byte[] expected, byte[] input, byte[] key) {
 		byte[] actual = hmacSha1(input, key);
 		return Arrays.equals(expected, actual);
 	}
