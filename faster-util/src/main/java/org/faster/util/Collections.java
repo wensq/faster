@@ -15,7 +15,11 @@
  */
 package org.faster.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author sqwen
@@ -43,20 +47,36 @@ public final class Collections {
 			return java.util.Collections.emptySet();
 		}
 
-		return new LinkedHashSet<T>(elements);
+        if (elements instanceof Set) {
+            return (Set<T>) elements;
+        }
+
+		return new HashSet<T>(elements);
 	}
 
-    public static <T> List<T> slice(Collection<T> objs, String... slicePropertyNames) {
-        return slice(objs, true, slicePropertyNames);
+    public static <T> List<T> toList(Collection<T> elements) {
+        if (elements == null) {
+            return java.util.Collections.emptyList();
+        }
+
+        if (elements instanceof List) {
+            return (List<T>) elements;
+        }
+
+        return new ArrayList<T>(elements);
     }
 
-    public static <T> List<T> slice(Collection<T> objs, boolean ignoreNullValue, String... slicePropertyNames) {
+    public static <T> List<T> sliceProperty(Collection<T> objs, String... slicePropertyNames) {
+        return sliceProperty(objs, true, slicePropertyNames);
+    }
+
+    public static <T> List<T> sliceProperty(Collection<T> objs, boolean ignoreNullValue, String... slicePropertyNames) {
         if (objs == null || objs.isEmpty()) {
-            return null;
+            return java.util.Collections.emptyList();
         }
 
         if (slicePropertyNames == null || slicePropertyNames.length == 0) {
-            return java.util.Collections.emptyList();
+            return toList(objs);
         }
 
         List<T> ret = new ArrayList<T>(objs.size());
