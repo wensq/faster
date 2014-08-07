@@ -98,27 +98,40 @@ public final class Codecs {
 		return StringEscapeUtils.unescapeXml(xmlEscaped);
 	}
 
+    /**
+     * URL 编码
+     */
+    public static String urlEncode(String part, String encoding) {
+        try {
+            return URLEncoder.encode(part, encoding);
+        } catch (UnsupportedEncodingException e) {
+            throw Exceptions.unchecked(e);
+        }
+    }
+
 	/**
-	 * URL 编码, Encode默认为UTF-8.
+	 * URL 编码, encoding默认为UTF-8.
 	 */
 	public static String urlEncode(String part) {
-		try {
-			return URLEncoder.encode(part, DEFAULT_URL_ENCODING);
-		} catch (UnsupportedEncodingException e) {
-			throw Exceptions.unchecked(e);
-		}
+        return urlEncode(part, DEFAULT_URL_ENCODING);
 	}
+
+    /**
+     * URL 解码
+     */
+    public static String urlDecode(String part, String encoding) {
+        try {
+            return URLDecoder.decode(part, encoding);
+        } catch (UnsupportedEncodingException e) {
+            throw Exceptions.unchecked(e);
+        }
+    }
 
 	/**
 	 * URL 解码, Encode默认为UTF-8.
 	 */
 	public static String urlDecode(String part) {
-
-		try {
-			return URLDecoder.decode(part, DEFAULT_URL_ENCODING);
-		} catch (UnsupportedEncodingException e) {
-			throw Exceptions.unchecked(e);
-		}
+        return urlDecode(part, DEFAULT_URL_ENCODING);
 	}
 
 }
